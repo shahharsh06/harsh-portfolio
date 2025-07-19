@@ -10,7 +10,7 @@ import { MobileMenuProvider, useMobileMenu } from "@/components/MobileMenuContex
 
 const MainContent = () => {
   const { isMobileMenuOpen, setIsMobileMenuOpen } = useMobileMenu();
-  
+
   const handleContentClick = () => {
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
@@ -26,13 +26,13 @@ const MainContent = () => {
         }`}
         onClick={handleContentClick}
       >
-        <Hero />
-        <About />
-        <Skills />
+      <Hero />
+      <About />
+      <Skills />
         <CareerEducation />
-        <Projects />
-        <Contact />
-        <Footer />
+      <Projects />
+      <Contact />
+      <Footer />
       </div>
     </div>
   );
