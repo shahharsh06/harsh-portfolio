@@ -58,11 +58,11 @@ const Projects = () => {
             // Coverflow/Parallax for small screens (circular/rolling)
             <div className="flex items-center justify-center h-96">
               <div className="relative w-[90vw] max-w-[480px] h-full flex items-center justify-center">
-                <div
+          <div 
                   className="flex items-center justify-center w-full h-full"
-                  onMouseEnter={() => setIsFeaturedHovered(true)}
-                  onMouseLeave={() => setIsFeaturedHovered(false)}
-                >
+            onMouseEnter={() => setIsFeaturedHovered(true)}
+            onMouseLeave={() => setIsFeaturedHovered(false)}
+          >
                   {featuredProjects.map((project, index) => {
                     // Circular coverflow: calculate offset with modulo
                     const n = featuredProjects.length;
@@ -94,10 +94,10 @@ const Projects = () => {
                       };
                     }
                     return (
-                      <div
-                        key={index}
+              <div 
+                key={index} 
                         className={`absolute left-1/2 top-1/2 transition-all duration-500 ease-in-out`}
-                        style={{
+                style={{
                           ...style,
                           width: 'min(90vw, 480px)',
                           maxWidth: '100%',
@@ -154,35 +154,35 @@ const Projects = () => {
                     <div
                       key={i + '-' + project.title}
                       className={`flex-shrink-0 ${getCardWidthClass(visibleFeatured, 'featured')} ${getCardPadding(i, visibleFeatured)}`}
-                    >
-                      <ProjectCard
-                        title={project.title}
-                        description={project.description}
-                        image={project.image}
-                        technologies={project.technologies}
-                        githubUrl={project.githubUrl}
-                        liveUrl={project.liveUrl}
-                        featured
-                      />
-                    </div>
-                  ))}
-                </div>
+              >
+                <ProjectCard
+                  title={project.title}
+                  description={project.description}
+                  image={project.image}
+                  technologies={project.technologies}
+                  githubUrl={project.githubUrl}
+                  liveUrl={project.liveUrl}
+                  featured
+                />
+              </div>
+            ))}
+          </div>
               </div>
               {/* Featured Projects Navigation Arrows for desktop/large screens */}
-              <button
-                onClick={() => scrollToFeatured('prev')}
+          <button
+            onClick={() => scrollToFeatured('prev')}
                 className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full bg-background/80 hover:bg-background text-muted-foreground hover:text-primary p-2 rounded-full shadow-lg transition-all duration-200 opacity-60 hover:opacity-100 z-20"
-                aria-label="Previous featured project"
-              >
-                <ChevronLeft className="h-6 w-6" />
-              </button>
-              <button
-                onClick={() => scrollToFeatured('next')}
+            aria-label="Previous featured project"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+          <button
+            onClick={() => scrollToFeatured('next')}
                 className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full bg-background/80 hover:bg-background text-muted-foreground hover:text-primary p-2 rounded-full shadow-lg transition-all duration-200 opacity-60 hover:opacity-100 z-20"
-                aria-label="Next featured project"
-              >
-                <ChevronRight className="h-6 w-6" />
-              </button>
+            aria-label="Next featured project"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
             </div>
           )}
         </div>
@@ -194,11 +194,11 @@ const Projects = () => {
             // Coverflow/Parallax for small screens (circular/rolling)
             <div className="flex items-center justify-center h-96">
               <div className="relative w-[90vw] max-w-[480px] h-full flex items-center justify-center">
-                <div
+          <div 
                   className="flex items-center justify-center w-full h-full"
-                  onMouseEnter={() => setIsOtherHovered(true)}
-                  onMouseLeave={() => setIsOtherHovered(false)}
-                >
+            onMouseEnter={() => setIsOtherHovered(true)}
+            onMouseLeave={() => setIsOtherHovered(false)}
+          >
                   {otherProjects.map((project, index) => {
                     // Circular coverflow: calculate offset with modulo
                     const n = otherProjects.length;
@@ -229,42 +229,42 @@ const Projects = () => {
                       };
                     }
                     return (
-                      <div
-                        key={index}
+              <div 
+                key={index} 
                         className={`absolute left-1/2 top-1/2 transition-all duration-500 ease-in-out`}
-                        style={{
+                style={{
                           ...style,
                           width: 'min(90vw, 480px)',
                           maxWidth: '100%',
                           ...(style.pointerEvents ? { pointerEvents: style.pointerEvents } : {}),
-                        }}
-                      >
-                        <ProjectCard
-                          title={project.title}
-                          description={project.description}
-                          technologies={project.technologies}
-                          githubUrl={project.githubUrl}
-                          liveUrl={project.liveUrl}
-                        />
-                      </div>
+                }}
+              >
+                <ProjectCard
+                  title={project.title}
+                  description={project.description}
+                  technologies={project.technologies}
+                  githubUrl={project.githubUrl}
+                  liveUrl={project.liveUrl}
+                />
+              </div>
                     );
                   })}
-                </div>
+          </div>
                 {/* Other Projects Navigation Arrows for mobile/coverflow */}
-                <button
-                  onClick={() => scrollToOther('prev')}
+          <button
+            onClick={() => scrollToOther('prev')}
                   className="absolute -left-4 top-1/2 -translate-y-1/2 z-30 bg-background/90 hover:bg-background text-muted-foreground hover:text-primary p-2 rounded-full shadow-lg transition-all duration-200 opacity-90 hover:opacity-100"
-                  aria-label="Previous other project"
-                >
-                  <ChevronLeft className="h-6 w-6" />
-                </button>
-                <button
-                  onClick={() => scrollToOther('next')}
+            aria-label="Previous other project"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+          <button
+            onClick={() => scrollToOther('next')}
                   className="absolute -right-4 top-1/2 -translate-y-1/2 z-30 bg-background/90 hover:bg-background text-muted-foreground hover:text-primary p-2 rounded-full shadow-lg transition-all duration-200 opacity-90 hover:opacity-100"
-                  aria-label="Next other project"
-                >
-                  <ChevronRight className="h-6 w-6" />
-                </button>
+            aria-label="Next other project"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
               </div>
             </div>
           ) : (
