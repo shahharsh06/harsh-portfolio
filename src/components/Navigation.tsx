@@ -28,6 +28,10 @@ const Navigation = () => {
     { label: "Contact", href: "#contact" },
   ];
 
+  const externalLinks = [
+    { label: "Dashboard", href: "/dashboard.html", icon: "📊" },
+  ];
+
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     element?.scrollIntoView({ behavior: "smooth" });
@@ -59,6 +63,23 @@ const Navigation = () => {
               ))}
               <div className="flex items-center space-x-3 ml-6">
                 <ThemeToggle />
+                {externalLinks.map((link) => (
+                  <Button
+                    key={link.label}
+                    variant="ghost"
+                    size="sm"
+                    asChild
+                    className="hover-glow rounded-full p-0 w-10 h-10 flex items-center justify-center group"
+                  >
+                    <a href={link.href} target="_blank" rel="noopener noreferrer">
+                      <div className="rounded-full bg-transparent p-2 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20 transition-colors">
+                        <span className="text-sm text-foreground group-hover:text-primary group-focus:text-primary group-active:text-primary transition-colors">
+                          {link.icon}
+                        </span>
+                      </div>
+                    </a>
+                  </Button>
+                ))}
                 <Button
                   variant="ghost"
                   size="sm"
