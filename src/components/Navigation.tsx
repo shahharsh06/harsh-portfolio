@@ -154,6 +154,19 @@ const Navigation = () => {
                     {item.label}
                   </button>
                 ))}
+                {/* External Links for Mobile */}
+                {externalLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-primary hover:bg-muted transition-fast w-full text-left"
+                  >
+                    <span className="mr-2">{link.icon}</span>
+                    {link.label}
+                  </a>
+                ))}
                 <div className="flex items-center space-x-3 px-3 py-2">
                   <ThemeToggle />
                   <Button
