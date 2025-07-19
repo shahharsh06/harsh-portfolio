@@ -1,34 +1,42 @@
 # Harsh Portfolio Website
 
-A professional, accessible, and responsive portfolio website to showcase Harsh's software development skills, projects, and blog, built with React and Tailwind CSS.
+A professional, accessible, and responsive portfolio website showcasing Harsh's software development skills, projects, and experience. Built with React 18, TypeScript, and Tailwind CSS with modern development practices and optimized performance.
 
 ## 🎯 Project Overview
 
 This portfolio website demonstrates modern web development practices including:
 - **React 18** with TypeScript for robust development
-- **Tailwind CSS** for responsive, accessible design
+- **Tailwind CSS** for responsive, accessible design with custom gradients
 - **Dark/Light Theme** with system preference detection
-- **SEO Optimization** with meta tags, sitemap, and OpenGraph
-- **Performance Optimized** with Lighthouse scores >90
+- **Performance Optimized** with lazy loading and efficient components
 - **Accessibility Compliant** (WCAG AA+ standards)
-- **Free Hosting** on GitHub Pages/Vercel
+- **Modern UI/UX** with smooth animations and interactive elements
 
 ## 🚀 Features
 
 ### Core Features
-- ✅ **Home Page**: Hero section with name, title, and introduction
-- ✅ **About Section**: Skills, education, certifications, experience
-- ✅ **Projects Gallery**: Showcase with GitHub links, tech stacks, descriptions
-- ✅ **Contact Form**: Email integration and social media links
+- ✅ **Hero Section**: Animated typewriter effect with gradient styling
+- ✅ **About Section**: Skills, education, certifications, and experience
+- ✅ **Projects Gallery**: Interactive showcase with filtering and carousel
+- ✅ **Contact Form**: Frontend form with validation (backend integration pending)
 - ✅ **Theme Toggle**: Light/Dark mode with system preference detection
-- ✅ **Responsive Design**: Mobile-first approach
-- ✅ **SEO Optimized**: Meta tags, sitemap, OpenGraph, Twitter Cards
+- ✅ **Responsive Design**: Mobile-first approach with breakpoint optimization
+- ✅ **GitHub Integration**: Repository connected and deployed
 
 ### Advanced Features
-- 🔄 **Project Filtering**: Search and filter projects by technology
-- 🔄 **Animations**: Smooth page transitions with Framer Motion
+- ✅ **Interactive Components**: Hover effects, animations, and micro-interactions
+- ✅ **Gradient Consistency**: Unified blue-to-cyan gradient across all UI elements
+- ✅ **Reusable Components**: Modular design with shared UI components
+- ✅ **Data Separation**: Centralized constants and external data files
+- ✅ **Type Safety**: Full TypeScript implementation with proper interfaces
+- ✅ **Performance**: Optimized bundle size and efficient rendering
+
+### Planned Features
+- 🔄 **SEO Optimization**: Meta tags, OpenGraph, and structured data
+- 🔄 **Contact Form Backend**: Email integration and form processing
+- 🔄 **Testing Pipeline**: Unit tests, integration tests, and CI/CD
 - 🔄 **Analytics**: Google Analytics integration
-- 🔄 **Performance**: Lazy loading, image optimization
+- 🔄 **Performance Monitoring**: Lighthouse CI and performance tracking
 
 ## 🎨 Design System
 
@@ -37,62 +45,110 @@ This portfolio website demonstrates modern web development practices including:
 **Light Mode:**
 - Background: `#FAFAFA`
 - Text: `#1E1E1E`
-- Accent: `#0077B6`
-- Button/Highlight: `#90E0EF`
+- Primary: `#0077B6` (Blue)
+- Secondary: `#00B4D8` (Cyan)
+- Gradient: `from-primary to-cyan-400`
 
 **Dark Mode:**
 - Background: `#121212`
 - Text: `#E0E0E0`
-- Accent: `#00B4D8`
-- Button/Highlight: `#CAF0F8`
+- Primary: `#00B4D8`
+- Secondary: `#CAF0F8`
+- Gradient: `from-primary to-cyan-400`
 
 ### Typography
 - **Headings**: Inter (Google Fonts)
 - **Body**: Inter (Google Fonts)
 - **Code**: JetBrains Mono
 
+### Component Library
+- **GradientButton**: Reusable button with consistent gradient styling
+- **SectionHeader**: Standardized section headers with icons
+- **InteractiveCard**: Hover-animated cards for content display
+- **ProjectCard**: Specialized cards for project showcases
+- **SkillTag**: Tag components for skills and technologies
+
 ## 🛠️ Tech Stack
 
-- **Frontend**: React 18 + TypeScript
-- **Styling**: Tailwind CSS + CSS Modules
-- **Build Tool**: Vite
-- **Routing**: React Router DOM
-- **State Management**: React Context API
-- **Icons**: Lucide React
-- **Animations**: Framer Motion
-- **Deployment**: GitHub Pages / Vercel
-- **Analytics**: Google Analytics 4
+### Frontend
+- **React 18** + TypeScript for type-safe development
+- **Tailwind CSS** + CSS Modules for styling
+- **Framer Motion** for smooth animations
+- **React Router DOM** for client-side routing
+- **Lucide React** for consistent iconography
 
-## 📋 Development Roadmap
+### Build & Development
+- **Vite** for fast development and optimized builds
+- **ESLint** + TypeScript for code quality
+- **PostCSS** + Autoprefixer for CSS processing
+- **SWC** for fast compilation
 
-### Phase 1: Foundation (Week 1)
-- [x] Project setup and repository structure
-- [x] React + Vite + TypeScript configuration
-- [x] Tailwind CSS setup with custom theme
-- [x] Basic routing structure
-- [ ] Home page component
-- [ ] About page component
+### UI Components
+- **Radix UI** primitives for accessible components
+- **Class Variance Authority** for component variants
+- **Tailwind Merge** for class name optimization
+- **Sonner** for toast notifications
 
-### Phase 2: Core Features (Week 2)
-- [ ] Projects gallery component
-- [ ] Contact form with email integration
-- [ ] Theme toggle functionality
-- [ ] Responsive navigation
-- [ ] SEO meta tags implementation
+### State Management
+- **React Context API** for global state (theme, mobile menu)
+- **React Hook Form** for form management
+- **Zod** for schema validation
 
-### Phase 3: Enhancement (Week 3)
-- [ ] Blog system with Markdown support
-- [ ] Project filtering and search
-- [ ] Smooth animations and transitions
-- [ ] Performance optimization
-- [ ] Accessibility improvements
+## 📁 Project Structure
 
-### Phase 4: Deployment (Week 4)
-- [ ] GitHub Actions CI/CD setup
-- [ ] Production build optimization
-- [ ] Domain configuration
-- [ ] Google Analytics integration
-- [ ] Final testing and launch
+```
+harsh-portfolio/
+├── public/
+│   ├── placeholder.svg
+│   ├── robot.txt
+│   └── vite.svg
+├── src/
+│   ├── assets/
+│   │   ├── profile/
+│   │   │   └── harsh_profile_image.jpg
+│   │   └── resume/
+│   │       └── Harsh_SE_Resume.pdf
+│   ├── components/
+│   │   ├── ui/                    # Reusable UI components
+│   │   │   ├── GradientButton.tsx
+│   │   │   ├── SectionHeader.tsx
+│   │   │   ├── InteractiveCard.tsx
+│   │   │   ├── ProjectCard.tsx
+│   │   │   └── SkillTag.tsx
+│   │   ├── icons/                 # Custom icon components
+│   │   │   ├── EnvelopeIcon.tsx
+│   │   │   ├── GithubIcon.tsx
+│   │   │   ├── LinkedinIcon.tsx
+│   │   │   └── index.ts
+│   │   ├── About.tsx
+│   │   ├── CareerEducation.tsx
+│   │   ├── Contact.tsx
+│   │   ├── Footer.tsx
+│   │   ├── Hero.tsx
+│   │   ├── Navigation.tsx
+│   │   ├── Projects.tsx
+│   │   └── Skills.tsx
+│   ├── data/                      # External data files
+│   │   ├── projects.ts
+│   │   └── timeline.ts
+│   ├── hooks/                     # Custom React hooks
+│   │   ├── useCarousel.ts
+│   │   ├── useResponsive.ts
+│   │   └── use-toast.ts
+│   ├── lib/                       # Utilities and constants
+│   │   ├── constants.ts
+│   │   └── utils.ts
+│   ├── pages/                     # Page components
+│   │   ├── Index.tsx
+│   │   └── NotFound.tsx
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── index.css
+├── components.json                # shadcn/ui configuration
+├── tailwind.config.ts            # Tailwind configuration
+├── vite.config.ts                # Vite configuration
+└── package.json
+```
 
 ## 🚀 Quick Start
 
@@ -119,97 +175,120 @@ npm run build
 
 # Preview production build
 npm run preview
+
+# Lint code
+npm run lint
 ```
 
 ### Environment Variables
 
-Create a `.env.local` file:
+Create a `.env.local` file for any environment-specific configurations:
 
 ```env
-VITE_GOOGLE_ANALYTICS_ID=your_ga_id
-VITE_CONTACT_EMAIL=your_email@example.com
+# Future: Add environment variables for:
+# VITE_GOOGLE_ANALYTICS_ID=your_ga_id
+# VITE_CONTACT_EMAIL=your_email@example.com
+# VITE_CONTACT_API_ENDPOINT=your_api_endpoint
 ```
 
-## 📁 Project Structure
+## 🎯 Key Improvements
 
-```
-harsh-portfolio/
-├── public/
-│   ├── images/
-│   ├── favicon.ico
-│   └── robots.txt
-├── src/
-│   ├── components/
-│   │   ├── layout/
-│   │   ├── ui/
-│   │   └── sections/
-│   ├── pages/
-│   ├── hooks/
-│   ├── context/
-│   ├── utils/
-│   ├── styles/
-│   └── types/
-├── content/
-│   ├── projects/
-│   └── blog/
-├── docs/
-└── scripts/
-```
+### Code Organization
+- **Centralized Constants**: Personal info and social links in `src/lib/constants.ts`
+- **Data Separation**: Timeline and projects data in separate files
+- **Reusable Components**: Modular UI components for consistency
+- **Type Safety**: Full TypeScript implementation with proper interfaces
 
-## 🧪 Testing
+### UI/UX Enhancements
+- **Gradient Consistency**: Unified blue-to-cyan gradient across all components
+- **Interactive Elements**: Hover effects, animations, and micro-interactions
+- **Responsive Design**: Mobile-first approach with optimized breakpoints
+- **Accessibility**: WCAG compliant with proper ARIA labels and keyboard navigation
 
-```bash
-# Run unit tests
-npm run test
+### Performance Optimizations
+- **Bundle Size**: Removed 47 unnecessary files and unused dependencies
+- **Lazy Loading**: Efficient component loading and rendering
+- **Code Splitting**: Optimized imports and dependencies
+- **Build Optimization**: Vite configuration for fast builds
 
-# Run accessibility tests
-npm run test:a11y
+## 📊 Performance Metrics
 
-# Run Lighthouse audit
-npm run lighthouse
-```
-
-## 📊 Performance Targets
-
-- **Lighthouse Score**: >90 in all categories
-- **First Contentful Paint**: <1.5s
-- **Largest Contentful Paint**: <2.5s
-- **Cumulative Layout Shift**: <0.1
-- **First Input Delay**: <100ms
+- **Lighthouse Score**: >90 in all categories (target)
+- **First Contentful Paint**: <1.5s (target)
+- **Largest Contentful Paint**: <2.5s (target)
+- **Cumulative Layout Shift**: <0.1 (target)
+- **First Input Delay**: <100ms (target)
+- **Bundle Size**: Optimized with tree-shaking and code splitting
 
 ## ♿ Accessibility Standards
 
-- WCAG 2.1 AA compliance
-- Keyboard navigation support
-- Screen reader compatibility
-- High contrast ratios (4.5:1 minimum)
-- Color-blind safe palette
-- Focus indicators
+- **WCAG 2.1 AA** compliance
+- **Keyboard navigation** support
+- **Screen reader** compatibility
+- **High contrast ratios** (4.5:1 minimum)
+- **Color-blind safe** palette
+- **Focus indicators** and proper ARIA labels
+- **Semantic HTML** structure
 
 ## 🚀 Deployment
 
 ### GitHub Pages
 1. Push to main branch
 2. GitHub Actions automatically builds and deploys
-3. Available at: `https://yourusername.github.io/harsh-portfolio`
+3. Available at: `https://shahharsh06.github.io/harsh-portfolio`
 
 ### Vercel (Alternative)
 1. Connect GitHub repository to Vercel
 2. Automatic deployments on push to main
 3. Custom domain support
 
-## 📈 SEO Checklist
+## 📈 SEO Features (Planned)
 
-- [ ] Meta title and description
-- [ ] OpenGraph tags
-- [ ] Twitter Card tags
-- [ ] Structured data (JSON-LD)
-- [ ] Sitemap.xml
-- [ ] Robots.txt
-- [ ] Alt text for images
-- [ ] Semantic HTML
-- [ ] Page speed optimization
-- [ ] Mobile-friendly design
+- 🔄 Meta title and description
+- 🔄 OpenGraph tags
+- 🔄 Twitter Card tags
+- 🔄 Structured data (JSON-LD)
+- 🔄 Sitemap.xml
+- 🔄 Robots.txt
+- ✅ Alt text for images
+- ✅ Semantic HTML structure
+- ✅ Page speed optimization
+- ✅ Mobile-friendly design
+
+## 🧪 Testing (Planned)
+
+```bash
+# Future testing commands:
+# npm run test          # Unit tests
+# npm run test:e2e      # End-to-end tests
+# npm run test:a11y     # Accessibility tests
+# npm run lighthouse    # Performance audit
+```
+
+## 🔄 Development Roadmap
+
+### Phase 1: Foundation ✅
+- [x] Project setup and repository structure
+- [x] React + Vite + TypeScript configuration
+- [x] Tailwind CSS setup with custom theme
+- [x] Basic routing structure
+- [x] Core components (Hero, About, Projects, Contact)
+- [x] Theme toggle functionality
+- [x] Responsive navigation
+
+### Phase 2: Enhancement 🔄
+- [ ] SEO optimization (meta tags, OpenGraph)
+- [ ] Contact form backend integration
+- [ ] Google Analytics integration
+- [ ] Performance monitoring
+- [ ] Testing pipeline setup
+
+### Phase 3: Advanced Features 📋
+- [ ] Blog system with Markdown support
+- [ ] Advanced project filtering
+- [ ] Performance optimization
+- [ ] CI/CD pipeline
+- [ ] Final testing and launch
 
 ## 🤝 Contributing
 
@@ -229,7 +308,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Lucide React](https://lucide.dev/) for beautiful icons
 - [Framer Motion](https://www.framer.com/motion/) for animations
 - [Vite](https://vitejs.dev/) for the build tool
+- [Radix UI](https://www.radix-ui.com/) for accessible components
+- [shadcn/ui](https://ui.shadcn.com/) for component inspiration
 
 ---
 
-**Built with ❤️ by Harsh**
+**Built with ❤️ by Harsh Shah**
+
+*ML & Software Engineer | Texas A&M University*
