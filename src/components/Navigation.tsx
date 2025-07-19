@@ -29,7 +29,7 @@ const Navigation = () => {
   ];
 
   const externalLinks = [
-    { label: "Dashboard", href: "/dashboard.html", icon: "📊" },
+    { label: "Dashboard", href: "/harsh-portfolio/dashboard.html", icon: "📊" },
   ];
 
   const scrollToSection = (href: string) => {
