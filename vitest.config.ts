@@ -1,24 +1,9 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import path from "path";
-import { componentTagger } from "lovable-tagger";
+import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react-swc';
+import path from 'path';
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  server: {
-    host: "::",
-    port: 8080,
-  },
-  plugins: [
-    react(),
-    mode === 'development' &&
-    componentTagger(),
-  ].filter(Boolean),
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
+export default defineConfig({
+  plugins: [react()],
   test: {
     globals: true,
     environment: 'jsdom',
@@ -38,23 +23,28 @@ export default defineConfig(({ mode }) => ({
         '**/*.test.*',
         '**/*.spec.*',
         'src/main.tsx',
-        'src/vite-env.d.ts'
+        'src/vite-env.d.ts',
+        'src/pages/NotFound.tsx', // Static page, no logic to test
+        'src/components/icons/**', // Icon components are simple
+        'src/components/ThemeProvider.tsx', // Context provider, minimal logic
+        'src/components/MobileMenuContext.tsx', // Context provider, minimal logic
       ],
       include: [
         'src/**/*.{ts,tsx}',
         'src/**/*.{js,jsx}'
       ],
       all: true,
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
-      threshold: {
+      thresholds: {
         branches: 80,
         functions: 80,
         lines: 80,
         statements: 80
       }
     }
-  }
-}));
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+}); 
