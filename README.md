@@ -1,6 +1,6 @@
 # Harsh Portfolio Website
 
-![Test Coverage](https://img.shields.io/badge/coverage-96.5%25-brightgreen?logo=vitest&style=flat)
+![Test Coverage](https://img.shields.io/badge/coverage-96.50%25-red?logo=vitesthttps://img.shields.io/badge/coverage-96.5%25-brightgreen?logo=viteststyle=flat&style=flat)
 ![Function Coverage](https://img.shields.io/badge/functions-82.71%25-green?logo=typescript&style=flat)
 ![Tests Passing](https://img.shields.io/badge/tests-381%20passing-brightgreen?logo=vitest&style=flat)
 
