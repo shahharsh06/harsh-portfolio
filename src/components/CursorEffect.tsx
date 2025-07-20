@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useTheme } from './ThemeProvider';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { useTheme } from 'next-themes';
 
 interface CursorEffectProps {
   enabled?: boolean;
@@ -24,17 +24,17 @@ const CursorEffect: React.FC<CursorEffectProps> = ({
   speed = 1
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const mouseRef = useRef({ x: 0, y: 0 });
+  const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const trailRef = useRef<Array<{ x: number; y: number; timestamp: number }>>([]);
   const animationRef = useRef<number>();
   const [isVisible, setIsVisible] = useState(false);
   const { theme } = useTheme();
 
-  // Theme-aware colors
-  const themeColors = colors || {
+  // Theme-aware colors - wrapped in useMemo to prevent unnecessary re-renders
+  const themeColors = useMemo(() => colors || {
     primary: theme === 'dark' ? '#3b82f6' : '#2563eb',
     secondary: theme === 'dark' ? '#8b5cf6' : '#7c3aed'
-  };
+  }, [colors, theme]);
 
   useEffect(() => {
     if (!enabled) return;

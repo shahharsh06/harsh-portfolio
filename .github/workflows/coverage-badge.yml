@@ -2,14 +2,11 @@ name: Update Coverage Badge
 
 on:
   push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
   coverage-badge:
@@ -60,7 +57,6 @@ jobs:
           echo "Coverage: $PERCENTAGE%"
 
       - name: Update README with coverage badge
-        if: github.ref == 'refs/heads/main'
         run: |
           # Create badge URL
           BADGE_URL="https://img.shields.io/badge/coverage-${{ steps.coverage.outputs.coverage }}%25-${{ steps.coverage.outputs.color }}?logo=vitest&style=flat"

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Download, Mail } from "lucide-react";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import heroImage from "@/assets/profile/harsh_profile_image.jpg";
 import resumeFile from "@/assets/resume/Harsh_SE_Resume.pdf";
 import { GradientButton } from "./ui/GradientButton";
@@ -15,12 +15,14 @@ const Hero = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   
   const fullName = PERSONAL_INFO.name;
-  const titles = [
+  
+  // Titles array wrapped in useMemo to prevent unnecessary re-renders
+  const titles = useMemo(() => [
     'Machine Learning Engineer',
     'Data Scientist', 
     'AI Enthusiast',
     'Python Developer'
-  ];
+  ], []);
 
   // Name typewriter effect
   useEffect(() => {

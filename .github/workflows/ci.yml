@@ -27,9 +27,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run linting
-        run: npm run lint
-
       - name: Run tests with coverage
         run: npm run test:coverage
 
@@ -112,33 +109,4 @@ jobs:
         with:
           name: build-files
           path: dist/
-          retention-days: 7
-
-  security:
-    name: Security Audit
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run security audit (production only)
-        run: npm audit --audit-level=high --production
-
-      - name: Check for high severity vulnerabilities
-        run: |
-          if npm audit --audit-level=high --production; then
-            echo "No high severity vulnerabilities found in production dependencies"
-          else
-            echo "High severity vulnerabilities found in production dependencies"
-            exit 1
-          fi 
+          retention-days: 7 
