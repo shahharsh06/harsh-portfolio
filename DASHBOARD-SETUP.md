@@ -1,243 +1,378 @@
-# Portfolio Dashboard Setup Guide
+# Portfolio Dashboard Setup & Configuration
 
-## 📊 Dashboard Overview
+## 🎯 Dashboard Overview
 
-The Portfolio Dashboard provides comprehensive test coverage and code quality metrics for the portfolio website. It displays real-time (planned) and static metrics with interactive charts and visualizations.
+**Last Updated**: December 2024
 
-### Current Features ✅
-- **Coverage Metrics**: Test coverage metrics (96.5%)
-- **Code Quality Metrics**: TypeScript coverage, linting scores, and security analysis
-- **Test Categories**: Component, UI, Utility, Integration, and Hook tests breakdown
-- **CI/CD Status**: Pipeline status with visual indicators
-- **Interactive Charts**: Chart.js doughnut and line charts for data visualization
-- **Theme Integration**: Seamless light/dark theme switching
-- **Responsive Design**: Mobile-optimized dashboard layout
-- **Lucide React Icons**: Consistent iconography matching portfolio design
+### Current Status
+- **Status**: ✅ Live and Active
+- **URL**: `https://shahharsh06.github.io/harsh-portfolio/dashboard.html`
+- **Coverage**: 91.72% (352 tests passing)
+- **Auto-updates**: ✅ Every 6 hours via CI/CD
+- **Theme Integration**: ✅ Matches portfolio theme
 
-### Planned Features 🔄
-- **Real-time Updates**: Live coverage updates and metrics
-- **Auto-refresh**: Automatic data refresh
-- **Live Data**: API integration for dynamic data
+## 📊 Dashboard Features
 
-## 🎯 Dashboard Metrics
-
-### Current Metrics
-- **Overall Coverage**: 96.5% (Target: 80%)
-- **Total Tests**: 381 tests (All passing)
-- **Function Coverage**: 82.71% (Target: 65%)
-- **Code Quality**: A+ grade
+### Core Metrics Display
+- **Overall Coverage**: 91.72% (Target: 80%)
+- **Total Tests**: 352 tests (All passing)
+- **Function Coverage**: 74.35% (Target: 65%)
 - **Security Score**: 95% (No high severity issues)
-- **Component Coverage**: 8 components with 90%+ coverage
-- **Test Categories**: 5 categories with detailed breakdowns
 
-### Coverage Breakdown
-- **Statements**: 96.5% (1958/2029)
-- **Branches**: 93.03% (267/287)
-- **Functions**: 82.71% (67/81)
-- **Lines**: 96.5% (1958/2029)
-
-## 🚀 Quick Start
-
-### 1. Access Dashboard
-- **URL**: `/harsh-portfolio/dashboard.html`
-- **Navigation**: Accessible via portfolio navigation
-- **Theme Sync**: Matches portfolio theme preferences
-
-### 2. Dashboard Features
-- **Coverage Overview**: Main metrics display
-- **Interactive Charts**: Coverage breakdown and trends
-- **Test Categories**: Detailed test breakdown
-- **CI/CD Status**: Pipeline status indicators
+### Interactive Components
+- **Coverage Chart**: Doughnut chart showing covered vs uncovered code
+- **Test Trend Chart**: Line chart showing test growth over time
+- **Component Coverage**: Detailed breakdown by component
+- **Test Categories**: Breakdown by test type
 - **Quality Metrics**: TypeScript, linting, and security scores
 
-### 3. Theme Integration
-- **Light/Dark Mode**: Toggle between themes
-- **Consistent Styling**: Matches portfolio design system
-- **Responsive Layout**: Mobile-optimized design
+### Visual Elements
+- **Theme Integration**: Seamless light/dark mode switching
+- **Responsive Design**: Mobile-optimized layout
+- **Lucide React Icons**: Consistent iconography
+- **Gradient Styling**: Matches portfolio design system
+- **Interactive Cards**: Hover effects and animations
 
-## 📁 File Structure
+## 🚀 Dashboard Configuration
 
+### File Structure
 ```
 public/
 ├── dashboard.html          # Main dashboard file
 ├── dashboard.js            # Dashboard JavaScript
-├── dashboard-data.json     # Dashboard data (future)
-└── robot.txt              # Robots file
+└── dashboard-data.json     # Metrics data (auto-generated)
 ```
 
-## 🛠️ Technical Implementation
+### Dashboard HTML Structure
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags and styling -->
+    <title>Portfolio Dashboard - Test Coverage & Code Quality</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <!-- Header with theme toggle -->
+    <!-- Overview cards with metrics -->
+    <!-- Charts section -->
+    <!-- Detailed metrics -->
+    <!-- CI/CD status -->
+    <!-- Action items -->
+    <!-- Footer -->
+</body>
+</html>
+```
 
-### Frontend Technologies
-- **HTML5**: Semantic structure
-- **CSS3**: Tailwind CSS for styling
-- **JavaScript**: Vanilla JS for interactivity
-- **Chart.js**: Data visualization
-- **Lucide Icons**: Consistent iconography
-
-### Key Features
-- **Responsive Design**: Mobile-first approach
-- **Theme Integration**: Light/dark mode support
-- **Interactive Charts**: Chart.js visualizations
-- **Accessibility**: WCAG compliant design
-- **Performance**: Optimized loading and rendering
-
-## 📊 Chart Configuration
-
-### Coverage Chart (Doughnut)
-- **Type**: Doughnut chart
-- **Data**: Coverage percentage (96.5% covered, 3.5% uncovered)
-- **Colors**: Green for covered, gray for uncovered
-- **Responsive**: Adapts to screen size
-
-### Test Trend Chart (Line)
-- **Type**: Line chart
-- **Data**: Test count and coverage over time
-- **Datasets**: Test count (0 → 381), Coverage % (0 → 96.5%)
-- **Colors**: Blue for test count, green for coverage
-- **Animation**: Smooth transitions
-
-## 🎨 Design System
-
-### Color Palette
-- **Primary**: Blue (#0077B6)
-- **Secondary**: Cyan (#00B4D8)
-- **Success**: Green (#10b981)
-- **Warning**: Yellow (#f59e0b)
-- **Error**: Red (#ef4444)
-
-### Typography
-- **Font**: Inter (Google Fonts)
-- **Weights**: 300, 400, 500, 600, 700
-- **Responsive**: Scales with screen size
-
-### Components
-- **Cards**: Gradient backgrounds with hover effects
-- **Buttons**: Consistent styling with portfolio
-- **Icons**: Lucide React icon set
-- **Charts**: Chart.js with custom styling
-
-## 🔄 Future Enhancements
-
-### Phase 1: Real-time Updates
-- [ ] **API Integration**: Backend for live data
-- [ ] **WebSocket**: Real-time updates
-- [ ] **Auto-refresh**: Automatic data refresh
-- [ ] **Live Metrics**: Dynamic coverage updates
-
-### Phase 2: Advanced Features
-- [ ] **Historical Data**: Coverage trends over time
-- [ ] **Performance Metrics**: Lighthouse scores
-- [ ] **Security Analysis**: Vulnerability scanning
-- [ ] **Custom Alerts**: Coverage threshold notifications
-
-### Phase 3: Integration
-- [ ] **CI/CD Integration**: Automated updates
-- [ ] **GitHub Actions**: Coverage badge updates
-- [ ] **Slack Notifications**: Coverage alerts
-- [ ] **Email Reports**: Weekly coverage summaries
-
-## 🧪 Testing Dashboard
-
-### Test Coverage
-- **Dashboard Tests**: Component testing
-- **Chart Tests**: Chart.js functionality
-- **Theme Tests**: Light/dark mode switching
-- **Responsive Tests**: Mobile/desktop layouts
-
-### Quality Assurance
-- **Accessibility**: WCAG 2.1 AA compliance
-- **Performance**: Lighthouse optimization
-- **Cross-browser**: Chrome, Firefox, Safari, Edge
-- **Mobile**: iOS Safari, Chrome Mobile
-
-## 📈 Performance Metrics
-
-### Current Performance
-- **Load Time**: <2 seconds
-- **Lighthouse Score**: >90 in all categories
-- **Bundle Size**: Optimized with minification
-- **Caching**: Static asset caching
-
-### Optimization
-- **CDN**: Chart.js and Lucide icons via CDN
-- **Minification**: CSS and JS minification
-- **Compression**: Gzip compression
-- **Caching**: Browser and CDN caching
-
-## 🔧 Configuration
-
-### Chart.js Configuration
+### Dashboard JavaScript Features
 ```javascript
-// Coverage chart configuration
-const coverageConfig = {
+// Theme management
+const themeToggle = document.getElementById('themeToggle');
+const html = document.documentElement;
+
+// Chart configuration
+const coverageChart = new Chart(coverageCtx, {
     type: 'doughnut',
     data: {
         labels: ['Covered', 'Uncovered'],
         datasets: [{
-            data: [96.5, 3.5],
-            backgroundColor: ['#10b981', '#6b7280'],
-            borderWidth: 0
+            data: [91.72, 8.28],
+            backgroundColor: ['#10b981', '#e5e7eb']
         }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'bottom'
-            }
-        }
     }
-};
+});
+
+// Auto-refresh every 5 minutes
+setInterval(() => {
+    document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+}, 300000);
 ```
 
-### Theme Configuration
+## 📈 Metrics Integration
+
+### Coverage Data Sources
+- **LCOV Reports**: Generated by Vitest coverage
+- **Test Results**: From CI/CD pipeline
+- **Build Status**: From GitHub Actions
+- **Security Data**: From npm audit results
+
+### Data Flow
+1. **CI/CD Pipeline** runs tests and generates coverage
+2. **Dashboard Workflow** parses coverage data
+3. **Metrics Updated** in dashboard.html and dashboard-data.json
+4. **Auto-commit** changes to repository
+5. **GitHub Pages** deploys updated dashboard
+
+### Coverage Calculation
+```bash
+# Parse coverage from lcov.info
+TOTAL_LINES=$(grep -E "^LF:" coverage/lcov.info | awk -F: '{sum += $2} END {print sum}')
+COVERED_LINES=$(grep -E "^LH:" coverage/lcov.info | awk -F: '{sum += $2} END {print sum}')
+COVERAGE_PERCENTAGE=$(echo "scale=2; $COVERED_LINES * 100 / $TOTAL_LINES" | bc)
+```
+
+## 🎨 Design System
+
+### Color Scheme
 ```css
-/* Light theme variables */
+/* Light Mode */
+--background: 0 0% 100%;
+--foreground: 222.2 84% 4.9%;
+--primary: 221.2 83.2% 53.3%;
+--secondary: 210 40% 96%;
+
+/* Dark Mode */
+--background: 222.2 84% 4.9%;
+--foreground: 210 40% 98%;
+--primary: 217.2 91.2% 59.8%;
+--secondary: 217.2 32.6% 17.5%;
+```
+
+### Coverage Colors
+```css
+.coverage-excellent { background: linear-gradient(135deg, #10b981, #059669); }
+.coverage-good { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.coverage-poor { background: linear-gradient(135deg, #ef4444, #dc2146); }
+```
+
+### Typography
+- **Font Family**: Inter (Google Fonts)
+- **Weights**: 300, 400, 500, 600, 700
+- **Responsive**: Scales appropriately on mobile
+
+## 🔧 CI/CD Integration
+
+### Dashboard Update Workflow
+```yaml
+name: Update Dashboard
+on:
+  workflow_run:
+    workflows: ["CI/CD Pipeline", "Deploy to GitHub Pages"]
+    types: [completed]
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+  workflow_dispatch:
+
+jobs:
+  update-dashboard:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - Checkout code
+      - Setup Node.js 18
+      - Install dependencies
+      - Run tests with coverage
+      - Generate dashboard data
+      - Update dashboard HTML
+      - Commit and push changes
+```
+
+### Update Process
+1. **Trigger**: CI/CD completion or scheduled (6 hours)
+2. **Test Execution**: Run tests with coverage
+3. **Data Parsing**: Extract metrics from coverage reports
+4. **HTML Update**: Replace hardcoded values with dynamic data
+5. **Commit**: Auto-commit changes with descriptive message
+6. **Deploy**: GitHub Pages automatically deploys updates
+
+## 📊 Current Metrics
+
+### Coverage Breakdown
+- **Statements**: 91.72% (1,862/2,030)
+- **Branches**: 92.3% (240/260)
+- **Functions**: 74.35% (58/78)
+- **Lines**: 91.72% (1,862/2,030)
+
+### Component Coverage
+- **About.tsx**: 100% coverage
+- **CareerEducation.tsx**: 100% coverage
+- **CursorEffect.tsx**: 100% coverage
+- **Skills.tsx**: 100% coverage
+- **Hero.tsx**: 93.6% coverage
+- **Projects.tsx**: 92.3% coverage
+- **Contact.tsx**: 90.55% coverage
+- **Navigation.tsx**: 98.16% coverage
+
+### Test Categories
+- **Component Tests**: 95+ tests
+- **UI Tests**: 73+ tests
+- **Utility Tests**: 27+ tests
+- **Integration Tests**: 16+ tests
+- **Hook Tests**: 26+ tests
+
+### Quality Metrics
+- **TypeScript Coverage**: 100%
+- **Linting Score**: 100%
+- **Build Success Rate**: 100%
+- **Deployment Success**: 100%
+- **Security Vulnerabilities**: 0
+
+## 🎯 Dashboard Sections
+
+### 1. Overview Cards
+- **Overall Coverage**: 91.72% with progress bar
+- **Total Tests**: 352 tests with status
+- **Function Coverage**: 74.35% with threshold
+- **Security Score**: 95% with status
+
+### 2. Charts Section
+- **Coverage Breakdown**: Doughnut chart
+- **Test Results Trend**: Line chart showing growth
+
+### 3. Detailed Metrics
+- **Component Coverage**: Individual component breakdown
+- **Test Categories**: Test type distribution
+- **Quality Metrics**: Code quality indicators
+
+### 4. CI/CD Status
+- **Test Pipeline**: Status with test count
+- **Coverage**: Status with percentage
+- **Deployment**: Status with platform
+
+### 5. Action Items
+- **Priority 1**: Hooks & Utilities improvement
+- **Priority 2**: Edge Cases and accessibility
+
+## 🛠️ Customization
+
+### Adding New Metrics
+1. **Update Workflow**: Add metric calculation in dashboard.yml
+2. **Update HTML**: Add new card or section in dashboard.html
+3. **Update JavaScript**: Add chart or display logic
+4. **Test**: Verify metric updates correctly
+
+### Modifying Charts
+```javascript
+// Update chart data
+coverageChart.data.datasets[0].data = [newCoverage, newUncovered];
+coverageChart.update();
+
+// Add new chart
+const newChart = new Chart(newCtx, {
+    type: 'bar',
+    data: { /* chart data */ },
+    options: { /* chart options */ }
+});
+```
+
+### Theme Customization
+```css
+/* Add new theme colors */
 :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --secondary: 210 40% 96%;
+    --custom-color: 220 13% 91%;
 }
 
-/* Dark theme variables */
 .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --secondary: 217.2 32.6% 17.5%;
+    --custom-color: 220 13% 18%;
+}
+
+/* Use in components */
+.custom-element {
+    background-color: hsl(var(--custom-color));
 }
 ```
 
-## 🚀 Deployment
+## 📱 Responsive Design
 
-### GitHub Pages
-1. **Build**: Dashboard is included in main build
-2. **Deploy**: Automatic deployment via GitHub Actions
-3. **Access**: Available at `/harsh-portfolio/dashboard.html`
+### Breakpoints
+- **Mobile**: < 768px
+- **Tablet**: 768px - 1024px
+- **Desktop**: > 1024px
 
-### Local Development
-1. **Serve**: `npm run dev`
-2. **Access**: `http://localhost:5173/dashboard.html`
-3. **Build**: `npm run build`
+### Mobile Optimizations
+- **Stacked Layout**: Cards stack vertically
+- **Simplified Charts**: Reduced chart complexity
+- **Touch-friendly**: Larger touch targets
+- **Optimized Typography**: Readable font sizes
 
-## 📝 Maintenance
+### Tablet Optimizations
+- **Grid Layout**: 2-column grid for cards
+- **Side-by-side Charts**: Charts display horizontally
+- **Medium Typography**: Balanced font sizes
 
-### Regular Updates
-- **Coverage Data**: Update after test runs
-- **Chart Data**: Refresh metrics weekly
-- **Dependencies**: Update Chart.js and Lucide icons
-- **Performance**: Monitor and optimize loading times
+### Desktop Optimizations
+- **Multi-column Layout**: 3-4 column grid
+- **Full Charts**: Complete chart functionality
+- **Hover Effects**: Enhanced interactivity
 
-### Monitoring
-- **Uptime**: Dashboard availability
-- **Performance**: Load times and Lighthouse scores
-- **Coverage**: Test coverage trends
-- **Quality**: Code quality metrics
+## 🔍 Troubleshooting
+
+### Common Issues
+
+#### 1. Dashboard Not Updating
+```bash
+# Check workflow status
+gh run list --workflow=dashboard.yml
+
+# Check dashboard file
+cat public/dashboard.html
+
+# Check data file
+cat public/dashboard-data.json
+```
+
+#### 2. Charts Not Loading
+```javascript
+// Check Chart.js loading
+if (typeof Chart === 'undefined') {
+    console.error('Chart.js not loaded');
+    // Load fallback
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js';
+    document.head.appendChild(script);
+}
+```
+
+#### 3. Theme Not Switching
+```javascript
+// Check theme toggle
+const themeToggle = document.getElementById('themeToggle');
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        html.classList.toggle('dark');
+        updateCharts(); // Re-render charts for new theme
+    });
+}
+```
+
+### Debug Commands
+```bash
+# Check dashboard accessibility
+curl -I https://shahharsh06.github.io/harsh-portfolio/dashboard.html
+
+# Check data file
+curl https://shahharsh06.github.io/harsh-portfolio/dashboard-data.json
+
+# Check workflow logs
+gh run view <run-id> --log
+```
+
+## 🚀 Future Enhancements
+
+### Planned Features
+1. **Real-time Updates**: Live coverage updates without page refresh
+2. **Advanced Analytics**: Detailed performance metrics
+3. **Historical Data**: Coverage trends over time
+4. **Custom Alerts**: Notifications for coverage drops
+5. **Export Features**: PDF/CSV export of metrics
+
+### Performance Improvements
+1. **Lazy Loading**: Load charts on demand
+2. **Caching**: Cache dashboard data
+3. **CDN Integration**: Faster asset loading
+4. **Service Worker**: Offline dashboard access
+
+### Analytics Integration
+1. **Google Analytics**: Track dashboard usage
+2. **Custom Events**: Track user interactions
+3. **Performance Monitoring**: Track load times
+4. **Error Tracking**: Monitor dashboard errors
 
 ---
 
-**Last Updated:** December 2024  
-**Version:** 1.0.0  
-**Status:** Production Ready ✅ 
+*This dashboard is automatically updated via CI/CD pipeline and reflects the latest project metrics.* 

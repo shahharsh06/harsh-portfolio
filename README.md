@@ -1,8 +1,9 @@
-# Harsh Portfolio Website
+# Harsh Shah - ML Engineer & Full Stack Developer Portfolio
 
-![Test Coverage](https://img.shields.io/badge/coverage-96.50%25-red?logo=vitesthttps://img.shields.io/badge/coverage-96.5%25-brightgreen?logo=viteststyle=flat&style=flat)
-![Function Coverage](https://img.shields.io/badge/functions-82.71%25-green?logo=typescript&style=flat)
-![Tests Passing](https://img.shields.io/badge/tests-381%20passing-brightgreen?logo=vitest&style=flat)
+![Test Coverage](https://img.shields.io/badge/coverage-91.72%25-brightgreen?logo=vitest&style=flat)
+![Function Coverage](https://img.shields.io/badge/functions-74.35%25-green?logo=typescript&style=flat)
+![Tests Passing](https://img.shields.io/badge/tests-352%20passing-brightgreen?logo=vitest&style=flat)
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen?logo=github&style=flat)
 
 A professional, accessible, and responsive portfolio website showcasing software development skills, projects, and experience. Built with React 18, TypeScript, and Tailwind CSS with modern development practices and optimized performance.
 
@@ -18,7 +19,7 @@ This portfolio website demonstrates modern web development practices including:
 - **Accessibility Compliant** (WCAG AA+ standards)
 - **Modern UI/UX** with smooth animations and interactive elements
 - **Portfolio Dashboard** with test coverage and code quality metrics
-- **Comprehensive Testing** with 96.5% coverage and 381 passing tests
+- **Comprehensive Testing** with 91.72% coverage and 352 passing tests
 
 ## 🚀 Features
 
@@ -40,7 +41,7 @@ This portfolio website demonstrates modern web development practices including:
 - ✅ **Type Safety**: Full TypeScript implementation with proper interfaces
 - ✅ **Performance**: Optimized bundle size and efficient rendering
 - ✅ **Dashboard Analytics**: Coverage tracking with Chart.js visualizations
-- ✅ **Comprehensive Testing**: 381 tests with 96.5% coverage
+- ✅ **Comprehensive Testing**: 352 tests with 91.72% coverage
 
 ### Planned Features
 - 🔄 **SEO Optimization**: Meta tags, OpenGraph, and structured data
@@ -52,7 +53,7 @@ This portfolio website demonstrates modern web development practices including:
 ## 📊 Portfolio Dashboard
 
 ### Dashboard Features
-- ✅ **Coverage Metrics**: Test coverage metrics (96.5%)
+- ✅ **Coverage Metrics**: Test coverage metrics (91.72%)
 - ✅ **Code Quality Metrics**: TypeScript coverage, linting scores, and security analysis
 - ✅ **Test Categories**: Component, UI, Utility, Integration, and Hook tests breakdown
 - ✅ **CI/CD Status**: Pipeline status with visual indicators
@@ -62,9 +63,9 @@ This portfolio website demonstrates modern web development practices including:
 - ✅ **Lucide React Icons**: Consistent iconography matching portfolio design
 
 ### Dashboard Metrics
-- **Overall Coverage**: 96.5% (Target: 80%)
-- **Total Tests**: 381 tests (All passing)
-- **Function Coverage**: 82.71% (Target: 65%)
+- **Overall Coverage**: 91.72% (Target: 80%)
+- **Total Tests**: 352 tests (All passing)
+- **Function Coverage**: 74.35% (Target: 65%)
 - **Code Quality**: A+ grade
 - **Security Score**: 95% (No high severity issues)
 - **Component Coverage**: 8 components with 90%+ coverage
