@@ -37,7 +37,7 @@ describe('Navigation Component', () => {
     const mockElement = {
       scrollIntoView: vi.fn(),
     };
-    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as Element);
+    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as unknown as Element);
   });
 
   it('renders navigation with logo', () => {

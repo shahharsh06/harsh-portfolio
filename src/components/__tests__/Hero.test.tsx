@@ -36,7 +36,7 @@ describe('Hero Component', () => {
     const mockElement = {
       scrollIntoView: vi.fn(),
     };
-    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as Element);
+    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as unknown as Element);
   });
 
   it('renders hero section with correct structure', () => {

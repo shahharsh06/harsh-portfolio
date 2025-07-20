@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "build:dev": "vite build --mode development",
-    "lint": "eslint .",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -15,7 +15,8 @@
     "test:coverage": "vitest run --coverage",
     "test:coverage:html": "vitest run --coverage --reporter=html",
     "test:coverage:watch": "vitest --coverage --watch",
-    "test:watch": "vitest --watch"
+    "test:watch": "vitest --watch",
+    "test:coverage:detailed": "vitest run --coverage && node scripts/coverage-summary.js"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.0",

@@ -167,7 +167,6 @@ describe('Constants', () => {
     it('should handle undefined window', () => {
       // Mock window as undefined (SSR)
       const originalWindow = global.window;
-      // @ts-expect-error - Testing undefined window
       delete global.window;
 
       expect(getVisibleCount('featured')).toBe(1);
