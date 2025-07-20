@@ -1,10 +1,12 @@
 # Harsh Portfolio Website
 
-![Test Coverage](https://img.shields.io/badge/coverage-91.07%25-brightgreen?logo=vitest&style=flat)
-![Function Coverage](https://img.shields.io/badge/functions-72.15%25-green?logo=typescript&style=flat)
-![Tests Passing](https://img.shields.io/badge/tests-274%20passing-brightgreen?logo=vitest&style=flat)
+![Test Coverage](https://img.shields.io/badge/coverage-96.5%25-brightgreen?logo=vitest&style=flat)
+![Function Coverage](https://img.shields.io/badge/functions-82.71%25-green?logo=typescript&style=flat)
+![Tests Passing](https://img.shields.io/badge/tests-381%20passing-brightgreen?logo=vitest&style=flat)
 
-A professional, accessible, and responsive portfolio website showcasing Harsh's software development skills, projects, and experience. Built with React 18, TypeScript, and Tailwind CSS with modern development practices and optimized performance.
+A professional, accessible, and responsive portfolio website showcasing software development skills, projects, and experience. Built with React 18, TypeScript, and Tailwind CSS with modern development practices and optimized performance.
+
+> ⭐ **If you find this portfolio helpful, please give it a star!** ⭐
 
 ## 🎯 Project Overview
 
@@ -15,8 +17,8 @@ This portfolio website demonstrates modern web development practices including:
 - **Performance Optimized** with lazy loading and efficient components
 - **Accessibility Compliant** (WCAG AA+ standards)
 - **Modern UI/UX** with smooth animations and interactive elements
-- **Portfolio Dashboard** with real-time test coverage and code quality metrics
-- **Comprehensive Testing** with 91.07% coverage and 274 passing tests
+- **Portfolio Dashboard** with test coverage and code quality metrics
+- **Comprehensive Testing** with 96.5% coverage and 381 passing tests
 
 ## 🚀 Features
 
@@ -28,7 +30,7 @@ This portfolio website demonstrates modern web development practices including:
 - ✅ **Theme Toggle**: Light/Dark mode with system preference detection
 - ✅ **Responsive Design**: Mobile-first approach with breakpoint optimization
 - ✅ **GitHub Integration**: Repository connected and deployed
-- ✅ **Portfolio Dashboard**: Real-time test coverage and code quality metrics
+- ✅ **Portfolio Dashboard**: Test coverage and code quality metrics
 
 ### Advanced Features
 - ✅ **Interactive Components**: Hover effects, animations, and micro-interactions
@@ -37,19 +39,20 @@ This portfolio website demonstrates modern web development practices including:
 - ✅ **Data Separation**: Centralized constants and external data files
 - ✅ **Type Safety**: Full TypeScript implementation with proper interfaces
 - ✅ **Performance**: Optimized bundle size and efficient rendering
-- ✅ **Dashboard Analytics**: Live coverage tracking with Chart.js visualizations
-- ✅ **Comprehensive Testing**: 274 tests with 91.07% coverage
+- ✅ **Dashboard Analytics**: Coverage tracking with Chart.js visualizations
+- ✅ **Comprehensive Testing**: 381 tests with 96.5% coverage
 
 ### Planned Features
 - 🔄 **SEO Optimization**: Meta tags, OpenGraph, and structured data
 - 🔄 **Contact Form Backend**: Email integration and form processing
 - 🔄 **Analytics**: Google Analytics integration
 - 🔄 **Performance Monitoring**: Lighthouse CI and performance tracking
+- 🔄 **Real-time Dashboard**: Live coverage updates and metrics
 
 ## 📊 Portfolio Dashboard
 
 ### Dashboard Features
-- ✅ **Coverage Metrics**: Test coverage metrics (91.07%)
+- ✅ **Coverage Metrics**: Test coverage metrics (96.5%)
 - ✅ **Code Quality Metrics**: TypeScript coverage, linting scores, and security analysis
 - ✅ **Test Categories**: Component, UI, Utility, Integration, and Hook tests breakdown
 - ✅ **CI/CD Status**: Pipeline status with visual indicators
@@ -59,9 +62,9 @@ This portfolio website demonstrates modern web development practices including:
 - ✅ **Lucide React Icons**: Consistent iconography matching portfolio design
 
 ### Dashboard Metrics
-- **Overall Coverage**: 91.07% (Target: 80%)
-- **Total Tests**: 274 tests (All passing)
-- **Function Coverage**: 72.15% (Target: 65%)
+- **Overall Coverage**: 96.5% (Target: 80%)
+- **Total Tests**: 381 tests (All passing)
+- **Function Coverage**: 82.71% (Target: 65%)
 - **Code Quality**: A+ grade
 - **Security Score**: 95% (No high severity issues)
 - **Component Coverage**: 8 components with 90%+ coverage
@@ -73,12 +76,12 @@ This portfolio website demonstrates modern web development practices including:
 - **Theme Sync**: Matches portfolio theme preferences
 
 ### Dashboard Status
-- 🔄 **Real-time Updates**: Not yet implemented (requires backend integration)
-- 🔄 **Auto-refresh**: Manual refresh required
-- 🔄 **Live Data**: Static data display (needs API integration)
 - ✅ **UI/UX**: Complete with responsive design and theme integration
 - ✅ **Charts**: Chart.js visualizations implemented
 - ✅ **Icons**: Lucide React icons consistent with portfolio
+- 🔄 **Real-time Updates**: Planned for future implementation
+- 🔄 **Auto-refresh**: Manual refresh required
+- 🔄 **Live Data**: Static data display (needs API integration)
 
 ## 🎨 Design System
 
@@ -145,7 +148,7 @@ This portfolio website demonstrates modern web development practices including:
 
 ## 📁 Project Structure
 
-```
+```bash
 harsh-portfolio/
 ├── .github/                       # GitHub Actions and workflows
 ├── .dist/                         # Build output (alternative)
@@ -167,9 +170,9 @@ harsh-portfolio/
 │   │   └── App.integration.test.tsx
 │   ├── assets/                   # Static assets
 │   │   ├── profile/
-│   │   │   └── harsh_profile_image.jpg
+│   │   │   └── profile_image.jpg
 │   │   └── resume/
-│   │       └── Harsh_SE_Resume.pdf
+│   │       └── resume.pdf
 │   ├── components/               # React components
 │   │   ├── __tests__/            # Component tests
 │   │   │   ├── About.test.tsx
@@ -296,6 +299,18 @@ npm run preview
 npm run lint
 ```
 
+<details>
+<summary>📋 Copy Installation Commands</summary>
+
+```bash
+git clone https://github.com/shahharsh06/harsh-portfolio.git
+cd harsh-portfolio
+npm install
+npm run dev
+```
+
+</details>
+
 ### Environment Variables
 
 Create a `.env.local` file for any environment-specific configurations:
@@ -306,6 +321,17 @@ Create a `.env.local` file for any environment-specific configurations:
 # VITE_CONTACT_EMAIL=your_email@example.com
 # VITE_CONTACT_API_ENDPOINT=your_api_endpoint
 ```
+
+<details>
+<summary>📋 Copy Environment Template</summary>
+
+```env
+VITE_GOOGLE_ANALYTICS_ID=your_ga_id
+VITE_CONTACT_EMAIL=your_email@example.com
+VITE_CONTACT_API_ENDPOINT=your_api_endpoint
+```
+
+</details>
 
 ## 🎯 Key Improvements
 
@@ -353,6 +379,15 @@ Create a `.env.local` file for any environment-specific configurations:
 2. GitHub Actions automatically builds and deploys
 3. Available at: `https://shahharsh06.github.io/harsh-portfolio`
 
+<details>
+<summary>📋 Copy GitHub Pages URL</summary>
+
+```
+https://shahharsh06.github.io/harsh-portfolio
+```
+
+</details>
+
 ### Vercel (Alternative)
 1. Connect GitHub repository to Vercel
 2. Automatic deployments on push to main
@@ -387,20 +422,31 @@ npm run test
 npm run test -- src/components/__tests__/Hero.test.tsx
 ```
 
-### Test Coverage: 91.07% ✅
+<details>
+<summary>📋 Copy Test Commands</summary>
 
-- **274 tests passing** across all components
+```bash
+npm run test:run
+npm run test:coverage
+npm run test
+```
+
+</details>
+
+### Test Coverage: 96.5% ✅
+
+- **381 tests passing** across all components
 - **Component Tests**: 95+ tests covering all major components
 - **UI Tests**: 73+ tests for reusable UI components  
 - **Integration Tests**: 16+ tests for component interactions
 - **Utility Tests**: 27+ tests for helper functions
 - **Hook Tests**: 26+ tests for custom React hooks
-- **Function Coverage**: 72.15% (exceeds 65% threshold)
+- **Function Coverage**: 82.71% (exceeds 65% threshold)
 
 ### Test Categories
 - ✅ **Unit Tests**: All components and utilities
 - ✅ **Integration Tests**: Component interactions and user flows
-- ✅ **Coverage Dashboard**: Real-time coverage tracking
+- ✅ **Coverage Dashboard**: Coverage tracking
 - 🔄 **E2E Tests**: Planned with Playwright
 - 🔄 **Accessibility Tests**: Planned for WCAG compliance
 
@@ -410,7 +456,7 @@ npm run test -- src/components/__tests__/Hero.test.tsx
 - ✅ **Quality Metrics**: TypeScript, linting, and security scores
 - ✅ **CI/CD Status**: Pipeline status with visual indicators
 - ✅ **Chart Visualizations**: Coverage trends and breakdowns
-- 🔄 **Real-time Updates**: Requires backend integration
+- 🔄 **Real-time Updates**: Planned for future implementation
 - 🔄 **Live Data**: Currently static data (needs API)
 
 ## 🔄 Development Roadmap
@@ -425,8 +471,8 @@ npm run test -- src/components/__tests__/Hero.test.tsx
 - [x] Responsive navigation
 
 ### Phase 2: Enhancement ✅
-- [x] Testing pipeline setup (91.09% coverage achieved)
-- [x] Portfolio Dashboard with real-time metrics
+- [x] Testing pipeline setup (96.5% coverage achieved)
+- [x] Portfolio Dashboard with metrics
 - [x] Chart.js integration for data visualization
 - [x] Lucide React icon consistency
 - [x] Dashboard theme integration
@@ -442,6 +488,7 @@ npm run test -- src/components/__tests__/Hero.test.tsx
 - [ ] CI/CD pipeline automation
 - [ ] E2E testing with Playwright
 - [ ] Accessibility testing for WCAG compliance
+- [ ] Real-time dashboard updates
 - [ ] Final testing and launch
 
 ## 🤝 Contributing
@@ -451,6 +498,17 @@ npm run test -- src/components/__tests__/Hero.test.tsx
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+<details>
+<summary>📋 Copy Contributing Commands</summary>
+
+```bash
+git checkout -b feature/amazing-feature
+git commit -m 'Add amazing feature'
+git push origin feature/amazing-feature
+```
+
+</details>
 
 ## 📄 License
 
@@ -470,3 +528,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Built with ❤️ by Harsh Shah**
 
 *ML & Software Engineer | Texas A&M University*
+
+> ⭐ **If you found this portfolio helpful, please give it a star!** ⭐

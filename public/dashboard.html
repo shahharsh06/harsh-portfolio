@@ -238,7 +238,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-muted-foreground">Overall Coverage</p>
-                        <p id="overallCoverage" class="text-2xl font-bold text-gradient">91.07%</p>
+                        <p id="overallCoverage" class="text-2xl font-bold text-gradient">96.5%</p>
                     </div>
                     <div class="p-3 bg-primary/10 rounded-full flex items-center justify-center transition-smooth group-hover:bg-primary/20" style="width: 48px; height: 48px;">
                         <i data-lucide="bar-chart-3" class="w-6 h-6 text-primary"></i>
@@ -247,7 +247,7 @@
                 <div class="mt-4">
                     <div class="flex items-center">
                         <div class="flex-1 bg-muted rounded-full h-2">
-                            <div id="coverageBar" class="coverage-excellent h-2 rounded-full" style="width: 91.07%"></div>
+                            <div id="coverageBar" class="coverage-excellent h-2 rounded-full" style="width: 96.5%"></div>
                         </div>
                         <span class="ml-2 text-sm text-muted-foreground">Target: 80%</span>
                     </div>
@@ -259,7 +259,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-muted-foreground">Total Tests</p>
-                        <p id="totalTests" class="text-2xl font-bold text-gradient">274</p>
+                        <p id="totalTests" class="text-2xl font-bold text-gradient">381</p>
                     </div>
                     <div class="p-3 bg-green-500/10 rounded-full flex items-center justify-center transition-smooth group-hover:bg-green-500/20" style="width: 48px; height: 48px;">
                         <i data-lucide="check-circle" class="w-6 h-6 text-green-500"></i>
@@ -275,7 +275,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-muted-foreground">Function Coverage</p>
-                        <p id="functionCoverage" class="text-2xl font-bold text-gradient">72.15%</p>
+                        <p id="functionCoverage" class="text-2xl font-bold text-gradient">82.71%</p>
                     </div>
                     <div class="p-3 bg-blue-500/10 rounded-full flex items-center justify-center transition-smooth group-hover:bg-blue-500/20" style="width: 48px; height: 48px;">
                         <i data-lucide="function" class="w-6 h-6 text-blue-500"></i>
@@ -428,7 +428,7 @@
                     </div>
                     <div>
                         <p class="font-medium text-green-900 dark:text-green-100">Test Pipeline</p>
-                        <p class="text-sm text-green-600 dark:text-green-400">✓ 274 tests passing</p>
+                        <p class="text-sm text-green-600 dark:text-green-400">✓ 381 tests passing</p>
                     </div>
                 </div>
                 <div class="flex items-center p-4 bg-green-50 dark:bg-green-900/10 rounded-lg">
@@ -437,7 +437,7 @@
                     </div>
                     <div>
                         <p class="font-medium text-green-900 dark:text-green-100">Coverage</p>
-                        <p class="text-sm text-green-600 dark:text-green-400">✓ 91.07% coverage</p>
+                        <p class="text-sm text-green-600 dark:text-green-400">✓ 96.5% coverage</p>
                     </div>
                 </div>
                 <div class="flex items-center p-4 bg-green-50 dark:bg-green-900/10 rounded-lg">
@@ -575,7 +575,7 @@
                 data: {
                     labels: ['Covered', 'Uncovered'],
                     datasets: [{
-                        data: [91.07, 8.93],
+                        data: [96.5, 3.5],
                         backgroundColor: ['#10b981', isDark() ? '#374151' : '#e5e7eb'],
                         borderWidth: 0
                     }]
@@ -613,7 +613,7 @@
                     labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
                     datasets: [{
                         label: 'Test Count',
-                        data: [0, 50, 120, 274],
+                        data: [0, 50, 120, 381],
                         borderColor: '#3b82f6',
                         backgroundColor: 'rgba(59, 130, 246, 0.1)',
                         tension: 0.4,
@@ -624,7 +624,7 @@
                         pointRadius: 6
                     }, {
                         label: 'Coverage %',
-                        data: [0, 25, 60, 91.07],
+                        data: [0, 25, 60, 96.5],
                         borderColor: '#10b981',
                         backgroundColor: 'rgba(16, 185, 129, 0.1)',
                         tension: 0.4,
@@ -694,7 +694,7 @@
                         '<div class="text-center">' +
                         '<div class="text-4xl mb-2">📊</div>' +
                         '<div class="text-lg font-medium">Coverage Breakdown</div>' +
-                        '<div class="text-sm">91.07% Covered, 8.93% Uncovered</div>' +
+                        '<div class="text-sm">96.5% Covered, 3.5% Uncovered</div>' +
                         '</div></div>';
                     
                     document.getElementById('testTrendChart').parentElement.innerHTML = 
@@ -702,7 +702,7 @@
                         '<div class="text-center">' +
                         '<div class="text-4xl mb-2">📈</div>' +
                         '<div class="text-lg font-medium">Test Results Trend</div>' +
-                        '<div class="text-sm">Growing from 0 to 274 tests</div>' +
+                        '<div class="text-sm">Growing from 0 to 381 tests</div>' +
                         '</div></div>';
                 }
             }, 100);
@@ -710,7 +710,7 @@
 
         // Update coverage bar color based on percentage
         function updateCoverageBar() {
-            const coverage = 91.07;
+            const coverage = 96.5;
             const bar = document.getElementById('coverageBar');
             const coverageText = document.getElementById('overallCoverage');
             

@@ -157,6 +157,7 @@ const CursorEffect: React.FC<CursorEffectProps> = ({
   return (
     <div
       ref={containerRef}
+      data-testid="cursor-effect"
       className="cursor-effect-container"
       style={{
         position: 'fixed',

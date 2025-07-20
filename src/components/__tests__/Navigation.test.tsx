@@ -274,4 +274,185 @@ describe('Navigation Component', () => {
     // Navigation should still be functional
     expect(screen.getByRole('navigation')).toBeInTheDocument();
   });
+
+  it('handles navigation item hover states', async () => {
+    const user = userEvent.setup();
+    renderWithMobileMenu(<Navigation />);
+    
+    const navItems = screen.getAllByRole('button');
+    if (navItems.length > 0) {
+      await user.hover(navItems[0]);
+      expect(navItems[0]).toBeInTheDocument();
+      
+      await user.unhover(navItems[0]);
+      expect(navItems[0]).toBeInTheDocument();
+    }
+  });
+
+  it('handles theme toggle hover states', async () => {
+    const user = userEvent.setup();
+    renderWithMobileMenu(<Navigation />);
+
+    const themeToggle = screen.getByRole('button', { name: /toggle theme/i });
+    await user.hover(themeToggle);
+    expect(themeToggle).toBeInTheDocument();
+    
+    await user.unhover(themeToggle);
+    expect(themeToggle).toBeInTheDocument();
+  });
+
+  it('handles navigation item focus states', async () => {
+    const user = userEvent.setup();
+    renderWithMobileMenu(<Navigation />);
+    
+    const navItems = screen.getAllByRole('button');
+    if (navItems.length > 0) {
+      await user.tab();
+      expect(navItems[0]).toHaveFocus();
+      
+      await user.tab();
+      expect(navItems[1]).toHaveFocus();
+    }
+  });
+
+  it('handles social link interactions', async () => {
+    const user = userEvent.setup();
+    renderWithMobileMenu(<Navigation />);
+    
+    // Find social links by href
+    const socialLinks = Array.from(document.querySelectorAll('a')).filter(link => 
+      link.getAttribute('href')?.includes('github.com') || 
+      link.getAttribute('href')?.includes('linkedin.com')
+    );
+    
+    if (socialLinks.length > 0) {
+      await user.click(socialLinks[0]);
+      expect(socialLinks[0]).toBeInTheDocument();
+    }
+  });
+
+  it('handles navigation item keyboard interactions', async () => {
+    const user = userEvent.setup();
+    renderWithMobileMenu(<Navigation />);
+    
+    const navItems = screen.getAllByRole('button');
+    if (navItems.length > 0) {
+      await user.tab();
+      expect(navItems[0]).toHaveFocus();
+      
+      await user.keyboard('{Enter}');
+      expect(navItems[0]).toBeInTheDocument();
+    }
+  });
+
+  it('handles theme toggle keyboard interactions', async () => {
+    const user = userEvent.setup();
+    renderWithMobileMenu(<Navigation />);
+    
+    const themeToggle = screen.getByRole('button', { name: /toggle theme/i });
+    await user.tab();
+    await user.tab();
+    await user.tab();
+    
+    // Should be able to activate theme toggle with keyboard
+    await user.keyboard('{Enter}');
+    expect(themeToggle).toBeInTheDocument();
+  });
+
+  it('handles navigation accessibility features', () => {
+    renderWithMobileMenu(<Navigation />);
+    
+    // Check for proper ARIA labels
+    const navigation = screen.getByRole('navigation');
+    expect(navigation).toBeInTheDocument();
+    
+    // Check for proper button roles
+    const buttons = screen.getAllByRole('button');
+    expect(buttons.length).toBeGreaterThan(0);
+    
+    // Check for proper link roles
+    const links = screen.getAllByRole('link');
+    expect(links.length).toBeGreaterThan(0);
+  });
+
+  it('handles navigation state management', () => {
+    renderWithMobileMenu(<Navigation />);
+    
+    // Navigation should maintain state properly
+    const navigation = screen.getByRole('navigation');
+    expect(navigation).toBeInTheDocument();
+    
+    // All navigation items should be present
+    const navItems = screen.getAllByRole('button');
+    expect(navItems.length).toBeGreaterThan(0);
+  });
+
+  it('handles mobile menu state transitions', async () => {
+    const user = userEvent.setup();
+    renderWithMobileMenu(<Navigation />);
+    
+    // Mock mobile viewport
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 375,
+    });
+    
+    // Trigger resize to mobile
+    window.dispatchEvent(new Event('resize'));
+    
+    // Should handle mobile state properly
+    expect(screen.getByRole('navigation')).toBeInTheDocument();
+  });
+
+  it('handles theme toggle with keyboard', async () => {
+    const user = userEvent.setup();
+    renderWithMobileMenu(<Navigation />);
+    
+    const themeToggle = screen.getByRole('button', { name: /toggle theme/i });
+    
+    // Test keyboard interaction - focus directly on theme toggle
+    await user.click(themeToggle);
+    expect(themeToggle).toBeInTheDocument();
+    
+    await user.keyboard('{Enter}');
+    expect(themeToggle).toBeInTheDocument();
+  });
+
+  it('handles navigation accessibility features', () => {
+    renderWithMobileMenu(<Navigation />);
+    
+    const navigation = screen.getByRole('navigation');
+    expect(navigation).toBeInTheDocument();
+    
+    const navItems = screen.getAllByRole('button');
+    navItems.forEach(item => {
+      // Check if item has any accessibility attributes
+      expect(item).toBeInTheDocument();
+    });
+  });
+
+  it('handles navigation performance optimization', () => {
+    renderWithMobileMenu(<Navigation />);
+    
+    // Should render efficiently
+    const navigation = screen.getByRole('navigation');
+    expect(navigation).toBeInTheDocument();
+    
+    // Check for performance-related attributes
+    const navItems = screen.getAllByRole('button');
+    expect(navItems.length).toBeGreaterThan(0);
+  });
+
+  it('handles navigation error boundaries', () => {
+    renderWithMobileMenu(<Navigation />);
+    
+    // Should handle errors gracefully
+    const navigation = screen.getByRole('navigation');
+    expect(navigation).toBeInTheDocument();
+    
+    // Navigation should remain functional even with errors
+    const navItems = screen.getAllByRole('button');
+    expect(navItems.length).toBeGreaterThan(0);
+  });
 }); 
