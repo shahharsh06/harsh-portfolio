@@ -64,11 +64,17 @@ jobs:
               
               const coverage = totalLines > 0 ? Math.round((coveredLines / totalLines) * 100) : 0;
               
+              // Count test files
+              const testFiles = fs.readdirSync('./src', { recursive: true })
+                .filter(file => file.includes('.test.') || file.includes('.spec.'))
+                .length;
+              
               const comment = `## 📊 Test Coverage Report
               
               **Coverage**: ${coverage}%
               **Covered Lines**: ${coveredLines}
               **Total Lines**: ${totalLines}
+              **Test Files**: ${testFiles}
               
               Coverage reports are available as artifacts.`;
               
@@ -107,8 +113,6 @@ jobs:
           name: build-files
           path: dist/
           retention-days: 7
-
-
 
   security:
     name: Security Audit

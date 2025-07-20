@@ -7,7 +7,7 @@ import { vi } from 'vitest';
 // Custom render function that includes providers
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <ThemeProvider>
         {children}
       </ThemeProvider>
@@ -26,7 +26,7 @@ export { customRender as render };
 
 // Test data
 export const mockPersonalInfo = {
-  name: "Harsh Shah",
+  name: "Test User",
   email: "test@example.com",
   location: "Test Location",
   title: "Test Title",
@@ -88,4 +88,10 @@ export const mockWindowMethods = () => {
     writable: true,
     value: vi.fn(),
   });
+};
+
+// Helper to wrap state updates in act()
+export const act = async (callback: () => void | Promise<void>) => {
+  const { act: reactAct } = await import('@testing-library/react');
+  return reactAct(callback);
 }; 

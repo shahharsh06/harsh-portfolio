@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { render } from '@/test/utils';
 import Projects from '../Projects';
@@ -124,8 +124,12 @@ describe('Projects Component', () => {
     expect(nextButtons.length).toBeGreaterThan(0);
     
     // Test navigation with the first set of buttons
-    await user.click(nextButtons[0]);
-    await user.click(prevButtons[0]);
+    await act(async () => {
+      await user.click(nextButtons[0]);
+    });
+    await act(async () => {
+      await user.click(prevButtons[0]);
+    });
     
     // Carousel should still be functional
     expect(prevButtons[0]).toBeInTheDocument();
@@ -146,8 +150,12 @@ describe('Projects Component', () => {
     if (otherProjectNavButtons.length >= 2) {
       const [prevButton, nextButton] = otherProjectNavButtons;
       
-      await user.click(nextButton);
-      await user.click(prevButton);
+      await act(async () => {
+        await user.click(nextButton);
+      });
+      await act(async () => {
+        await user.click(prevButton);
+      });
       
       expect(prevButton).toBeInTheDocument();
       expect(nextButton).toBeInTheDocument();
@@ -217,7 +225,9 @@ describe('Projects Component', () => {
       const firstCard = projectCards[0];
       
       // Hover over card
-      await user.hover(firstCard);
+      await act(async () => {
+        await user.hover(firstCard);
+      });
       
       // Card should still be visible
       expect(firstCard).toBeInTheDocument();
@@ -270,10 +280,14 @@ describe('Projects Component', () => {
     
     const featuredCarousel = document.querySelector('.flex.overflow-hidden');
     if (featuredCarousel) {
-      await user.hover(featuredCarousel);
+      await act(async () => {
+        await user.hover(featuredCarousel);
+      });
       expect(featuredCarousel).toBeInTheDocument();
       
-      await user.unhover(featuredCarousel);
+      await act(async () => {
+        await user.unhover(featuredCarousel);
+      });
       expect(featuredCarousel).toBeInTheDocument();
     }
   });
@@ -284,10 +298,14 @@ describe('Projects Component', () => {
     
     const otherCarousel = document.querySelectorAll('.flex.overflow-hidden')[1];
     if (otherCarousel) {
-      await user.hover(otherCarousel);
+      await act(async () => {
+        await user.hover(otherCarousel);
+      });
       expect(otherCarousel).toBeInTheDocument();
       
-      await user.unhover(otherCarousel);
+      await act(async () => {
+        await user.unhover(otherCarousel);
+      });
       expect(otherCarousel).toBeInTheDocument();
     }
   });
@@ -325,10 +343,14 @@ describe('Projects Component', () => {
     if (projectCards.length > 0) {
       const firstCard = projectCards[0];
       
-      await user.hover(firstCard);
+      await act(async () => {
+        await user.hover(firstCard);
+      });
       expect(firstCard).toHaveClass('hover-lift');
       
-      await user.unhover(firstCard);
+      await act(async () => {
+        await user.unhover(firstCard);
+      });
       expect(firstCard).toBeInTheDocument();
     }
   });
@@ -340,7 +362,9 @@ describe('Projects Component', () => {
     const sectionIcons = document.querySelectorAll('[data-testid="section-icon"]');
     if (sectionIcons.length > 0) {
       const firstIcon = sectionIcons[0];
-      await user.click(firstIcon);
+      await act(async () => {
+        await user.click(firstIcon);
+      });
       expect(firstIcon).toBeInTheDocument();
     }
   });
@@ -373,7 +397,9 @@ describe('Projects Component', () => {
     if (nextButtons.length > 0) {
       // Click next multiple times to test infinite scrolling
       for (let i = 0; i < 3; i++) {
-        await user.click(nextButtons[0]);
+        await act(async () => {
+          await user.click(nextButtons[0]);
+        });
       }
       
       expect(nextButtons[0]).toBeInTheDocument();
@@ -391,7 +417,9 @@ describe('Projects Component', () => {
     if (prevButtons.length > 0) {
       // Click previous multiple times to test reverse scrolling
       for (let i = 0; i < 3; i++) {
-        await user.click(prevButtons[0]);
+        await act(async () => {
+          await user.click(prevButtons[0]);
+        });
       }
       
       expect(prevButtons[0]).toBeInTheDocument();
@@ -414,7 +442,7 @@ describe('Projects Component', () => {
     expect(otherProjectCards.length).toBeGreaterThan(0);
   });
 
-  it('handles window resize events', () => {
+  it('handles window resize events', async () => {
     render(<Projects />);
     
     // Mock window resize
@@ -425,7 +453,9 @@ describe('Projects Component', () => {
     });
     
     // Trigger resize event
-    window.dispatchEvent(new Event('resize'));
+    await act(async () => {
+      window.dispatchEvent(new Event('resize'));
+    });
     
     // Projects should still be functional
     expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
@@ -440,13 +470,17 @@ describe('Projects Component', () => {
       const firstCarousel = carouselContainers[0];
       
       // Hover over carousel
-      await user.hover(firstCarousel);
+      await act(async () => {
+        await user.hover(firstCarousel);
+      });
       
       // Carousel should still be functional
       expect(firstCarousel).toBeInTheDocument();
       
       // Unhover
-      await user.unhover(firstCarousel);
+      await act(async () => {
+        await user.unhover(firstCarousel);
+      });
       expect(firstCarousel).toBeInTheDocument();
     }
   });
@@ -460,8 +494,12 @@ describe('Projects Component', () => {
       const firstCarousel = carouselContainers[0];
       
       // Hover and unhover
-      await user.hover(firstCarousel);
-      await user.unhover(firstCarousel);
+      await act(async () => {
+        await user.hover(firstCarousel);
+      });
+      await act(async () => {
+        await user.unhover(firstCarousel);
+      });
       
       // Carousel should resume functionality
       expect(firstCarousel).toBeInTheDocument();
@@ -479,7 +517,9 @@ describe('Projects Component', () => {
     );
     
     if (carouselButtons.length > 0) {
-      await user.click(carouselButtons[0]);
+      await act(async () => {
+        await user.click(carouselButtons[0]);
+      });
       expect(carouselButtons[0]).toBeInTheDocument();
     }
   });
@@ -504,7 +544,7 @@ describe('Projects Component', () => {
     }, { timeout: 3000 });
   });
 
-  it('handles carousel responsive breakpoints', () => {
+  it('handles carousel responsive breakpoints', async () => {
     // Test mobile breakpoint
     Object.defineProperty(window, 'innerWidth', {
       writable: true,
@@ -522,7 +562,9 @@ describe('Projects Component', () => {
       value: 1024,
     });
     
-    window.dispatchEvent(new Event('resize'));
+    await act(async () => {
+      window.dispatchEvent(new Event('resize'));
+    });
     expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
   });
 
@@ -534,8 +576,10 @@ describe('Projects Component', () => {
       const firstCarousel = carouselContainers[0];
       
       // Simulate touch events using mouse events instead
-      const mouseEvent = new MouseEvent('mousedown', { clientX: 100, clientY: 100 });
-      firstCarousel.dispatchEvent(mouseEvent);
+      await act(async () => {
+        const mouseEvent = new MouseEvent('mousedown', { clientX: 100, clientY: 100 });
+        firstCarousel.dispatchEvent(mouseEvent);
+      });
       
       expect(firstCarousel).toBeInTheDocument();
     }
@@ -652,24 +696,26 @@ describe('Projects Component', () => {
     });
   });
 
-  it('handles carousel responsive breakpoint changes', () => {
+  it('handles carousel responsive breakpoint changes', async () => {
     render(<Projects />);
     
     // Test different breakpoints
     const breakpoints = [375, 768, 1024, 1440];
     
-    breakpoints.forEach(width => {
+    for (const width of breakpoints) {
       Object.defineProperty(window, 'innerWidth', {
         writable: true,
         configurable: true,
         value: width,
       });
       
-      window.dispatchEvent(new Event('resize'));
+      await act(async () => {
+        window.dispatchEvent(new Event('resize'));
+      });
       
       // Should adapt to different screen sizes
       expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
-    });
+    }
   });
 
   it('handles carousel data validation', () => {

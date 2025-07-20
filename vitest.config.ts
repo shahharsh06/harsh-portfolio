@@ -53,6 +53,13 @@ export default defineConfig({
         lines: 80,
         statements: 80
       }
+    },
+    // Suppress React Router warnings
+    onConsoleLog(log, type) {
+      if (log.includes('React Router Future Flag Warning')) {
+        return false;
+      }
+      return true;
     }
   },
   resolve: {

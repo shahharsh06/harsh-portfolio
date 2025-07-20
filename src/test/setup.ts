@@ -47,6 +47,15 @@ Object.defineProperty(window, 'scrollIntoView', {
   value: vi.fn(),
 });
 
+// Suppress React Router warnings
+const originalWarn = console.warn;
+console.warn = (...args) => {
+  if (args[0]?.includes?.('React Router Future Flag Warning')) {
+    return;
+  }
+  originalWarn(...args);
+};
+
 // Setup global test utilities
 global.console = {
   ...console,

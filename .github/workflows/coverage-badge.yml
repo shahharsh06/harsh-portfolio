@@ -35,10 +35,10 @@ jobs:
         run: |
           # Extract coverage percentage from lcov.info
           if [ -f "coverage/lcov.info" ]; then
-            COVERAGE=$(grep -E "^LF:" coverage/lcov.info | awk -F: '{sum += $2} END {print sum}')
-            HITS=$(grep -E "^LH:" coverage/lcov.info | awk -F: '{sum += $2} END {print sum}')
-            if [ "$COVERAGE" -gt 0 ]; then
-              PERCENTAGE=$((HITS * 100 / COVERAGE))
+            TOTAL_LINES=$(grep -E "^LF:" coverage/lcov.info | awk -F: '{sum += $2} END {print sum}')
+            COVERED_LINES=$(grep -E "^LH:" coverage/lcov.info | awk -F: '{sum += $2} END {print sum}')
+            if [ "$TOTAL_LINES" -gt 0 ]; then
+              PERCENTAGE=$(echo "scale=2; $COVERED_LINES * 100 / $TOTAL_LINES" | bc)
             else
               PERCENTAGE=0
             fi
@@ -71,7 +71,7 @@ jobs:
           # Check if coverage badge already exists
           if echo "$README_CONTENT" | grep -q "coverage.*brightgreen\|coverage.*yellow\|coverage.*red"; then
             # Update existing badge
-            sed -i 's|https://img.shields.io/badge/coverage-[0-9]*%25-[a-z]*?logo=vitest|'"$BADGE_URL"'|g' README.md
+            sed -i 's|https://img.shields.io/badge/coverage-[0-9]*\.*[0-9]*%25-[a-z]*?logo=vitest|'"$BADGE_URL"'|g' README.md
           else
             # Add new badge after the first heading
             sed -i '1a\\n![Test Coverage]('"$BADGE_URL"')\n' README.md
