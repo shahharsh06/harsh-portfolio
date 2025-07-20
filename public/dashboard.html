@@ -238,7 +238,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-muted-foreground">Overall Coverage</p>
-                        <p id="overallCoverage" class="text-2xl font-bold text-gradient">96.5%</p>
+                        <p id="overallCoverage" class="text-2xl font-bold text-gradient">91.72%</p>
                     </div>
                     <div class="p-3 bg-primary/10 rounded-full flex items-center justify-center transition-smooth group-hover:bg-primary/20" style="width: 48px; height: 48px;">
                         <i data-lucide="bar-chart-3" class="w-6 h-6 text-primary"></i>
@@ -247,7 +247,7 @@
                 <div class="mt-4">
                     <div class="flex items-center">
                         <div class="flex-1 bg-muted rounded-full h-2">
-                            <div id="coverageBar" class="coverage-excellent h-2 rounded-full" style="width: 96.5%"></div>
+                            <div id="coverageBar" class="coverage-excellent h-2 rounded-full" style="width: 91.72%"></div>
                         </div>
                         <span class="ml-2 text-sm text-muted-foreground">Target: 80%</span>
                     </div>
@@ -437,7 +437,7 @@
                     </div>
                     <div>
                         <p class="font-medium text-green-900 dark:text-green-100">Coverage</p>
-                        <p class="text-sm text-green-600 dark:text-green-400">✓ 96.5% coverage</p>
+                        <p class="text-sm text-green-600 dark:text-green-400">✓ 91.72% coverage</p>
                     </div>
                 </div>
                 <div class="flex items-center p-4 bg-green-50 dark:bg-green-900/10 rounded-lg">
@@ -575,7 +575,7 @@
                 data: {
                     labels: ['Covered', 'Uncovered'],
                     datasets: [{
-                        data: [96.5, 3.5],
+                        data: [91.72, 3.5],
                         backgroundColor: ['#10b981', isDark() ? '#374151' : '#e5e7eb'],
                         borderWidth: 0
                     }]
@@ -624,7 +624,7 @@
                         pointRadius: 6
                     }, {
                         label: 'Coverage %',
-                        data: [0, 25, 60, 96.5],
+                        data: [0, 25, 60, 91.72],
                         borderColor: '#10b981',
                         backgroundColor: 'rgba(16, 185, 129, 0.1)',
                         tension: 0.4,
@@ -694,7 +694,7 @@
                         '<div class="text-center">' +
                         '<div class="text-4xl mb-2">📊</div>' +
                         '<div class="text-lg font-medium">Coverage Breakdown</div>' +
-                        '<div class="text-sm">96.5% Covered, 3.5% Uncovered</div>' +
+                        '<div class="text-sm">91.72% Covered, 3.5% Uncovered</div>' +
                         '</div></div>';
                     
                     document.getElementById('testTrendChart').parentElement.innerHTML = 
@@ -710,7 +710,7 @@
 
         // Update coverage bar color based on percentage
         function updateCoverageBar() {
-            const coverage = 96.5;
+            const coverage = 91.72;
             const bar = document.getElementById('coverageBar');
             const coverageText = document.getElementById('overallCoverage');
             
