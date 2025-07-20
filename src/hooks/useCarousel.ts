@@ -16,10 +16,12 @@ export const useCarousel = (totalItems: number, initialIndex = 0): CarouselState
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
   const next = useCallback(() => {
+    if (totalItems <= 1) return; // Don't change if 0 or 1 items
     setCurrentIndex((prev) => (prev + 1) % totalItems);
   }, [totalItems]);
 
   const prev = useCallback(() => {
+    if (totalItems <= 1) return; // Don't change if 0 or 1 items
     setCurrentIndex((prev) => (prev - 1 + totalItems) % totalItems);
   }, [totalItems]);
 

@@ -9,6 +9,13 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     css: true,
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/cypress/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
@@ -28,7 +35,6 @@ export default defineConfig({
         'src/components/icons/**', // Icon components are simple
         'src/components/ThemeProvider.tsx', // Context provider, minimal logic
         'src/components/MobileMenuContext.tsx', // Context provider, minimal logic
-        'src/hooks/__tests__/useCarousel.test.ts', // Temporarily excluded due to interface changes
       ],
       include: [
         'src/**/*.{ts,tsx}',

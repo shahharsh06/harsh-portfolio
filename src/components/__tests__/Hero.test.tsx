@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi, beforeAll } from 'vitest';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { render } from '@/test/utils';
@@ -14,6 +14,17 @@ vi.mock('@/assets/resume/Harsh_SE_Resume.pdf', () => ({
 }));
 
 describe('Hero Component', () => {
+  const mockIntersectionObserver = {
+    observe: vi.fn(),
+    disconnect: vi.fn(),
+    unobserve: vi.fn(),
+  };
+
+  beforeAll(() => {
+    // Mock IntersectionObserver
+    global.IntersectionObserver = vi.fn().mockImplementation(() => mockIntersectionObserver);
+  });
+
   beforeEach(() => {
     // Mock scrollIntoView
     Object.defineProperty(window, 'scrollIntoView', {
@@ -25,7 +36,7 @@ describe('Hero Component', () => {
     const mockElement = {
       scrollIntoView: vi.fn(),
     };
-    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as any);
+    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as Element);
   });
 
   it('renders hero section with correct structure', () => {

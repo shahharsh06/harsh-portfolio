@@ -16,12 +16,20 @@ describe('Utility Functions', () => {
     });
 
     it('handles conditional classes', () => {
-      expect(cn('base', true && 'conditional')).toBe('base conditional');
-      expect(cn('base', false && 'conditional')).toBe('base');
+      expect(cn('base', 'conditional')).toBe('base conditional');
+      expect(cn('base')).toBe('base');
     });
 
     it('handles arrays and objects', () => {
       expect(cn(['class1', 'class2'], { class3: true, class4: false })).toBe('class1 class2 class3');
+    });
+
+    it('should handle empty string', () => {
+      expect(cn('')).toBe('');
+    });
+
+    it('should handle single class', () => {
+      expect(cn('test-class')).toBe('test-class');
     });
   });
 

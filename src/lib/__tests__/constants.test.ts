@@ -101,6 +101,10 @@ describe('Constants', () => {
     it('should have correct name', () => {
       expect(PERSONAL_INFO.name).toBe('Harsh Shah');
     });
+
+    // Test with invalid key
+    // @ts-expect-error - Testing invalid key
+    expect(PERSONAL_INFO.invalidKey).toBeUndefined();
   });
 
   describe('SOCIAL_LINKS', () => {
@@ -163,7 +167,7 @@ describe('Constants', () => {
     it('should handle undefined window', () => {
       // Mock window as undefined (SSR)
       const originalWindow = global.window;
-      // @ts-ignore
+      // @ts-expect-error - Testing undefined window
       delete global.window;
 
       expect(getVisibleCount('featured')).toBe(1);

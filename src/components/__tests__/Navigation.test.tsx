@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi, beforeAll } from 'vitest';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { render } from '@/test/utils';
@@ -15,6 +15,17 @@ const renderWithMobileMenu = (component: React.ReactElement) => {
 };
 
 describe('Navigation Component', () => {
+  const mockIntersectionObserver = {
+    observe: vi.fn(),
+    disconnect: vi.fn(),
+    unobserve: vi.fn(),
+  };
+
+  beforeAll(() => {
+    // Mock IntersectionObserver
+    global.IntersectionObserver = vi.fn().mockImplementation(() => mockIntersectionObserver);
+  });
+
   beforeEach(() => {
     // Mock scrollIntoView
     Object.defineProperty(window, 'scrollIntoView', {
@@ -26,16 +37,7 @@ describe('Navigation Component', () => {
     const mockElement = {
       scrollIntoView: vi.fn(),
     };
-    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as any);
-    
-    // Mock IntersectionObserver
-    const mockIntersectionObserver = vi.fn();
-    mockIntersectionObserver.mockReturnValue({
-      observe: () => null,
-      unobserve: () => null,
-      disconnect: () => null,
-    });
-    window.IntersectionObserver = mockIntersectionObserver;
+    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as Element);
   });
 
   it('renders navigation with logo', () => {

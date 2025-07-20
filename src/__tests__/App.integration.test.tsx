@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi, beforeAll } from 'vitest';
 import { screen, waitFor, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from '@/components/ThemeProvider';
@@ -14,6 +14,41 @@ const renderApp = (ui: React.ReactElement) => {
 };
 
 describe('App Integration Tests', () => {
+  const mockIntersectionObserver = {
+    observe: vi.fn(),
+    disconnect: vi.fn(),
+    unobserve: vi.fn(),
+  };
+
+  const mockResizeObserver = {
+    observe: vi.fn(),
+    disconnect: vi.fn(),
+    unobserve: vi.fn(),
+  };
+
+  beforeAll(() => {
+    // Mock IntersectionObserver
+    global.IntersectionObserver = vi.fn().mockImplementation(() => mockIntersectionObserver);
+    
+    // Mock ResizeObserver
+    global.ResizeObserver = vi.fn().mockImplementation(() => mockResizeObserver);
+    
+    // Mock window.matchMedia
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+  });
+
   beforeEach(() => {
     // Mock scrollIntoView
     Object.defineProperty(window, 'scrollIntoView', {
@@ -25,7 +60,7 @@ describe('App Integration Tests', () => {
     const mockElement = {
       scrollIntoView: vi.fn(),
     };
-    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as any);
+    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as Element);
   });
 
   it('renders all main sections', () => {
