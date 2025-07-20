@@ -42,12 +42,10 @@ All colors MUST be HSL.
     --ring: 221.2 83.2% 53.3%;
 
     /* Portfolio-specific design tokens - Light Theme */
-    --hero-gradient: linear-gradient(135deg, hsl(221.2 83.2% 53.3%), hsl(262.1 83.3% 57.8%));
     --card-gradient: linear-gradient(145deg, hsl(0 0% 100%), hsl(210 40% 98%));
     --text-gradient: linear-gradient(135deg, hsl(221.2 83.2% 53.3%), hsl(189 85% 55%));
     
     /* Shadows and effects - Light Theme */
-    --shadow-glow: 0 0 40px hsl(221.2 83.2% 53.3% / 0.2);
     --shadow-card: 0 8px 32px hsl(220 13% 20% / 0.1);
     --shadow-subtle: 0 2px 8px hsl(220 13% 20% / 0.05);
     
@@ -56,22 +54,6 @@ All colors MUST be HSL.
     --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 
     --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
@@ -106,22 +88,12 @@ All colors MUST be HSL.
     --ring: 217.2 91.2% 59.8%;
 
     /* Portfolio-specific design tokens - Dark Theme */
-    --hero-gradient: linear-gradient(135deg, hsl(217.2 91.2% 59.8%), hsl(263 85% 70%));
     --card-gradient: linear-gradient(145deg, hsl(217.2 32.6% 17.5%), hsl(222.2 84% 4.9%));
     --text-gradient: linear-gradient(135deg, hsl(217.2 91.2% 59.8%), hsl(189 85% 55%));
     
     /* Shadows and effects - Dark Theme */
-    --shadow-glow: 0 0 40px hsl(217.2 91.2% 59.8% / 0.3);
     --shadow-card: 0 8px 32px hsl(220 13% 3% / 0.4);
     --shadow-subtle: 0 2px 8px hsl(220 13% 3% / 0.2);
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -138,10 +110,6 @@ All colors MUST be HSL.
 
 @layer components {
   /* Portfolio-specific component styles */
-  .hero-gradient {
-    background: var(--hero-gradient);
-  }
-  
   .card-gradient {
     background: var(--card-gradient);
   }
@@ -151,10 +119,6 @@ All colors MUST be HSL.
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-  }
-  
-  .glow-effect {
-    box-shadow: var(--shadow-glow);
   }
   
   .card-shadow {

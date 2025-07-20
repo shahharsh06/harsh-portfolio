@@ -20,27 +20,27 @@ const App = () => {
   }, []);
 
   return (
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      {showCursorEffect && (
-        <CursorEffect 
-          enabled={true}
-          trailLength={10}
-          blurAmount={6}
-          circleSize={8}
-          arcHeight={25}
-          speed={1.2}
-        />
-      )}
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        {showCursorEffect && (
+          <CursorEffect 
+            enabled={true}
+            trailLength={10}
+            blurAmount={6}
+            circleSize={8}
+            arcHeight={25}
+            speed={1.2}
+          />
+        )}
       <HashRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
       </HashRouter>
-    </TooltipProvider>
+      </TooltipProvider>
   );
 };
 

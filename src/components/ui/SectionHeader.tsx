@@ -10,7 +10,7 @@ interface SectionHeaderProps {
 }
 
 export const SectionHeader = ({ 
-  title, 
+  title,
   gradientWord, 
   icon: Icon, 
   description, 
@@ -22,9 +22,9 @@ export const SectionHeader = ({
         <SectionIcon icon={<Icon />} size={28} padding="p-3" interactive={true} />
         <span>{title} <span className="text-gradient">{gradientWord}</span></span>
       </h2>
-      <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
         {description}
-      </p>
+        </p>
     </div>
   );
-}; 
+};

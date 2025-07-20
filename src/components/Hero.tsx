@@ -86,11 +86,11 @@ const Hero = () => {
             >
               <div className="w-48 h-60 lg:w-80 lg:h-96 rounded-3xl overflow-hidden border border-transparent bg-gradient-to-r from-primary to-cyan-400 p-[0.5px] shadow-2xl hover:shadow-glow transition-all duration-300">
                 <div className="w-full h-full rounded-3xl overflow-hidden">
-                  <img
-                    src={heroImage}
-                    alt="Harsh - ML Engineer & Code Craftsman"
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                  />
+                <img
+                  src={heroImage}
+                  alt="Harsh - ML Engineer & Code Craftsman"
+                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                />
                 </div>
               </div>
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-primary/10 to-transparent"></div>

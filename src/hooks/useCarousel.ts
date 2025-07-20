@@ -1,42 +1,44 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 
-interface UseCarouselProps {
-  items: any[];
-  autoSlideInterval?: number;
-  isHovered?: boolean;
+interface CarouselState {
+  currentIndex: number;
+  totalItems: number;
 }
 
-export const useCarousel = ({ 
-  items, 
-  autoSlideInterval = 3000, 
-  isHovered = false 
-}: UseCarouselProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+interface CarouselActions {
+  next: () => void;
+  prev: () => void;
+  goTo: (index: number) => void;
+  reset: () => void;
+}
 
-  const scrollTo = (direction: 'prev' | 'next') => {
-    const n = items.length;
-    if (direction === 'prev') {
-      setCurrentIndex(prev => (prev - 1 + n) % n);
-    } else {
-      setCurrentIndex(prev => (prev + 1) % n);
+export const useCarousel = (totalItems: number, initialIndex = 0): CarouselState & CarouselActions => {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+
+  const next = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % totalItems);
+  }, [totalItems]);
+
+  const prev = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + totalItems) % totalItems);
+  }, [totalItems]);
+
+  const goTo = useCallback((index: number) => {
+    if (index >= 0 && index < totalItems) {
+      setCurrentIndex(index);
     }
-  };
+  }, [totalItems]);
 
-  // Auto-scroll effect
-  useEffect(() => {
-    if (isHovered || items.length === 0) return;
-    
-    const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % items.length);
-    }, autoSlideInterval);
-    
-    return () => clearInterval(interval);
-  }, [isHovered, items.length, autoSlideInterval]);
+  const reset = useCallback(() => {
+    setCurrentIndex(initialIndex);
+  }, [initialIndex]);
 
   return {
     currentIndex,
-    setCurrentIndex,
-    scrollTo,
-    totalItems: items.length
+    totalItems,
+    next,
+    prev,
+    goTo,
+    reset,
   };
 }; 

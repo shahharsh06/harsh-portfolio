@@ -1,9 +1,43 @@
-import { clsx, type ClassValue } from "clsx"
+import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { COVERFLOW_CONFIG } from './constants';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+
+// Utility function to get a reliable image URL with fallback
+export function getImageUrl(url: string, fallback?: string): string {
+  if (!url) return fallback || '';
+  
+  // If it's already a full URL, return it
+  if (url.startsWith('http')) {
+    return url;
+  }
+  
+  // If it's a relative path, make it absolute
+  if (url.startsWith('/')) {
+    return `${window.location.origin}${url}`;
+  }
+  
+  return url;
+}
+
+// Utility function to get project-specific fallback emoji
+export function getProjectFallbackEmoji(title: string): string {
+  const lowerTitle = title.toLowerCase();
+  
+  if (lowerTitle.includes('recipe') || lowerTitle.includes('food')) return '🍽️';
+  if (lowerTitle.includes('weather')) return '🌤️';
+  if (lowerTitle.includes('e-commerce') || lowerTitle.includes('shop')) return '🛒';
+  if (lowerTitle.includes('task') || lowerTitle.includes('todo')) return '📋';
+  if (lowerTitle.includes('ai') || lowerTitle.includes('chat')) return '🤖';
+  if (lowerTitle.includes('data') || lowerTitle.includes('analytics')) return '📊';
+  if (lowerTitle.includes('fitness') || lowerTitle.includes('workout')) return '💪';
+  if (lowerTitle.includes('blog')) return '📝';
+  if (lowerTitle.includes('portfolio')) return '🎨';
+  
+  return '💻'; // Default fallback
 }
 
 // Helper to get card width class based on visible count

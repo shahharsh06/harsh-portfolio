@@ -1,11 +1,34 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ExternalLink } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
-import { GithubIcon, LinkedinIcon } from "./icons";
-import SectionIcon from "./SectionIcon";
+import { GithubIcon, LinkedinIcon, DashboardIcon } from "./icons";
 import { useMobileMenu } from "./MobileMenuContext";
 import { PERSONAL_INFO, SOCIAL_LINKS } from "@/lib/constants";
+
+// Reusable social icon button component
+const SocialIconButton = ({ 
+  href, 
+  icon: Icon, 
+  label 
+}: { 
+  href: string; 
+  icon: React.ComponentType<{ className?: string }>; 
+  label: string; 
+}) => (
+  <Button
+    variant="ghost"
+    size="sm"
+    asChild
+    className="hover-glow rounded-full p-0 w-10 h-10 flex items-center justify-center group"
+  >
+    <a href={href} target="_blank" rel="noopener noreferrer">
+      <div className="rounded-full bg-transparent p-2 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20 transition-colors">
+        <Icon className="h-4 w-4 text-foreground group-hover:text-primary group-focus:text-primary group-active:text-primary transition-colors" />
+      </div>
+    </a>
+  </Button>
+);
 
 const Navigation = () => {
   const { isMobileMenuOpen, setIsMobileMenuOpen } = useMobileMenu();
@@ -28,8 +51,10 @@ const Navigation = () => {
     { label: "Contact", href: "#contact" },
   ];
 
-  const externalLinks = [
-    { label: "Dashboard", href: "/harsh-portfolio/dashboard.html", icon: "📊" },
+  const socialLinks = [
+    { label: "Dashboard", href: "/harsh-portfolio/dashboard.html", icon: DashboardIcon },
+    { label: "GitHub", href: SOCIAL_LINKS.github, icon: GithubIcon },
+    { label: "LinkedIn", href: SOCIAL_LINKS.linkedin, icon: LinkedinIcon },
   ];
 
   const scrollToSection = (href: string) => {
@@ -37,6 +62,19 @@ const Navigation = () => {
     element?.scrollIntoView({ behavior: "smooth" });
     setIsMobileMenuOpen(false);
   };
+
+  const SocialIcons = () => (
+    <div className="flex items-center space-x-3">
+      {socialLinks.map((link) => (
+        <SocialIconButton
+          key={link.label}
+          href={link.href}
+          icon={link.icon}
+          label={link.label}
+        />
+      ))}
+    </div>
+  );
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-smooth ${
@@ -63,47 +101,7 @@ const Navigation = () => {
               ))}
               <div className="flex items-center space-x-3 ml-6">
                 <ThemeToggle />
-                {externalLinks.map((link) => (
-                  <Button
-                    key={link.label}
-                    variant="ghost"
-                    size="sm"
-                    asChild
-                    className="hover-glow rounded-full p-0 w-10 h-10 flex items-center justify-center group"
-                  >
-                    <a href={link.href} target="_blank" rel="noopener noreferrer">
-                      <div className="rounded-full bg-transparent p-2 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20 transition-colors">
-                        <span className="text-sm text-foreground group-hover:text-primary group-focus:text-primary group-active:text-primary transition-colors">
-                          {link.icon}
-                        </span>
-                      </div>
-                    </a>
-                  </Button>
-                ))}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  asChild
-                  className="hover-glow rounded-full p-0 w-10 h-10 flex items-center justify-center group"
-                >
-                  <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">
-                    <div className="rounded-full bg-transparent p-2 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20 transition-colors">
-                      <GithubIcon className="h-4 w-4 text-foreground group-hover:text-primary group-focus:text-primary group-active:text-primary transition-colors" />
-                    </div>
-                  </a>
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  asChild
-                  className="hover-glow rounded-full p-0 w-10 h-10 flex items-center justify-center group"
-                >
-                  <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer">
-                    <div className="rounded-full bg-transparent p-2 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20 transition-colors">
-                      <LinkedinIcon className="h-4 w-4 text-foreground group-hover:text-primary group-focus:text-primary group-active:text-primary transition-colors" />
-                    </div>
-                  </a>
-                </Button>
+                <SocialIcons />
               </div>
             </div>
           </div>
@@ -154,45 +152,9 @@ const Navigation = () => {
                     {item.label}
                   </button>
                 ))}
-                {/* External Links for Mobile */}
-                {externalLinks.map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-primary hover:bg-muted transition-fast w-full text-left"
-                  >
-                    <span className="mr-2">{link.icon}</span>
-                    {link.label}
-                  </a>
-                ))}
                 <div className="flex items-center space-x-3 px-3 py-2">
                   <ThemeToggle />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    asChild
-                    className="hover-glow rounded-full p-0 w-10 h-10 flex items-center justify-center group"
-                  >
-                    <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">
-                      <div className="rounded-full bg-transparent p-2 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20 transition-colors">
-                        <GithubIcon className="h-4 w-4 text-foreground group-hover:text-primary group-focus:text-primary group-active:text-primary transition-colors" />
-                      </div>
-                    </a>
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    asChild
-                    className="hover-glow rounded-full p-0 w-10 h-10 flex items-center justify-center group"
-                  >
-                    <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer">
-                      <div className="rounded-full bg-transparent p-2 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20 transition-colors">
-                        <LinkedinIcon className="h-4 w-4 text-foreground group-hover:text-primary group-focus:text-primary group-active:text-primary transition-colors" />
-                      </div>
-                    </a>
-                  </Button>
+                  <SocialIcons />
                 </div>
               </div>
             </div>
