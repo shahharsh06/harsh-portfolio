@@ -19,7 +19,7 @@ export const SkillTag: React.FC<SkillTagProps> = ({
 
   return (
     <span
-      className={`${sizeClasses[size]} bg-background/50 border border-border rounded-full font-medium hover:bg-primary/10 hover:border-primary/30 transition-all duration-200 ${className}`}
+      className={`${sizeClasses[size]} bg-background/50 border border-border rounded-full font-medium hover:bg-primary/10 hover:border-primary/30 transition-all duration-200 inline-flex items-center justify-center ${className}`}
     >
       {children}
     </span>

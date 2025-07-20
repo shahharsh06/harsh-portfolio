@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { screen } from '@testing-library/react';
 import { render } from '@/test/utils';
 import ProjectCard from '../ProjectCard';
+import userEvent from '@testing-library/user-event';
+import { fireEvent, waitFor } from '@testing-library/react';
 
 describe('ProjectCard Component', () => {
   const mockProps = {
@@ -23,7 +25,7 @@ describe('ProjectCard Component', () => {
     expect(card).toHaveTextContent('A test project description');
   });
 
-  it('displays project image when provided', () => {
+  it('displays project image when provided for featured projects', () => {
     render(
       <ProjectCard
         title="Test Project"
@@ -32,6 +34,7 @@ describe('ProjectCard Component', () => {
         technologies={['React', 'TypeScript']}
         githubUrl="https://github.com"
         liveUrl="https://example.com"
+        featured={true}
       />
     );
 
@@ -39,6 +42,23 @@ describe('ProjectCard Component', () => {
     expect(image).toBeInTheDocument();
     expect(image).toHaveAttribute('src', 'http://localhost:3000/mock-project-image.jpg');
     expect(image).toHaveAttribute('alt', 'Test Project');
+  });
+
+  it('does not display project image for non-featured projects', () => {
+    render(
+      <ProjectCard
+        title="Test Project"
+        description="Test description"
+        image="/mock-project-image.jpg"
+        technologies={['React', 'TypeScript']}
+        githubUrl="https://github.com"
+        liveUrl="https://example.com"
+        featured={false}
+      />
+    );
+
+    const image = screen.queryByRole('img');
+    expect(image).not.toBeInTheDocument();
   });
 
   it('handles missing image', () => {
@@ -142,11 +162,28 @@ describe('ProjectCard Component', () => {
   });
 
   it('has proper accessibility attributes', () => {
-    render(<ProjectCard {...mockProps} />);
+    render(<ProjectCard {...mockProps} featured={true} />);
     
-    // Check image alt text
+    // Check image alt text for featured projects
     const image = screen.getByRole('img');
     expect(image).toHaveAttribute('alt', 'Test Project');
+    
+    // Check link accessibility
+    const githubLink = screen.getByRole('link', { name: /github/i });
+    const liveLink = screen.getByRole('link', { name: /live demo/i });
+    
+    expect(githubLink).toHaveAttribute('target', '_blank');
+    expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(liveLink).toHaveAttribute('target', '_blank');
+    expect(liveLink).toHaveAttribute('rel', 'noopener noreferrer');
+  });
+
+  it('has proper accessibility attributes for non-featured projects', () => {
+    render(<ProjectCard {...mockProps} featured={false} />);
+    
+    // Non-featured projects don't have images
+    const image = screen.queryByRole('img');
+    expect(image).not.toBeInTheDocument();
     
     // Check link accessibility
     const githubLink = screen.getByRole('link', { name: /github/i });
@@ -165,62 +202,104 @@ describe('ProjectCard Component', () => {
     expect(card).toHaveClass('custom-class');
   });
 
+  it('handles image loading state', () => {
+    render(<ProjectCard {...mockProps} />);
+    
+    // Should show loading state initially
+    const loadingElement = screen.getByText('Loading...');
+    expect(loadingElement).toBeInTheDocument();
+  });
+
+  it('handles image error state', async () => {
+    const user = userEvent.setup();
+    render(<ProjectCard {...mockProps} />);
+    
+    // Simulate image error
+    const image = screen.getByRole('img');
+    fireEvent.error(image);
+    
+    // Should show fallback content
+    await waitFor(() => {
+      const projectTitles = screen.getAllByText('Test Project');
+      expect(projectTitles.length).toBeGreaterThan(0);
+    });
+  });
+
+  it('handles image load success', async () => {
+    render(<ProjectCard {...mockProps} />);
+    
+    const image = screen.getByRole('img');
+    fireEvent.load(image);
+    
+    // Image should be visible after loading
+    await waitFor(() => {
+      expect(image).toHaveClass('block');
+    });
+  });
+
+  it('applies different styling for featured vs non-featured projects', () => {
+    const { rerender } = render(<ProjectCard {...mockProps} featured={true} />);
+    
+    // Featured project should have larger icons
+    const githubLink = screen.getByRole('link', { name: /github/i });
+    expect(githubLink).toBeInTheDocument();
+    
+    rerender(<ProjectCard {...mockProps} featured={false} />);
+    
+    // Non-featured project should have smaller icons
+    const githubLinkSmall = screen.getByRole('link', { name: /github/i });
+    expect(githubLinkSmall).toBeInTheDocument();
+  });
+
   it('handles empty technologies array', () => {
-    const propsWithoutTech = { ...mockProps, technologies: [] };
-    render(<ProjectCard {...propsWithoutTech} />);
+    render(<ProjectCard {...mockProps} technologies={[]} />);
     
     const card = screen.getByText('Test Project').closest('div[class*="card-gradient"]');
     expect(card).toBeInTheDocument();
-    // Should still render the card without technology tags
+    expect(card).toHaveTextContent('Test Project');
   });
 
-  it('handles long project titles', () => {
-    const propsWithLongTitle = { 
-      ...mockProps, 
-      title: 'This is a very long project title that might overflow the card container'
+  it('handles long technology lists', () => {
+    const longTechList = ['React', 'TypeScript', 'Tailwind', 'Node.js', 'Python', 'Django', 'PostgreSQL', 'Redis', 'Docker', 'AWS'];
+    render(<ProjectCard {...mockProps} technologies={longTechList} />);
+    
+    longTechList.forEach(tech => {
+      expect(screen.getByText(tech)).toBeInTheDocument();
+    });
+  });
+
+  it('handles special characters in title and description', () => {
+    const specialProps = {
+      ...mockProps,
+      title: 'Test Project & More! 🚀',
+      description: 'A project with special chars: @#$%^&*()'
     };
-    render(<ProjectCard {...propsWithLongTitle} />);
     
-    const title = screen.getByRole('heading', { level: 3 });
-    expect(title).toHaveTextContent('This is a very long project title');
+    render(<ProjectCard {...specialProps} />);
+    
+    expect(screen.getByText('Test Project & More! 🚀')).toBeInTheDocument();
+    expect(screen.getByText('A project with special chars: @#$%^&*()')).toBeInTheDocument();
   });
 
-  it('handles long project descriptions', () => {
-    const propsWithLongDesc = { 
-      ...mockProps, 
-      description: 'This is a very long project description that might overflow the card container and need to be truncated or wrapped properly'
-    };
-    render(<ProjectCard {...propsWithLongDesc} />);
+  it('handles very long descriptions', () => {
+    const longDescription = 'This is a very long project description that should be truncated to two lines using the line-clamp utility. It contains a lot of text to test the truncation functionality and ensure the card maintains consistent height across different content lengths.';
     
-    const description = screen.getByText('This is a very long project description that might overflow the card container and need to be truncated or wrapped properly');
-    expect(description).toBeInTheDocument();
+    render(<ProjectCard {...mockProps} description={longDescription} />);
+    
+    expect(screen.getByText(longDescription)).toBeInTheDocument();
   });
 
-  it('applies different icon sizes for featured vs non-featured', () => {
-    const { rerender } = render(<ProjectCard {...mockProps} featured={true} />);
+  it('handles missing liveUrl', () => {
+    render(<ProjectCard {...mockProps} liveUrl="" />);
     
-    // Featured projects should have larger icons
-    let githubLink = screen.getByRole('link', { name: /github/i });
-    expect(githubLink).toBeInTheDocument();
-    
-    rerender(<ProjectCard {...mockProps} featured={false} />);
-    
-    // Non-featured projects should have smaller icons
-    githubLink = screen.getByRole('link', { name: /github/i });
-    expect(githubLink).toBeInTheDocument();
+    // Should still render the card
+    expect(screen.getByText('Test Project')).toBeInTheDocument();
   });
 
-  it('applies different description text sizes for featured vs non-featured', () => {
-    const { rerender } = render(<ProjectCard {...mockProps} featured={true} />);
+  it('handles missing githubUrl', () => {
+    render(<ProjectCard {...mockProps} githubUrl="" />);
     
-    // Featured projects should have normal text size
-    let description = screen.getByText('A test project description');
-    expect(description).toHaveClass('text-sm');
-    
-    rerender(<ProjectCard {...mockProps} featured={false} />);
-    
-    // Non-featured projects should have smaller text
-    description = screen.getByText('A test project description');
-    expect(description).toHaveClass('text-sm');
+    // Should still render the card
+    expect(screen.getByText('Test Project')).toBeInTheDocument();
   });
 }); 

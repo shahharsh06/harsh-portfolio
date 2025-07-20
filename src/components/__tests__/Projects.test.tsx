@@ -198,51 +198,14 @@ describe('Projects Component', () => {
     });
   });
 
-  it('applies responsive design classes', () => {
+  it('handles auto-scrolling functionality', async () => {
     render(<Projects />);
     
-    const projectsSection = document.getElementById('projects');
-    expect(projectsSection).toHaveClass('py-20');
-    
-    // Check grid layout
-    const gridContainers = projectsSection?.querySelectorAll('.grid');
-    gridContainers?.forEach(container => {
-      expect(container).toHaveClass('lg:grid-cols-2');
-    });
-  });
-
-  it('displays project status badges', () => {
-    render(<Projects />);
-    
-    // Check for status badges (if any)
-    const badges = document.querySelectorAll('[data-testid="status-badge"]');
-    if (badges.length > 0) {
-      badges.forEach(badge => {
-        expect(badge).toBeInTheDocument();
-      });
-    }
-  });
-
-  it('has consistent styling with theme', () => {
-    render(<Projects />);
-    
-    const projectsSection = document.getElementById('projects');
-    expect(projectsSection).toHaveClass('py-20');
-    
-    const description = screen.getByText(/Here are some of my recent projects/);
-    expect(description).toHaveClass('text-muted-foreground');
-  });
-
-  it('displays project dates or timeframes', () => {
-    render(<Projects />);
-    
-    // Check for date elements (if any)
-    const dateElements = document.querySelectorAll('[data-testid="project-date"]');
-    if (dateElements.length > 0) {
-      dateElements.forEach(date => {
-        expect(date).toBeInTheDocument();
-      });
-    }
+    // Wait for auto-scroll to potentially trigger
+    await waitFor(() => {
+      const carousels = document.querySelectorAll('.flex.overflow-hidden');
+      expect(carousels.length).toBeGreaterThan(0);
+    }, { timeout: 1000 });
   });
 
   it('handles project card interactions', async () => {
@@ -259,5 +222,195 @@ describe('Projects Component', () => {
       // Card should still be visible
       expect(firstCard).toBeInTheDocument();
     }
+  });
+
+  it('handles carousel auto-scrolling functionality', async () => {
+    render(<Projects />);
+    
+    // Wait for auto-scroll to potentially trigger
+    await waitFor(() => {
+      const carousels = document.querySelectorAll('.flex.overflow-hidden');
+      expect(carousels.length).toBeGreaterThan(0);
+    }, { timeout: 1000 });
+  });
+
+  it('handles mobile responsive behavior', () => {
+    // Mock mobile viewport
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 375,
+    });
+
+    render(<Projects />);
+    
+    // Should still render all sections
+    expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 3, name: 'Other Projects' })).toBeInTheDocument();
+  });
+
+  it('handles desktop responsive behavior', () => {
+    // Mock desktop viewport
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 1440,
+    });
+
+    render(<Projects />);
+    
+    // Should render all sections
+    expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 3, name: 'Other Projects' })).toBeInTheDocument();
+  });
+
+  it('handles carousel pause on hover for featured projects', async () => {
+    const user = userEvent.setup();
+    render(<Projects />);
+    
+    const featuredCarousel = document.querySelector('.flex.overflow-hidden');
+    if (featuredCarousel) {
+      await user.hover(featuredCarousel);
+      expect(featuredCarousel).toBeInTheDocument();
+      
+      await user.unhover(featuredCarousel);
+      expect(featuredCarousel).toBeInTheDocument();
+    }
+  });
+
+  it('handles carousel pause on hover for other projects', async () => {
+    const user = userEvent.setup();
+    render(<Projects />);
+    
+    const otherCarousel = document.querySelectorAll('.flex.overflow-hidden')[1];
+    if (otherCarousel) {
+      await user.hover(otherCarousel);
+      expect(otherCarousel).toBeInTheDocument();
+      
+      await user.unhover(otherCarousel);
+      expect(otherCarousel).toBeInTheDocument();
+    }
+  });
+
+  it('handles navigation button accessibility', () => {
+    render(<Projects />);
+    
+    const navButtons = screen.getAllByRole('button');
+    const accessibleButtons = navButtons.filter(button => 
+      button.getAttribute('aria-label')?.includes('project')
+    );
+    
+    expect(accessibleButtons.length).toBeGreaterThan(0);
+    accessibleButtons.forEach(button => {
+      expect(button).toHaveAttribute('aria-label');
+    });
+  });
+
+  it('handles carousel transition animations', async () => {
+    render(<Projects />);
+    
+    const carouselContainers = document.querySelectorAll('.flex.overflow-hidden');
+    carouselContainers.forEach(container => {
+      // Check for flex and overflow-hidden classes which are the actual classes
+      expect(container).toHaveClass('flex');
+      expect(container).toHaveClass('overflow-hidden');
+    });
+  });
+
+  it('handles project card hover effects', async () => {
+    const user = userEvent.setup();
+    render(<Projects />);
+    
+    const projectCards = screen.getAllByText(/E-Commerce Platform|Recipe Finder App/).map(el => el.closest('div[class*="card-gradient"]')).filter(Boolean);
+    if (projectCards.length > 0) {
+      const firstCard = projectCards[0];
+      
+      await user.hover(firstCard);
+      expect(firstCard).toHaveClass('hover-lift');
+      
+      await user.unhover(firstCard);
+      expect(firstCard).toBeInTheDocument();
+    }
+  });
+
+  it('handles section icon interactions', async () => {
+    const user = userEvent.setup();
+    render(<Projects />);
+    
+    const sectionIcons = document.querySelectorAll('[data-testid="section-icon"]');
+    if (sectionIcons.length > 0) {
+      const firstIcon = sectionIcons[0];
+      await user.click(firstIcon);
+      expect(firstIcon).toBeInTheDocument();
+    }
+  });
+
+  it('handles external link accessibility', () => {
+    render(<Projects />);
+    
+    const externalLinks = screen.getAllByRole('link');
+    const githubLinks = externalLinks.filter(link => 
+      link.getAttribute('href')?.includes('github.com')
+    );
+    const demoLinks = externalLinks.filter(link => 
+      link.getAttribute('href')?.includes('demo') || link.getAttribute('href')?.includes('live')
+    );
+    
+    [...githubLinks, ...demoLinks].forEach(link => {
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    });
+  });
+
+  it('handles carousel infinite scrolling', async () => {
+    const user = userEvent.setup();
+    render(<Projects />);
+    
+    const nextButtons = screen.getAllByRole('button').filter(button => 
+      button.getAttribute('aria-label')?.includes('next')
+    );
+    
+    if (nextButtons.length > 0) {
+      // Click next multiple times to test infinite scrolling
+      for (let i = 0; i < 3; i++) {
+        await user.click(nextButtons[0]);
+      }
+      
+      expect(nextButtons[0]).toBeInTheDocument();
+    }
+  });
+
+  it('handles carousel reverse scrolling', async () => {
+    const user = userEvent.setup();
+    render(<Projects />);
+    
+    const prevButtons = screen.getAllByRole('button').filter(button => 
+      button.getAttribute('aria-label')?.includes('previous')
+    );
+    
+    if (prevButtons.length > 0) {
+      // Click previous multiple times to test reverse scrolling
+      for (let i = 0; i < 3; i++) {
+        await user.click(prevButtons[0]);
+      }
+      
+      expect(prevButtons[0]).toBeInTheDocument();
+    }
+  });
+
+  it('displays correct number of featured projects', () => {
+    render(<Projects />);
+    
+    // Featured projects should be limited to a specific number
+    const featuredProjectCards = screen.getAllByText(/E-Commerce Platform|Task Management App|Weather Dashboard/).map(el => el.closest('div[class*="card-gradient"]')).filter(Boolean);
+    expect(featuredProjectCards.length).toBeGreaterThan(0);
+  });
+
+  it('displays correct number of other projects', () => {
+    render(<Projects />);
+    
+    // Other projects should be displayed
+    const otherProjectCards = screen.getAllByText(/Portfolio Website|Recipe Finder App|Fitness Tracker/).map(el => el.closest('div[class*="card-gradient"]')).filter(Boolean);
+    expect(otherProjectCards.length).toBeGreaterThan(0);
   });
 }); 

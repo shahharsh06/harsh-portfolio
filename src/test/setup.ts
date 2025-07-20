@@ -1,18 +1,23 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
+// Make vi available globally for TypeScript
+declare global {
+  const vi: typeof import('vitest')['vi'];
+}
+
 // Mock IntersectionObserver
 global.IntersectionObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
-  unobserve: vi.fn(),
   disconnect: vi.fn(),
+  unobserve: vi.fn(),
 }));
 
 // Mock ResizeObserver
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
-  unobserve: vi.fn(),
   disconnect: vi.fn(),
+  unobserve: vi.fn(),
 }));
 
 // Mock matchMedia

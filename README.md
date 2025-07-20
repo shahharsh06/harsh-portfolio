@@ -1,6 +1,8 @@
 # Harsh Portfolio Website
 
-![Test Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen?logo=vitesthttps://img.shields.io/badge/coverage-91%25-brightgreen?logo=viteststyle=flat&style=flat)
+![Test Coverage](https://img.shields.io/badge/coverage-91.07%25-brightgreen?logo=vitest&style=flat)
+![Function Coverage](https://img.shields.io/badge/functions-72.15%25-green?logo=typescript&style=flat)
+![Tests Passing](https://img.shields.io/badge/tests-274%20passing-brightgreen?logo=vitest&style=flat)
 
 A professional, accessible, and responsive portfolio website showcasing Harsh's software development skills, projects, and experience. Built with React 18, TypeScript, and Tailwind CSS with modern development practices and optimized performance.
 
@@ -14,6 +16,7 @@ This portfolio website demonstrates modern web development practices including:
 - **Accessibility Compliant** (WCAG AA+ standards)
 - **Modern UI/UX** with smooth animations and interactive elements
 - **Portfolio Dashboard** with real-time test coverage and code quality metrics
+- **Comprehensive Testing** with 91.07% coverage and 274 passing tests
 
 ## 🚀 Features
 
@@ -35,6 +38,7 @@ This portfolio website demonstrates modern web development practices including:
 - ✅ **Type Safety**: Full TypeScript implementation with proper interfaces
 - ✅ **Performance**: Optimized bundle size and efficient rendering
 - ✅ **Dashboard Analytics**: Live coverage tracking with Chart.js visualizations
+- ✅ **Comprehensive Testing**: 274 tests with 91.07% coverage
 
 ### Planned Features
 - 🔄 **SEO Optimization**: Meta tags, OpenGraph, and structured data
@@ -45,7 +49,7 @@ This portfolio website demonstrates modern web development practices including:
 ## 📊 Portfolio Dashboard
 
 ### Dashboard Features
-- ✅ **Coverage Metrics**: Test coverage metrics (91.09%)
+- ✅ **Coverage Metrics**: Test coverage metrics (91.07%)
 - ✅ **Code Quality Metrics**: TypeScript coverage, linting scores, and security analysis
 - ✅ **Test Categories**: Component, UI, Utility, Integration, and Hook tests breakdown
 - ✅ **CI/CD Status**: Pipeline status with visual indicators
@@ -55,8 +59,9 @@ This portfolio website demonstrates modern web development practices including:
 - ✅ **Lucide React Icons**: Consistent iconography matching portfolio design
 
 ### Dashboard Metrics
-- **Overall Coverage**: 91.09% (Target: 80%)
-- **Total Tests**: 202 tests (All passing)
+- **Overall Coverage**: 91.07% (Target: 80%)
+- **Total Tests**: 274 tests (All passing)
+- **Function Coverage**: 72.15% (Target: 65%)
 - **Code Quality**: A+ grade
 - **Security Score**: 95% (No high severity issues)
 - **Component Coverage**: 8 components with 90%+ coverage
@@ -382,14 +387,15 @@ npm run test
 npm run test -- src/components/__tests__/Hero.test.tsx
 ```
 
-### Test Coverage: 91.09% ✅
+### Test Coverage: 91.07% ✅
 
-- **202 tests passing** across all components
-- **Component Tests**: 95 tests covering all major components
-- **UI Tests**: 73 tests for reusable UI components  
-- **Integration Tests**: 16 tests for component interactions
-- **Utility Tests**: 27 tests for helper functions
-- **Hook Tests**: 26 tests for custom React hooks
+- **274 tests passing** across all components
+- **Component Tests**: 95+ tests covering all major components
+- **UI Tests**: 73+ tests for reusable UI components  
+- **Integration Tests**: 16+ tests for component interactions
+- **Utility Tests**: 27+ tests for helper functions
+- **Hook Tests**: 26+ tests for custom React hooks
+- **Function Coverage**: 72.15% (exceeds 65% threshold)
 
 ### Test Categories
 - ✅ **Unit Tests**: All components and utilities
