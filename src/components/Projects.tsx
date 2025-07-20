@@ -44,7 +44,8 @@ const CoverflowCarousel = ({
   onNavigate, 
   onMouseEnter, 
   onMouseLeave,
-  isHovered 
+  isHovered,
+  type = 'featured'
 }: { 
   projects: Project[]; 
   currentIndex: number; 
@@ -52,83 +53,90 @@ const CoverflowCarousel = ({
   onMouseEnter: () => void; 
   onMouseLeave: () => void; 
   isHovered: boolean; 
-}) => (
-  <div className="flex items-center justify-center h-96">
-    <div className="relative w-[90vw] max-w-[480px] h-full flex items-center justify-center">
-      <div 
-        className="flex items-center justify-center w-full h-full"
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-      >
-        {projects.map((project, index) => {
-          const n = projects.length;
-          let offset = (index - currentIndex + n) % n;
-          if (offset > n / 2) offset -= n;
-          
-          let style;
-          if (offset === 0) {
-            style = {
-              transform: 'scale(1) rotateY(0deg) translateX(0px) translate(-50%, -50%)',
-              zIndex: 10,
-              opacity: 1,
-              filter: 'none',
-            };
-          } else if (offset === -1 || offset === 1) {
-            style = {
-              transform: `scale(0.85) rotateY(${offset === -1 ? 30 : -30}deg) translateX(${offset === -1 ? -40 : 40}px) translate(-50%, -50%)`,
-              zIndex: 5,
-              opacity: 0.7,
-              filter: 'blur(0.5px)',
-            };
-          } else {
-            style = {
-              transform: `scale(0.7) translateX(${offset * 60}px) translate(-50%, -50%)`,
-              zIndex: 1,
-              opacity: 0.3,
-              filter: 'blur(1px)',
-              pointerEvents: 'none',
-            };
-          }
-          
-          return (
-            <div 
-              key={index} 
-              className="absolute left-1/2 top-1/2 transition-all duration-500 ease-in-out"
-              style={{
-                ...style,
-                width: 'min(90vw, 480px)',
-                maxWidth: '100%',
-                ...(style.pointerEvents ? { pointerEvents: style.pointerEvents } : {}),
-              }}
-            >
-              <ProjectCard
-                title={project.title}
-                description={project.description}
-                image={project.image}
-                technologies={project.technologies}
-                githubUrl={project.githubUrl}
-                liveUrl={project.liveUrl}
-                featured={project.featured}
-              />
-            </div>
-          );
-        })}
+  type?: 'featured' | 'other';
+}) => {
+  // For mobile coverflow, we use single-step navigation for consistent UX
+  // The auto-scroll will still work with the multi-step pattern, but display will be smooth
+  const displayIndex = currentIndex % projects.length;
+
+  return (
+    <div className="flex items-center justify-center h-96">
+      <div className="relative w-[90vw] max-w-[480px] h-full flex items-center justify-center">
+        <div 
+          className="flex items-center justify-center w-full h-full"
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        >
+          {projects.map((project, index) => {
+            const n = projects.length;
+            let offset = (index - displayIndex + n) % n;
+            if (offset > n / 2) offset -= n;
+            
+            let style;
+            if (offset === 0) {
+              style = {
+                transform: 'scale(1) rotateY(0deg) translateX(0px) translate(-50%, -50%)',
+                zIndex: 10,
+                opacity: 1,
+                filter: 'none',
+              };
+            } else if (offset === -1 || offset === 1) {
+              style = {
+                transform: `scale(0.85) rotateY(${offset === -1 ? 30 : -30}deg) translateX(${offset === -1 ? -40 : 40}px) translate(-50%, -50%)`,
+                zIndex: 5,
+                opacity: 0.7,
+                filter: 'blur(0.5px)',
+              };
+            } else {
+              style = {
+                transform: `scale(0.7) translateX(${offset * 60}px) translate(-50%, -50%)`,
+                zIndex: 1,
+                opacity: 0.3,
+                filter: 'blur(1px)',
+                pointerEvents: 'none',
+              };
+            }
+            
+            return (
+              <div 
+                key={index} 
+                className="absolute left-1/2 top-1/2 transition-all duration-500 ease-in-out"
+                style={{
+                  ...style,
+                  width: 'min(90vw, 480px)',
+                  maxWidth: '100%',
+                  ...(style.pointerEvents ? { pointerEvents: style.pointerEvents } : {}),
+                }}
+              >
+                <ProjectCard
+                  title={project.title}
+                  description={project.description}
+                  image={project.image}
+                  technologies={project.technologies}
+                  githubUrl={project.githubUrl}
+                  liveUrl={project.liveUrl}
+                  featured={type === 'featured'}
+                />
+              </div>
+            );
+          })}
+        </div>
+        <NavigationButton
+          direction="prev"
+          onClick={() => onNavigate('prev')}
+          className="left-0 -translate-x-1/2"
+          label="Previous project"
+        />
+        <NavigationButton
+          direction="next"
+          onClick={() => onNavigate('next')}
+          className="right-0 translate-x-1/2"
+          label="Next project"
+        />
       </div>
-      <NavigationButton
-        direction="prev"
-        onClick={() => onNavigate('prev')}
-        className="left-0 -translate-x-1/2"
-        label="Previous project"
-      />
-      <NavigationButton
-        direction="next"
-        onClick={() => onNavigate('next')}
-        className="right-0 translate-x-1/2"
-        label="Next project"
-      />
     </div>
-  </div>
-);
+  );
+};
 
 // Reusable desktop carousel component
 const DesktopCarousel = ({ 
@@ -162,7 +170,7 @@ const DesktopCarousel = ({
         {getRollingWindow(projects, currentIndex, visibleCount).map((project, i) => (
           <div
             key={i + '-' + project.title}
-            className={`flex-shrink-0 ${getCardWidthClass(visibleCount, type)} ${getCardPadding(i, visibleCount)}`}
+            className={`flex-shrink-0 ${getCardWidthClass(visibleCount, type)} ${getCardPadding(i, visibleCount)} h-full`}
           >
             <ProjectCard
               title={project.title}
@@ -198,17 +206,63 @@ const Projects = () => {
   
   const { isSmallScreen, visibleFeatured, visibleOther } = useResponsive();
   
+  // Enhanced carousel hooks with auto-scrolling for desktop (multi-step)
   const {
     currentIndex: currentFeaturedIndex,
     next: nextFeatured,
     prev: prevFeatured,
-  } = useCarousel(featuredProjects.length);
+    pause: pauseFeatured,
+    resume: resumeFeatured,
+  } = useCarousel(featuredProjects.length, 0, {
+    autoPlay: true,
+    interval: CAROUSEL_INTERVALS.FEATURED,
+    pauseOnHover: true,
+    type: 'featured',
+    isMobile: false
+  });
 
   const {
     currentIndex: currentOtherIndex,
     next: nextOther,
     prev: prevOther,
-  } = useCarousel(otherProjects.length);
+    pause: pauseOther,
+    resume: resumeOther,
+  } = useCarousel(otherProjects.length, 0, {
+    autoPlay: true,
+    interval: CAROUSEL_INTERVALS.OTHER,
+    pauseOnHover: true,
+    type: 'other',
+    isMobile: false
+  });
+
+  // Mobile carousel hooks with single-step navigation for consistent UX
+  const {
+    currentIndex: currentFeaturedMobileIndex,
+    next: nextFeaturedMobile,
+    prev: prevFeaturedMobile,
+    pause: pauseFeaturedMobile,
+    resume: resumeFeaturedMobile,
+  } = useCarousel(featuredProjects.length, 0, {
+    autoPlay: true,
+    interval: CAROUSEL_INTERVALS.FEATURED,
+    pauseOnHover: true,
+    type: 'featured',
+    isMobile: true
+  });
+
+  const {
+    currentIndex: currentOtherMobileIndex,
+    next: nextOtherMobile,
+    prev: prevOtherMobile,
+    pause: pauseOtherMobile,
+    resume: resumeOtherMobile,
+  } = useCarousel(otherProjects.length, 0, {
+    autoPlay: true,
+    interval: CAROUSEL_INTERVALS.OTHER,
+    pauseOnHover: true,
+    type: 'other',
+    isMobile: true
+  });
 
   const scrollToFeatured = (direction: 'prev' | 'next') => {
     if (direction === 'prev') {
@@ -223,6 +277,45 @@ const Projects = () => {
       prevOther();
     } else {
       nextOther();
+    }
+  };
+
+  const scrollToFeaturedMobile = (direction: 'prev' | 'next') => {
+    if (direction === 'prev') {
+      prevFeaturedMobile();
+    } else {
+      nextFeaturedMobile();
+    }
+  };
+
+  const scrollToOtherMobile = (direction: 'prev' | 'next') => {
+    if (direction === 'prev') {
+      prevOtherMobile();
+    } else {
+      nextOtherMobile();
+    }
+  };
+
+  // Handle hover events for auto-scroll pause/resume
+  const handleFeaturedHover = (isHovered: boolean) => {
+    setIsFeaturedHovered(isHovered);
+    if (isHovered) {
+      pauseFeatured();
+      pauseFeaturedMobile();
+    } else {
+      resumeFeatured();
+      resumeFeaturedMobile();
+    }
+  };
+
+  const handleOtherHover = (isHovered: boolean) => {
+    setIsOtherHovered(isHovered);
+    if (isHovered) {
+      pauseOther();
+      pauseOtherMobile();
+    } else {
+      resumeOther();
+      resumeOtherMobile();
     }
   };
 
@@ -244,11 +337,12 @@ const Projects = () => {
           {isSmallScreen ? (
             <CoverflowCarousel
               projects={featuredProjects}
-              currentIndex={currentFeaturedIndex}
-              onNavigate={scrollToFeatured}
-              onMouseEnter={() => setIsFeaturedHovered(true)}
-              onMouseLeave={() => setIsFeaturedHovered(false)}
+              currentIndex={currentFeaturedMobileIndex}
+              onNavigate={scrollToFeaturedMobile}
+              onMouseEnter={() => handleFeaturedHover(true)}
+              onMouseLeave={() => handleFeaturedHover(false)}
               isHovered={isFeaturedHovered}
+              type="featured"
             />
           ) : (
             <DesktopCarousel
@@ -256,8 +350,8 @@ const Projects = () => {
               currentIndex={currentFeaturedIndex}
               visibleCount={visibleFeatured}
               onNavigate={scrollToFeatured}
-              onMouseEnter={() => setIsFeaturedHovered(true)}
-              onMouseLeave={() => setIsFeaturedHovered(false)}
+              onMouseEnter={() => handleFeaturedHover(true)}
+              onMouseLeave={() => handleFeaturedHover(false)}
               type="featured"
             />
           )}
@@ -269,11 +363,12 @@ const Projects = () => {
           {isSmallScreen ? (
             <CoverflowCarousel
               projects={otherProjects}
-              currentIndex={currentOtherIndex}
-              onNavigate={scrollToOther}
-              onMouseEnter={() => setIsOtherHovered(true)}
-              onMouseLeave={() => setIsOtherHovered(false)}
+              currentIndex={currentOtherMobileIndex}
+              onNavigate={scrollToOtherMobile}
+              onMouseEnter={() => handleOtherHover(true)}
+              onMouseLeave={() => handleOtherHover(false)}
               isHovered={isOtherHovered}
+              type="other"
             />
           ) : (
             <DesktopCarousel
@@ -281,8 +376,8 @@ const Projects = () => {
               currentIndex={currentOtherIndex}
               visibleCount={visibleOther}
               onNavigate={scrollToOther}
-              onMouseEnter={() => setIsOtherHovered(true)}
-              onMouseLeave={() => setIsOtherHovered(false)}
+              onMouseEnter={() => handleOtherHover(true)}
+              onMouseLeave={() => handleOtherHover(false)}
               type="other"
             />
           )}

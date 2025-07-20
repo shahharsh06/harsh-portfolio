@@ -42,9 +42,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const fallbackEmoji = getProjectFallbackEmoji(title);
 
   return (
-    <Card className={`overflow-hidden card-gradient border-border hover-lift group ${className}`}>
+    <Card className={`overflow-hidden card-gradient border-border hover-lift group h-full flex flex-col ${className}`}>
       {image && (
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           {!imageLoaded && (
             <div className="w-full h-48 bg-gradient-to-br from-primary/20 to-cyan-400/20 animate-pulse flex items-center justify-center">
               <div className="text-muted-foreground">Loading...</div>
@@ -70,7 +70,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-smooth"></div>
         </div>
       )}
-      <CardHeader>
+      <CardHeader className="flex-shrink-0">
         <CardTitle className="flex items-center justify-between">
           {title}
           <div className="flex space-x-2">
@@ -104,10 +104,12 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             </a>
           </div>
         </CardTitle>
-        <CardDescription className={featured ? "" : "text-sm"}>{description}</CardDescription>
+        <CardDescription className={`${featured ? "" : "text-sm"} line-clamp-2`}>
+          {description}
+        </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className={`flex flex-wrap gap-${featured ? "2" : "1"}`}>
+      <CardContent className="flex-1 flex flex-col justify-end">
+        <div className={`flex flex-wrap gap-1 ${featured ? 'gap-2 min-h-[32px]' : 'min-h-[24px]'}`}>
           {technologies.slice(0, featured ? undefined : 4).map((tech) => (
             <SkillTag key={tech} size={featured ? "md" : "sm"}>
               {tech}

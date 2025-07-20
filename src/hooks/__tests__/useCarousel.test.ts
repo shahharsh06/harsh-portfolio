@@ -26,53 +26,106 @@ describe('useCarousel Hook', () => {
     expect(result.current.totalItems).toBe(5);
   });
 
-  it('scrolls to next item correctly', () => {
-    const { result } = renderHook(() => useCarousel(mockItems.length));
+  it('scrolls to next item correctly for featured type', () => {
+    const { result } = renderHook(() => useCarousel(mockItems.length, 0, { type: 'featured' }));
     
     act(() => {
       result.current.next();
     });
     
+    // Featured: steps by 2 (A B, B C, C D pattern)
+    expect(result.current.currentIndex).toBe(2);
+  });
+
+  it('scrolls to next item correctly for other type', () => {
+    const { result } = renderHook(() => useCarousel(mockItems.length, 0, { type: 'other' }));
+    
+    act(() => {
+      result.current.next();
+    });
+    
+    // Other: steps by 3 (A B C, B C D pattern)
+    expect(result.current.currentIndex).toBe(3);
+  });
+
+  it('scrolls to next item correctly for mobile', () => {
+    const { result } = renderHook(() => useCarousel(mockItems.length, 0, { isMobile: true }));
+    
+    act(() => {
+      result.current.next();
+    });
+    
+    // Mobile: single-step navigation
     expect(result.current.currentIndex).toBe(1);
   });
 
-  it('scrolls to previous item correctly', () => {
-    const { result } = renderHook(() => useCarousel(mockItems.length));
+  it('scrolls to previous item correctly for featured type', () => {
+    const { result } = renderHook(() => useCarousel(mockItems.length, 2, { type: 'featured' }));
     
-    // Go to next first
-    act(() => {
-      result.current.next();
-    });
-    
-    // Then go back
     act(() => {
       result.current.prev();
     });
     
+    // Featured: steps back by 2
     expect(result.current.currentIndex).toBe(0);
   });
 
-  it('handles circular navigation', () => {
-    const { result } = renderHook(() => useCarousel(mockItems.length));
+  it('scrolls to previous item correctly for other type', () => {
+    const { result } = renderHook(() => useCarousel(mockItems.length, 3, { type: 'other' }));
     
-    // Go to last item
     act(() => {
-      result.current.goTo(4);
+      result.current.prev();
     });
+    
+    // Other: steps back by 3
+    expect(result.current.currentIndex).toBe(0);
+  });
+
+  it('scrolls to previous item correctly for mobile', () => {
+    const { result } = renderHook(() => useCarousel(mockItems.length, 1, { isMobile: true }));
+    
+    act(() => {
+      result.current.prev();
+    });
+    
+    // Mobile: single-step back
+    expect(result.current.currentIndex).toBe(0);
+  });
+
+  it('handles circular navigation for featured type', () => {
+    const { result } = renderHook(() => useCarousel(mockItems.length, 4, { type: 'featured' }));
     
     // Go to next (should wrap to first)
     act(() => {
       result.current.next();
     });
     
-    expect(result.current.currentIndex).toBe(0);
+    expect(result.current.currentIndex).toBe(1); // (4 + 2) % 5 = 1
     
     // Go to previous (should wrap to last)
     act(() => {
       result.current.prev();
     });
     
-    expect(result.current.currentIndex).toBe(4);
+    expect(result.current.currentIndex).toBe(4); // (1 - 2 + 5) % 5 = 4
+  });
+
+  it('handles circular navigation for other type', () => {
+    const { result } = renderHook(() => useCarousel(mockItems.length, 4, { type: 'other' }));
+    
+    // Go to next (should wrap to first)
+    act(() => {
+      result.current.next();
+    });
+    
+    expect(result.current.currentIndex).toBe(2); // (4 + 3) % 5 = 2
+    
+    // Go to previous (should wrap to last)
+    act(() => {
+      result.current.prev();
+    });
+    
+    expect(result.current.currentIndex).toBe(4); // (2 - 3 + 5) % 5 = 4
   });
 
   it('handles empty items array', () => {
@@ -216,5 +269,132 @@ describe('useCarousel Hook', () => {
     });
     
     expect(result.current.currentIndex).toBe(0); // Should stay at 0 for single item
+  });
+
+  // New tests for auto-scrolling functionality
+  it('auto-scrolls with default interval', () => {
+    const { result } = renderHook(() => useCarousel(mockItems.length, 0, { autoPlay: true }));
+    
+    // Advance timer by default interval (3000ms)
+    act(() => {
+      vi.advanceTimersByTime(3000);
+    });
+    
+    expect(result.current.currentIndex).toBe(2); // Featured type by default, steps by 2
+  });
+
+  it('auto-scrolls with custom interval', () => {
+    const { result } = renderHook(() => useCarousel(mockItems.length, 0, { 
+      autoPlay: true, 
+      interval: 2000,
+      type: 'other'
+    }));
+    
+    // Advance timer by custom interval
+    act(() => {
+      vi.advanceTimersByTime(2000);
+    });
+    
+    expect(result.current.currentIndex).toBe(3); // Other type, steps by 3
+  });
+
+  it('auto-scrolls with mobile single-step navigation', () => {
+    const { result } = renderHook(() => useCarousel(mockItems.length, 0, { 
+      autoPlay: true, 
+      interval: 2000,
+      isMobile: true
+    }));
+    
+    // Advance timer by custom interval
+    act(() => {
+      vi.advanceTimersByTime(2000);
+    });
+    
+    expect(result.current.currentIndex).toBe(1); // Mobile, steps by 1
+  });
+
+  it('pauses auto-scroll when pause is called', () => {
+    const { result } = renderHook(() => useCarousel(mockItems.length, 0, { autoPlay: true }));
+    
+    // Pause auto-scroll
+    act(() => {
+      result.current.pause();
+    });
+    
+    // Advance timer
+    act(() => {
+      vi.advanceTimersByTime(3000);
+    });
+    
+    expect(result.current.currentIndex).toBe(0); // Should not have changed
+  });
+
+  it('resumes auto-scroll when resume is called', () => {
+    const { result } = renderHook(() => useCarousel(mockItems.length, 0, { autoPlay: true }));
+    
+    // Pause auto-scroll
+    act(() => {
+      result.current.pause();
+    });
+    
+    // Resume auto-scroll
+    act(() => {
+      result.current.resume();
+    });
+    
+    // Advance timer
+    act(() => {
+      vi.advanceTimersByTime(3000);
+    });
+    
+    expect(result.current.currentIndex).toBe(2); // Should have advanced
+  });
+
+  it('does not auto-scroll when autoPlay is false', () => {
+    const { result } = renderHook(() => useCarousel(mockItems.length, 0, { autoPlay: false }));
+    
+    // Advance timer
+    act(() => {
+      vi.advanceTimersByTime(3000);
+    });
+    
+    expect(result.current.currentIndex).toBe(0); // Should not have changed
+  });
+
+  it('handles multiple auto-scroll cycles', () => {
+    const { result } = renderHook(() => useCarousel(mockItems.length, 0, { 
+      autoPlay: true, 
+      type: 'featured'
+    }));
+    
+    // Advance timer multiple times
+    act(() => {
+      vi.advanceTimersByTime(3000); // First cycle: 0 -> 2
+    });
+    
+    expect(result.current.currentIndex).toBe(2);
+    
+    act(() => {
+      vi.advanceTimersByTime(3000); // Second cycle: 2 -> 4
+    });
+    
+    expect(result.current.currentIndex).toBe(4);
+    
+    act(() => {
+      vi.advanceTimersByTime(3000); // Third cycle: 4 -> 1 (wraps around)
+    });
+    
+    expect(result.current.currentIndex).toBe(1);
+  });
+
+  it('cleans up interval on unmount', () => {
+    const { unmount } = renderHook(() => useCarousel(mockItems.length, 0, { autoPlay: true }));
+    
+    // Spy on clearInterval
+    const clearIntervalSpy = vi.spyOn(global, 'clearInterval');
+    
+    unmount();
+    
+    expect(clearIntervalSpy).toHaveBeenCalled();
   });
 }); 
