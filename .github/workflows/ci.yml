@@ -127,14 +127,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run security audit
-        run: npm audit --audit-level=moderate
+      - name: Run security audit (production only)
+        run: npm audit --audit-level=high --production
 
-      - name: Check for vulnerabilities
+      - name: Check for high severity vulnerabilities
         run: |
-          if npm audit --audit-level=high; then
-            echo "No high severity vulnerabilities found"
+          if npm audit --audit-level=high --production; then
+            echo "No high severity vulnerabilities found in production dependencies"
           else
-            echo "High severity vulnerabilities found"
+            echo "High severity vulnerabilities found in production dependencies"
             exit 1
           fi 

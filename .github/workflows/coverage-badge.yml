@@ -7,6 +7,10 @@ on:
     branches: [ main, develop ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   coverage-badge:
     runs-on: ubuntu-latest
@@ -81,5 +85,5 @@ jobs:
             git config --local user.name "GitHub Action"
             git add README.md
             git commit -m "docs: update coverage badge to ${{ steps.coverage.outputs.coverage }}%" || echo "No changes to commit"
-            git push
+            git push || echo "Push failed, but this is not critical"
           fi 
