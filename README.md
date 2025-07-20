@@ -1,6 +1,6 @@
 # Harsh Portfolio Website
 
-![Test Coverage](https://img.shields.io/badge/coverage-91%25-brightgreen?logo=vitest&style=flat)
+![Test Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen?logo=vitesthttps://img.shields.io/badge/coverage-91%25-brightgreen?logo=viteststyle=flat&style=flat)
 
 A professional, accessible, and responsive portfolio website showcasing Harsh's software development skills, projects, and experience. Built with React 18, TypeScript, and Tailwind CSS with modern development practices and optimized performance.
 
