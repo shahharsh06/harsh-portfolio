@@ -1,9 +1,9 @@
 {
-  "lastUpdated": "2025-07-21T12:25:23Z",
+  "lastUpdated": "2025-07-21T14:54:06Z",
   "coverage": {
-    "percentage": 91.72,
+    "percentage": 91.52,
     "totalLines": 2030,
-    "coveredLines": 1862
+    "coveredLines": 1858
   },
   "tests": {
     "count": 381,
