@@ -47,7 +47,7 @@ describe('Hero Component', () => {
     expect(heroSection).toBeInTheDocument();
     
     // Check hero image
-    const heroImage = screen.getByAltText('Harsh - ML Engineer & Code Craftsman');
+    const heroImage = screen.getByAltText('Harsh - ML Engineer & Software Engineer');
     expect(heroImage).toBeInTheDocument();
     expect(heroImage).toHaveAttribute('src', '/mock-profile-image.jpg');
   });
@@ -143,7 +143,7 @@ describe('Hero Component', () => {
     render(<Hero />);
     
     // Check image alt text
-    const heroImage = screen.getByAltText('Harsh - ML Engineer & Code Craftsman');
+    const heroImage = screen.getByAltText('Harsh - ML Engineer & Software Engineer');
     expect(heroImage).toBeInTheDocument();
     
     // Check button accessibility

@@ -21,7 +21,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid md:grid-cols-3 gap-8 items-center">
           {/* Brand */}
-          <div className="text-center md:text-left">
+          <div className="text-center md:text-left hidden md:block">
             <span className="text-xl font-bold text-gradient block mb-2">{PERSONAL_INFO.name.split(' ')[0]}</span>
             <p className="text-muted-foreground text-sm">
               {PERSONAL_INFO.title}

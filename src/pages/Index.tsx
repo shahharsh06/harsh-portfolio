@@ -29,7 +29,7 @@ const MainContent = () => {
       <Hero />
       <About />
       <Skills />
-        <CareerEducation />
+      <CareerEducation />
       <Projects />
       <Contact />
       <Footer />
@@ -41,7 +41,7 @@ const MainContent = () => {
 const Index = () => {
   return (
     <MobileMenuProvider>
-      <MainContent />
+    <MainContent />
     </MobileMenuProvider>
   );
 };

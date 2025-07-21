@@ -6,7 +6,7 @@ import './index.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider defaultTheme="dark" storageKey="portfolio-ui-theme">
+    <ThemeProvider defaultTheme="system" storageKey="portfolio-ui-theme">
       <App />
     </ThemeProvider>
   </StrictMode>,

@@ -18,9 +18,9 @@ const Hero = () => {
   
   // Titles array wrapped in useMemo to prevent unnecessary re-renders
   const titles = useMemo(() => [
+    'AI Enthusiast',
     'Machine Learning Engineer',
     'Data Scientist', 
-    'AI Enthusiast',
     'Python Developer'
   ], []);
 
@@ -90,7 +90,7 @@ const Hero = () => {
                 <div className="w-full h-full rounded-3xl overflow-hidden">
                 <img
                   src={heroImage}
-                  alt="Harsh - ML Engineer & Code Craftsman"
+                  alt="Harsh - ML Engineer & Software Engineer"
                   className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                 />
                 </div>
@@ -124,14 +124,14 @@ const Hero = () => {
                 {titleDisplayText}
                 <span className="animate-pulse">|</span>
               </h2>
-              <p className="text-lg text-muted-foreground max-w-lg">
+              <p className="text-lg text-muted-foreground max-w-lg text-justify">
                 Passionate about building intelligent systems and scalable applications. 
                 Master's in Computer Science graduate from Texas A&M University, 
                 with expertise in machine learning, data science, and software development.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 text-justify">
               <GradientButton
                 onClick={scrollToContact}
                 className="px-8 py-3"
@@ -150,17 +150,17 @@ const Hero = () => {
               </GradientButton>
             </div>
 
-            <div className="flex items-center space-x-8 text-sm text-muted-foreground">
-              <div>
-                <span className="text-2xl font-bold text-gradient">1+</span>
+            <div className="flex items-center space-x-8 text-sm text-muted-foreground text-justify">
+              <div className="flex flex-col items-center">
+                <span className="text-2xl font-bold text-gradient text-center">1+</span>
                 <p>Years Experience</p>
               </div>
-              <div>
-                <span className="text-2xl font-bold text-gradient">10+</span>
+              <div className="flex flex-col items-center">
+                <span className="text-2xl font-bold text-gradient text-center">10+</span>
                 <p>Projects Completed</p>
               </div>
-              <div>
-                <span className="text-2xl font-bold text-gradient">25+</span>
+              <div className="flex flex-col items-center">
+                <span className="text-2xl font-bold text-gradient text-center">25+</span>
                 <p>Technologies</p>
               </div>
             </div>
