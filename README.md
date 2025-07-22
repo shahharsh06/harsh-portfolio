@@ -1,7 +1,7 @@
 # Harsh Shah - ML Engineer & Software Engineer Portfolio
 
-![Test Coverage](https://img.shields.io/badge/coverage-94.69%25-red?logo=vitesthttps://img.shields.io/badge/coverage-94.69%25-brightgreen?logo=viteststyle=flat&style=flat)
-![Function Coverage](https://img.shields.io/badge/functions-84.7%25-green?logo=typescript&style=flat)
+![Test Coverage](https://img.shields.io/badge/coverage-94.69%25-brightgreen?logo=vitesthttps://img.shields.io/badge/coverage-94.69%25-brightgreen?logo=viteststyle=flat&style=flat)
+![Function Coverage](https://img.shields.io/badge/functions-84.7%25-brightgreen?logo=typescript&style=flat)
 ![Tests Passing](https://img.shields.io/badge/tests-375%20passing-brightgreen?logo=vitest&style=flat)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen?logo=github&style=flat)
 
