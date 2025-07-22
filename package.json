@@ -20,12 +20,14 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
     "@radix-ui/react-tooltip": "^1.1.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "disposable-email-domains": "^1.0.62",
     "framer-motion": "^12.23.5",
     "lucide-react": "^0.462.0",
     "next-themes": "^0.3.0",

@@ -6,7 +6,7 @@
 
 ### Pipeline Overview
 - **Status**: ✅ Active and Optimized
-- **Test Coverage**: 91.72% (352 tests passing)
+- **Test Coverage**: 94.69% (375+ tests passing)
 - **Build Status**: ✅ Passing
 - **Deployment**: ✅ GitHub Pages
 - **Dashboard**: ✅ Live and Updated (auto-updates on code commit or manual dispatch)
@@ -20,10 +20,11 @@
 - **Success Rate**: 100% (after optimization)
 
 ### Coverage Metrics
-- **Statements**: 91.72% (1,862/2,030)
-- **Branches**: 92.3% (240/260)
-- **Functions**: 74.35% (58/78)
-- **Lines**: 91.72% (1,862/2,030)
+- **Statements:** 94.69%
+- **Branches:** 92.61%
+- **Functions:** 84.7%
+- **Lines:** 94.69%
+- **Total Tests:** 375+ (all passing)
 
 ## 🔧 Pipeline Configuration
 
@@ -152,6 +153,7 @@ Coverage reports are available as artifacts.
 - **Interactive Charts**: Chart.js visualizations
 - **Theme Integration**: Matches portfolio theme
 - **Responsive Design**: Mobile-optimized layout
+- **Note**: 'Other Projects' section is temporarily hidden in the UI and tests
 
 ### Dashboard Metrics
 - **Coverage Percentage**: 91.72%

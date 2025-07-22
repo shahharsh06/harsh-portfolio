@@ -67,6 +67,7 @@ https://shahharsh06.github.io/harsh-portfolio/dashboard.html
 - [ ] **Project links** work
 - [ ] **Filtering** works (if implemented)
 - [ ] **Carousel/slider** works (if implemented)
+- [ ] **Other Projects section** is currently hidden in the UI and tests
 
 ### **9. Contact Section**
 - [ ] **Contact form** displays

@@ -95,5 +95,9 @@ export const getCoverflowStyle = (index: number, currentIndex: number) => {
 // Helper to get rolling window of items
 export const getRollingWindow = <T>(arr: T[], start: number, count: number): T[] => {
   const n = arr.length;
-  return Array.from({ length: count }, (_, i) => arr[(start + i) % n]);
+  return Array.from({ length: count }, (_, i) => {
+    let idx = (start + i) % n;
+    if (idx < 0) idx += n;
+    return arr[idx];
+  });
 };

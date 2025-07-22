@@ -27,3 +27,6 @@ dist-ssr
 coverage/
 *.lcov
 coverage-badge.svg
+
+# Ignore environment variable files
+.env

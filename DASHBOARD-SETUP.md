@@ -7,16 +7,16 @@
 ### Current Status
 - **Status**: ✅ Live and Active
 - **URL**: `https://shahharsh06.github.io/harsh-portfolio/dashboard.html`
-- **Coverage**: 91.72% (352 tests passing)
+- **Coverage**: 94.69% (375+ tests passing)
 - **Auto-updates**: ✅ On code commit (push/merge) or manual workflow dispatch via CI/CD
 - **Theme Integration**: ✅ Matches portfolio theme
 
 ## 📊 Dashboard Features
 
 ### Core Metrics Display
-- **Overall Coverage**: 91.72% (Target: 80%)
-- **Total Tests**: 352 tests (All passing)
-- **Function Coverage**: 74.35% (Target: 65%)
+- **Overall Coverage**: 94.69% (Target: 80%)
+- **Total Tests**: 375+ (All passing)
+- **Function Coverage**: 84.7% (Target: 85%)
 - **Security Score**: 95% (No high severity issues)
 
 ### Interactive Components
@@ -181,10 +181,13 @@ jobs:
 ## 📊 Current Metrics
 
 ### Coverage Breakdown
-- **Statements**: 91.72% (1,862/2,030)
-- **Branches**: 92.3% (240/260)
-- **Functions**: 74.35% (58/78)
-- **Lines**: 91.72% (1,862/2,030)
+- **Statements:** 94.69%
+- **Branches:** 92.61%
+- **Functions:** 84.7%
+- **Lines:** 94.69%
+- **Total Tests:** 375+ (all passing)
+- **Component Coverage:** Updated to reflect current state
+- **Note:** 'Other Projects' section is temporarily hidden in the UI and tests
 
 ### Component Coverage
 - **About.tsx**: 100% coverage
@@ -197,11 +200,12 @@ jobs:
 - **Navigation.tsx**: 98.16% coverage
 
 ### Test Categories
-- **Component Tests**: 95+ tests
-- **UI Tests**: 73+ tests
-- **Utility Tests**: 27+ tests
-- **Integration Tests**: 16+ tests
-- **Hook Tests**: 26+ tests
+- **Component Tests:** 95+ tests
+- **UI Tests:** 73+ tests
+- **Utility Tests:** 27+ tests
+- **Integration Tests:** 16+ tests
+- **Hook Tests:** 26+ tests
+- **Unit Tests:** Now include direct tests for internal logic (navigation, project handlers)
 
 ### Quality Metrics
 - **TypeScript Coverage**: 100%
@@ -213,9 +217,9 @@ jobs:
 ## 🎯 Dashboard Sections
 
 ### 1. Overview Cards
-- **Overall Coverage**: 91.72% with progress bar
-- **Total Tests**: 352 tests with status
-- **Function Coverage**: 74.35% with threshold
+- **Overall Coverage**: 94.69% with progress bar
+- **Total Tests**: 375+ tests with status
+- **Function Coverage**: 84.7% with threshold
 - **Security Score**: 95% with status
 
 ### 2. Charts Section

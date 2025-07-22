@@ -3,6 +3,13 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { render } from '@/test/utils';
 import Contact from '../Contact';
+import emailjs from '@emailjs/browser';
+import { Toaster } from "@/components/ui/toaster";
+vi.mock('@emailjs/browser', () => ({
+  default: {
+    send: vi.fn().mockResolvedValue({ status: 200 }),
+  },
+}));
 
 describe('Contact Component', () => {
   beforeEach(() => {
@@ -376,5 +383,56 @@ describe('Contact Component', () => {
     expect(emailInput).toHaveValue('test@example.com');
     expect(subjectInput).toHaveValue('Test Subject');
     expect(messageInput).toHaveValue('Test Message');
+  });
+
+  it('shows correct toast message after successful form submission', async () => {
+    const user = userEvent.setup();
+    render(
+      <>
+        <Contact />
+        <Toaster />
+      </>
+    );
+
+    // Fill out the form
+    await user.type(screen.getByLabelText(/name/i), 'John Doe');
+    await user.type(screen.getByLabelText(/email/i), 'john@example.com');
+    await user.type(screen.getByLabelText(/subject/i), 'Test Subject');
+    await user.type(screen.getByLabelText(/message/i), 'Test message content');
+
+    // Submit the form
+    await user.click(screen.getByRole('button', { name: /send message/i }));
+
+    // Wait for the toast to appear using a flexible matcher
+    await screen.findByText((content) =>
+      content.includes("Thank you for reaching out. I'll get back to you within 1-3 business days.")
+    );
+  });
+
+  it('blocks disposable email addresses and shows a toast', async () => {
+    const user = userEvent.setup();
+    render(
+      <>
+        <Contact />
+        <Toaster />
+      </>
+    );
+
+    // Fill out the form with a disposable email
+    await user.type(screen.getByLabelText(/name/i), 'John Doe');
+    await user.type(screen.getByLabelText(/email/i), 'john@mailinator.com');
+    await user.type(screen.getByLabelText(/subject/i), 'Test Subject');
+    await user.type(screen.getByLabelText(/message/i), 'Test message content');
+
+    // Submit the form
+    await user.click(screen.getByRole('button', { name: /send message/i }));
+
+    // Wait for the disposable email toast to appear
+    await screen.findByText((content) =>
+      content.includes('Disposable Email Detected')
+    );
+    await screen.findByText((content) =>
+      content.includes('Please use a real, non-temporary email address.')
+    );
   });
 }); 
