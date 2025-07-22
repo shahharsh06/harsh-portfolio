@@ -3,26 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Dashboard - Test Coverage & Code Quality</title>
+    <title>Dashboard | Harsh Shah Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script>
-        // Fallback Chart.js if primary CDN fails
-        if (typeof Chart === 'undefined') {
-            const script = document.createElement('script');
-            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js';
-            script.onload = function() {
-                console.log('Chart.js loaded from fallback CDN');
-                // Re-initialize charts after fallback loads
-                setTimeout(updateCharts, 100);
-            };
-            document.head.appendChild(script);
-        }
-    </script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -97,7 +84,6 @@
             --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
             --radius: 0.5rem;
         }
-
         .dark {
             --background: 222.2 84% 4.9%;
             --foreground: 210 40% 98%;
@@ -124,11 +110,16 @@
             --shadow-card: 0 8px 32px hsl(220 13% 3% / 0.4);
             --shadow-subtle: 0 2px 8px hsl(220 13% 3% / 0.2);
         }
-
-        .gradient-bg {
-            background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+        .text-gradient {
+            background: var(--text-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        
+        .card-gradient {
+            background: var(--card-gradient);
+            border: 1px solid hsl(var(--border));
+        }
         .card-hover {
             transition: var(--transition-smooth);
         }
@@ -136,57 +127,27 @@
             transform: translateY(-5px);
             box-shadow: var(--shadow-card);
         }
-        
-        .coverage-excellent { background: linear-gradient(135deg, #10b981, #059669); }
-        .coverage-good { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .coverage-poor { background: linear-gradient(135deg, #ef4444, #dc2146); }
-        
-        .pulse-animation {
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .text-gradient {
-            background: var(--text-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .card-gradient {
-            background: var(--card-gradient);
-            border: 1px solid hsl(var(--border));
-        }
-
-        .hover-lift:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-card);
-        }
-
-        .transition-smooth {
-            transition: var(--transition-smooth);
-        }
-
         .hover-glow:hover {
             box-shadow: 0 0 20px hsl(var(--primary) / 0.4);
         }
-
+        .transition-smooth {
+            transition: var(--transition-smooth);
+        }
         .transition-fast {
             transition: var(--transition-fast);
         }
-
-        /* Base styles */
         * {
             border-color: hsl(var(--border));
         }
-
         body {
             background-color: hsl(var(--background));
             color: hsl(var(--foreground));
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .coverage-excellent {
+            background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%) !important;
+            box-shadow: 0 0 4px 1px rgba(59, 130, 246, 0.4);
+            border: 1.5px solid #3b82f6;
         }
     </style>
 </head>
@@ -198,11 +159,10 @@
                 <!-- Logo/Brand -->
                 <div class="flex-shrink-0">
                     <div class="flex flex-col">
-                        <h1 class="text-xl font-bold text-gradient">Portfolio Dashboard</h1>
-                        <p class="text-muted-foreground text-sm">Test Coverage & Code Quality Metrics</p>
+                        <h1 class="text-xl font-bold text-gradient">Dashboard</h1>
+                        <p class="text-foreground text-sm">Project Metrics & Quality Overview</p>
                     </div>
                 </div>
-
                 <!-- Right side controls -->
                 <div class="flex items-center space-x-4">
                     <!-- Theme Toggle -->
@@ -211,289 +171,263 @@
                             <i data-lucide="moon" class="w-4 h-4 text-foreground group-hover:text-primary group-focus:text-primary group-active:text-primary transition-colors"></i>
                         </div>
                     </button>
-
                     <!-- Back to Portfolio Link -->
                     <a href="/harsh-portfolio/" class="hover-glow rounded-full p-0 w-10 h-10 flex items-center justify-center group">
                         <div class="rounded-full bg-transparent p-2 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20 transition-colors">
                             <i data-lucide="home" class="w-4 h-4 text-foreground group-hover:text-primary group-focus:text-primary group-active:text-primary transition-colors"></i>
                         </div>
                     </a>
-
                     <!-- Last Updated -->
                     <div class="text-right hidden sm:block">
-                        <div class="text-xs text-muted-foreground">Last Updated</div>
+                        <div class="text-xs text-foreground">Last Updated</div>
                         <div id="lastUpdated" class="text-sm font-semibold text-foreground">Loading...</div>
                     </div>
                 </div>
             </div>
         </div>
     </header>
-
     <!-- Main Content -->
-    <main class="container mx-auto px-6 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Overview Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <!-- Overall Coverage -->
-            <div class="card-gradient rounded-lg shadow-md card-hover p-6">
+            <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
                 <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-muted-foreground">Overall Coverage</p>
-                        <p id="overallCoverage" class="text-2xl font-bold text-gradient">91.72%</p>
-                    </div>
                     <div class="p-3 bg-primary/10 rounded-full flex items-center justify-center transition-smooth group-hover:bg-primary/20" style="width: 48px; height: 48px;">
-                        <i data-lucide="bar-chart-3" class="w-6 h-6 text-primary"></i>
+                        <i data-lucide="bar-chart-3" class="w-6 h-6" style="color: #3b82f6"></i>
                     </div>
-                </div>
-                <div class="mt-4">
-                    <div class="flex items-center">
-                        <div class="flex-1 bg-muted rounded-full h-2">
-                            <div id="coverageBar" class="coverage-excellent h-2 rounded-full" style="width: 91.72%"></div>
-                        </div>
-                        <span class="ml-2 text-sm text-muted-foreground">Target: 80%</span>
+                    <div>
+                        <p class="text-sm font-medium text-foreground">Overall Coverage</p>
+                        <p id="overallCoverage" class="text-2xl font-bold text-gradient">91.72%</p>
+                        <p class="text-sm text-primary font-medium mt-1">✓ Industry Standard: 80%</p>
                     </div>
                 </div>
             </div>
-
-            <!-- Test Count -->
-            <div class="card-gradient rounded-lg shadow-md card-hover p-6">
+            <!-- Total Tests -->
+            <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
                 <div class="flex items-center justify-between">
+                    <div class="p-3 bg-primary/10 rounded-full flex items-center justify-center transition-smooth group-hover:bg-primary/20" style="width: 48px; height: 48px;">
+                        <i data-lucide="check-circle" class="w-6 h-6" style="color: #3b82f6"></i>
+                    </div>
                     <div>
-                        <p class="text-sm font-medium text-muted-foreground">Total Tests</p>
+                        <p class="text-sm font-medium text-foreground">Total Tests</p>
                         <p id="totalTests" class="text-2xl font-bold text-gradient">352</p>
+                        <p class="text-sm text-primary font-medium mt-1">✓ All tests passing</p>
                     </div>
-                    <div class="p-3 bg-green-500/10 rounded-full flex items-center justify-center transition-smooth group-hover:bg-green-500/20" style="width: 48px; height: 48px;">
-                        <i data-lucide="check-circle" class="w-6 h-6 text-green-500"></i>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <p class="text-sm text-green-600 dark:text-green-400 font-medium">✓ All tests passing</p>
                 </div>
             </div>
-
             <!-- Function Coverage -->
-            <div class="card-gradient rounded-lg shadow-md card-hover p-6">
+            <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
                 <div class="flex items-center justify-between">
+                    <div class="p-3 bg-primary/10 rounded-full flex items-center justify-center transition-smooth group-hover:bg-primary/20" style="width: 48px; height: 48px;">
+                        <i data-lucide="function-square" class="w-6 h-6" style="color: #3b82f6"></i>
+                    </div>
                     <div>
-                        <p class="text-sm font-medium text-muted-foreground">Function Coverage</p>
+                        <p class="text-sm font-medium text-foreground">Function Coverage</p>
                         <p id="functionCoverage" class="text-2xl font-bold text-gradient">74.35%</p>
+                        <p class="text-sm text-primary font-medium mt-1">✓ Exceeds 65% threshold</p>
                     </div>
-                    <div class="p-3 bg-blue-500/10 rounded-full flex items-center justify-center transition-smooth group-hover:bg-blue-500/20" style="width: 48px; height: 48px;">
-                        <i data-lucide="function" class="w-6 h-6 text-blue-500"></i>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <p class="text-sm text-blue-600 dark:text-blue-400 font-medium">✓ Exceeds 65% threshold</p>
                 </div>
             </div>
-
             <!-- Security Score -->
-            <div class="card-gradient rounded-lg shadow-md card-hover p-6">
+            <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
                 <div class="flex items-center justify-between">
+                    <div class="p-3 bg-primary/10 rounded-full flex items-center justify-center transition-smooth group-hover:bg-primary/20" style="width: 48px; height: 48px;">
+                        <i data-lucide="shield-check" class="w-6 h-6" style="color: #3b82f6"></i>
+                    </div>
                     <div>
-                        <p class="text-sm font-medium text-muted-foreground">Security Score</p>
+                        <p class="text-sm font-medium text-foreground">Security Score</p>
                         <p id="securityScore" class="text-2xl font-bold text-gradient">95%</p>
+                        <p class="text-sm text-primary font-medium mt-1">✓ No high severity issues</p>
                     </div>
-                    <div class="p-3 bg-red-500/10 rounded-full flex items-center justify-center transition-smooth group-hover:bg-red-500/20" style="width: 48px; height: 48px;">
-                        <i data-lucide="shield-check" class="w-6 h-6 text-red-500"></i>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <p class="text-sm text-red-600 dark:text-red-400 font-medium">✓ No high severity issues</p>
                 </div>
             </div>
         </div>
-
         <!-- Charts Section -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
             <!-- Coverage Breakdown -->
-            <div class="card-gradient rounded-lg shadow-md p-6">
+            <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
                 <h3 class="text-lg font-semibold text-foreground mb-4">Coverage Breakdown</h3>
                 <div class="h-64">
                     <canvas id="coverageChart"></canvas>
                 </div>
             </div>
-
             <!-- Test Results Trend -->
-            <div class="card-gradient rounded-lg shadow-md p-6">
+            <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
                 <h3 class="text-lg font-semibold text-foreground mb-4">Test Results Trend</h3>
                 <div class="h-64">
                     <canvas id="testTrendChart"></canvas>
                 </div>
             </div>
         </div>
-
         <!-- Detailed Metrics -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
             <!-- Component Coverage -->
-            <div class="card-gradient rounded-lg shadow-md p-6">
+            <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
                 <h3 class="text-lg font-semibold text-foreground mb-4">Component Coverage</h3>
                 <div class="space-y-4">
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">About.tsx</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">100%</span>
+                        <span class="text-sm font-bold text-primary">100%</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">CareerEducation.tsx</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">100%</span>
+                        <span class="text-sm font-bold text-primary">100%</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">CursorEffect.tsx</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">100%</span>
+                        <span class="text-sm font-bold text-primary">100%</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">Skills.tsx</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">100%</span>
+                        <span class="text-sm font-bold text-primary">100%</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">Hero.tsx</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">93.6%</span>
+                        <span class="text-sm font-bold text-primary">93.6%</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">Projects.tsx</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">92.3%</span>
+                        <span class="text-sm font-bold text-primary">92.3%</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">Contact.tsx</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">90.55%</span>
+                        <span class="text-sm font-bold text-primary">90.55%</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">Navigation.tsx</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">98.16%</span>
+                        <span class="text-sm font-bold text-primary">98.16%</span>
                     </div>
                 </div>
             </div>
-
             <!-- Test Categories -->
-            <div class="card-gradient rounded-lg shadow-md p-6">
+            <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
                 <h3 class="text-lg font-semibold text-foreground mb-4">Test Categories</h3>
                 <div class="space-y-4">
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">Component Tests</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">95+</span>
+                        <span class="text-sm font-bold text-primary">95+</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">UI Tests</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">73+</span>
+                        <span class="text-sm font-bold text-primary">73+</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">Utility Tests</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">27+</span>
+                        <span class="text-sm font-bold text-primary">27+</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">Integration Tests</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">16+</span>
+                        <span class="text-sm font-bold text-primary">16+</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">Hook Tests</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">26+</span>
+                        <span class="text-sm font-bold text-primary">26+</span>
                     </div>
                 </div>
             </div>
-
             <!-- Quality Metrics -->
-            <div class="card-gradient rounded-lg shadow-md p-6">
+            <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
                 <h3 class="text-lg font-semibold text-foreground mb-4">Quality Metrics</h3>
                 <div class="space-y-4">
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">TypeScript Coverage</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">100%</span>
+                        <span class="text-sm font-bold text-primary">100%</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">Linting Score</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">100%</span>
+                        <span class="text-sm font-bold text-primary">100%</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">Build Success Rate</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">100%</span>
+                        <span class="text-sm font-bold text-primary">100%</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">Deployment Success</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">100%</span>
+                        <span class="text-sm font-bold text-primary">100%</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-foreground">Security Vulnerabilities</span>
-                        <span class="text-sm font-bold text-green-600 dark:text-green-400">0</span>
+                        <span class="text-sm font-bold text-primary">0</span>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- CI/CD Status -->
-        <div class="card-gradient rounded-lg shadow-md p-6 mb-8">
+        <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6 mb-8">
             <h3 class="text-lg font-semibold text-foreground mb-4">CI/CD Pipeline Status</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="flex items-center p-4 bg-green-50 dark:bg-green-900/10 rounded-lg">
-                    <div class="p-2 bg-green-500/10 rounded-full flex items-center justify-center transition-smooth mr-4" style="width: 40px; height: 40px;">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
+                <div class="flex items-center p-4 bg-primary/5 dark:bg-primary/10 rounded-lg hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300">
+                    <div class="p-2 bg-primary/10 rounded-full flex items-center justify-center transition-smooth mr-4 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20" style="width: 40px; height: 40px;">
+                        <i data-lucide="check-circle" class="w-5 h-5" style="color: #3b82f6"></i>
                     </div>
                     <div>
-                        <p class="font-medium text-green-900 dark:text-green-100">Test Pipeline</p>
-                        <p class="text-sm text-green-600 dark:text-green-400">✓ 352 tests passing</p>
+                        <p class="text-sm font-medium text-foreground">Test Pipeline</p>
+                        <p class="text-sm text-primary">✓ 352 tests passing</p>
                     </div>
                 </div>
-                <div class="flex items-center p-4 bg-green-50 dark:bg-green-900/10 rounded-lg">
-                    <div class="p-2 bg-green-500/10 rounded-full flex items-center justify-center transition-smooth mr-4" style="width: 40px; height: 40px;">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
+                <div class="flex items-center p-4 bg-primary/5 dark:bg-primary/10 rounded-lg hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300">
+                    <div class="p-2 bg-primary/10 rounded-full flex items-center justify-center transition-smooth mr-4 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20" style="width: 40px; height: 40px;">
+                        <i data-lucide="check-circle" class="w-5 h-5" style="color: #3b82f6"></i>
                     </div>
                     <div>
-                        <p class="font-medium text-green-900 dark:text-green-100">Coverage</p>
-                        <p class="text-sm text-green-600 dark:text-green-400">✓ 91.72% coverage</p>
+                        <p class="text-sm font-medium text-foreground">Coverage</p>
+                        <p class="text-sm text-primary">✓ 91.72% coverage</p>
                     </div>
                 </div>
-                <div class="flex items-center p-4 bg-green-50 dark:bg-green-900/10 rounded-lg">
-                    <div class="p-2 bg-green-500/10 rounded-full flex items-center justify-center transition-smooth mr-4" style="width: 40px; height: 40px;">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
+                <div class="flex items-center p-4 bg-primary/5 dark:bg-primary/10 rounded-lg hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300">
+                    <div class="p-2 bg-primary/10 rounded-full flex items-center justify-center transition-smooth mr-4 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20" style="width: 40px; height: 40px;">
+                        <i data-lucide="check-circle" class="w-5 h-5" style="color: #3b82f6"></i>
                     </div>
                     <div>
-                        <p class="font-medium text-green-900 dark:text-green-100">Deployment</p>
-                        <p class="text-sm text-green-600 dark:text-green-400">✓ GitHub Pages active</p>
+                        <p class="text-sm font-medium text-foreground">Deployment</p>
+                        <p class="text-sm text-primary">✓ GitHub Pages active</p>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- Action Items -->
-        <div class="card-gradient rounded-lg shadow-md p-6">
+        <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
             <h3 class="text-lg font-semibold text-foreground mb-4">Next Steps to Improve Coverage</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <h4 class="font-medium text-foreground mb-3">Priority 1 - Hooks & Utilities</h4>
-                    <ul class="space-y-2 text-sm text-muted-foreground">
+                    <ul class="space-y-2 text-sm text-foreground">
                         <li class="flex items-center">
-                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-yellow-500"></i>
+                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-primary"></i>
                             Improve toaster.tsx coverage (47.05% → 80%+)
                         </li>
                         <li class="flex items-center">
-                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-yellow-500"></i>
+                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-primary"></i>
                             Improve use-toast.ts coverage (25.39% → 80%+)
                         </li>
                         <li class="flex items-center">
-                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-yellow-500"></i>
+                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-primary"></i>
                             Add missing branch coverage in utils.ts
                         </li>
                         <li class="flex items-center">
-                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-yellow-500"></i>
+                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-primary"></i>
                             Improve function coverage (74.35% → 80%+)
                         </li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-medium text-foreground mb-3">Priority 2 - Edge Cases</h4>
-                    <ul class="space-y-2 text-sm text-muted-foreground">
+                    <ul class="space-y-2 text-sm text-foreground">
                         <li class="flex items-center">
-                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-blue-500"></i>
+                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-primary"></i>
                             Add error boundary tests
                         </li>
                         <li class="flex items-center">
-                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-blue-500"></i>
+                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-primary"></i>
                             Add accessibility tests
                         </li>
                         <li class="flex items-center">
-                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-blue-500"></i>
+                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-primary"></i>
                             Add performance tests
                         </li>
                         <li class="flex items-center">
-                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-blue-500"></i>
+                            <i data-lucide="circle" class="w-3 h-3 mr-2 text-primary"></i>
                             Add E2E tests with Playwright
                         </li>
                     </ul>
@@ -501,25 +435,25 @@
             </div>
         </div>
     </main>
-
     <!-- Footer -->
     <footer class="bg-muted text-muted-foreground py-8 mt-12 border-t border-border">
         <div class="container mx-auto px-6 text-center">
-            <p class="text-foreground">Portfolio Dashboard - Built with ❤️ by Harsh Shah</p>
-            <p class="text-sm text-muted-foreground mt-2">Automatically updated via CI/CD pipeline</p>
+            <p class="text-foreground">Dashboard - Built with ❤️ by <span class="text-gradient font-semibold">Harsh Shah</span></p>
+            <p class="text-sm text-foreground mt-2">Automatically updated via CI/CD pipeline</p>
         </div>
     </footer>
-
     <script>
-        // Theme management
+        // Use the same localStorage key as the portfolio
+        const THEME_KEY = 'portfolio-ui-theme';
         const themeToggle = document.getElementById('themeToggle');
         const html = document.documentElement;
-        
-        // Check for saved theme preference or default to light
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        html.classList.toggle('dark', savedTheme === 'dark');
-        
-        // Update icon based on current theme
+        // Check for saved theme preference or default to system
+        const savedTheme = localStorage.getItem(THEME_KEY) || 'system';
+        if(savedTheme === 'dark' || (savedTheme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
         function updateThemeIcon() {
             const icon = themeToggle.querySelector('i');
             if (html.classList.contains('dark')) {
@@ -529,35 +463,25 @@
             }
             lucide.createIcons();
         }
-        
         updateThemeIcon();
-        
-        // Theme toggle handler
         themeToggle.addEventListener('click', () => {
             html.classList.toggle('dark');
             const theme = html.classList.contains('dark') ? 'dark' : 'light';
-            localStorage.setItem('theme', theme);
+            localStorage.setItem(THEME_KEY, theme);
             updateThemeIcon();
-            
-            // Update charts for new theme
             updateCharts();
         });
-
         // Initialize Lucide icons
         lucide.createIcons();
-
         // Update last updated time
         document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
-
         // Chart configuration
         const isDark = () => html.classList.contains('dark');
         const textColor = () => isDark() ? '#e5e7eb' : '#374151';
         const gridColor = () => isDark() ? '#374151' : '#e5e7eb';
-
         // Global chart instances
         let coverageChart = null;
         let trendChart = null;
-
         function updateCharts() {
             // Coverage Chart
             const coverageCtx = document.getElementById('coverageChart');
@@ -565,18 +489,16 @@
                 console.error('Coverage chart canvas not found');
                 return;
             }
-
             if (coverageChart) {
                 coverageChart.destroy();
             }
-            
             coverageChart = new Chart(coverageCtx, {
                 type: 'doughnut',
                 data: {
                     labels: ['Covered', 'Uncovered'],
                     datasets: [{
                         data: [91.72, 8.28],
-                        backgroundColor: ['#10b981', isDark() ? '#374151' : '#e5e7eb'],
+                        backgroundColor: ['#3b82f6', '#22d3ee'], // Download button gradient: blue and cyan
                         borderWidth: 0
                     }]
                 },
@@ -595,41 +517,38 @@
                     }
                 }
             });
-
             // Test Trend Chart
             const trendCtx = document.getElementById('testTrendChart');
             if (!trendCtx) {
                 console.error('Trend chart canvas not found');
                 return;
             }
-
             if (trendChart) {
                 trendChart.destroy();
             }
-            
             trendChart = new Chart(trendCtx, {
                 type: 'line',
                 data: {
                     labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
                     datasets: [{
-                        label: 'Test Count',
-                        data: [0, 50, 120, 352],
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        label: 'Coverage %',
+                        data: [0, 25, 60, 91.72],
+                        borderColor: '#22d3ee', // cyan
+                        backgroundColor: 'rgba(34, 211, 238, 0.1)',
                         tension: 0.4,
                         borderWidth: 3,
-                        pointBackgroundColor: '#3b82f6',
+                        pointBackgroundColor: '#22d3ee',
                         pointBorderColor: '#ffffff',
                         pointBorderWidth: 2,
                         pointRadius: 6
                     }, {
-                        label: 'Coverage %',
-                        data: [0, 25, 60, 91.72],
-                        borderColor: '#10b981',
-                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        label: 'Test Count',
+                        data: [0, 50, 120, 352],
+                        borderColor: '#3b82f6', // blue
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
                         tension: 0.4,
                         borderWidth: 3,
-                        pointBackgroundColor: '#10b981',
+                        pointBackgroundColor: '#3b82f6',
                         pointBorderColor: '#ffffff',
                         pointBorderWidth: 2,
                         pointRadius: 6
@@ -679,16 +598,18 @@
                 }
             });
         }
-
-        // Wait for DOM to be fully loaded before initializing charts
+        function renderLucideIcons() {
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        }
         document.addEventListener('DOMContentLoaded', function() {
-            // Small delay to ensure Chart.js is loaded
             setTimeout(() => {
+                renderLucideIcons();
                 if (typeof Chart !== 'undefined') {
                     updateCharts();
                 } else {
                     console.error('Chart.js not loaded');
-                    // Show fallback content
                     document.getElementById('coverageChart').parentElement.innerHTML = 
                         '<div class="flex items-center justify-center h-full text-muted-foreground">' +
                         '<div class="text-center">' +
@@ -696,7 +617,6 @@
                         '<div class="text-lg font-medium">Coverage Breakdown</div>' +
                         '<div class="text-sm">91.72% Covered, 8.28% Uncovered</div>' +
                         '</div></div>';
-                    
                     document.getElementById('testTrendChart').parentElement.innerHTML = 
                         '<div class="flex items-center justify-center h-full text-muted-foreground">' +
                         '<div class="text-center">' +
@@ -707,13 +627,14 @@
                 }
             }, 100);
         });
-
-        // Update coverage bar color based on percentage
+        // Also re-render icons after theme toggle
+        themeToggle.addEventListener('click', () => {
+            renderLucideIcons();
+        });
         function updateCoverageBar() {
             const coverage = 91.72;
             const bar = document.getElementById('coverageBar');
             const coverageText = document.getElementById('overallCoverage');
-            
             if (coverage >= 80) {
                 bar.className = 'coverage-excellent h-2 rounded-full';
             } else if (coverage >= 60) {
@@ -721,14 +642,10 @@
             } else {
                 bar.className = 'coverage-poor h-2 rounded-full';
             }
-            
             bar.style.width = coverage + '%';
             coverageText.textContent = coverage + '%';
         }
-
         updateCoverageBar();
-
-        // Auto-refresh every 5 minutes
         setInterval(() => {
             document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
         }, 300000);

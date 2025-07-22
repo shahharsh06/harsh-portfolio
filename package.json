@@ -16,7 +16,8 @@
     "test:coverage:html": "vitest run --coverage --reporter=html",
     "test:coverage:watch": "vitest --coverage --watch",
     "test:watch": "vitest --watch",
-    "test:coverage:detailed": "vitest run --coverage && node scripts/coverage-summary.js"
+    "test:coverage:detailed": "vitest run --coverage && node scripts/coverage-summary.js",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.0",
