@@ -8,7 +8,7 @@
 - **Status**: ✅ Live and Active
 - **URL**: `https://shahharsh06.github.io/harsh-portfolio/dashboard.html`
 - **Coverage**: 91.72% (352 tests passing)
-- **Auto-updates**: ✅ Every 6 hours via CI/CD
+- **Auto-updates**: ✅ On code commit (push/merge) or manual workflow dispatch via CI/CD
 - **Theme Integration**: ✅ Matches portfolio theme
 
 ## 📊 Dashboard Features
@@ -152,8 +152,6 @@ on:
   workflow_run:
     workflows: ["CI/CD Pipeline", "Deploy to GitHub Pages"]
     types: [completed]
-  schedule:
-    - cron: '0 */6 * * *'  # Every 6 hours
   workflow_dispatch:
 
 jobs:
@@ -173,7 +171,7 @@ jobs:
 ```
 
 ### Update Process
-1. **Trigger**: CI/CD completion or scheduled (6 hours)
+1. **Trigger**: CI/CD completion (on code commit/merge) or manual workflow dispatch
 2. **Test Execution**: Run tests with coverage
 3. **Data Parsing**: Extract metrics from coverage reports
 4. **HTML Update**: Replace hardcoded values with dynamic data
@@ -375,4 +373,4 @@ gh run view <run-id> --log
 
 ---
 
-*This dashboard is automatically updated via CI/CD pipeline and reflects the latest project metrics.* 
+*This dashboard is automatically updated via CI/CD pipeline on code commit (push/merge) or manual workflow dispatch and reflects the latest project metrics.* 
