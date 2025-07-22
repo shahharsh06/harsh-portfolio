@@ -179,4 +179,6 @@ Value: shahharsh06.github.io
 
 **Your portfolio is now live and will automatically update whenever you push changes to the main branch!** 🎉
 
-**Live URL**: `https://shahharsh06.github.io/harsh-portfolio` 
+**Live URL**: `https://shahharsh06.github.io/harsh-portfolio`
+
+> **Note:** Deployment process and workflow are up to date as of December 2024. 

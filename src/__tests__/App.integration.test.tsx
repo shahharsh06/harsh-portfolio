@@ -153,7 +153,9 @@ describe('App Integration Tests', () => {
     renderApp(<App />);
     
     // Use getAllByRole to handle multiple dashboard links
-    const dashboardLinks = screen.getAllByRole('link', { name: /dashboard/i });
+    const dashboardLinks = Array.from(screen.getAllByRole('link')).filter(link =>
+      link.getAttribute('href')?.includes('dashboard.html')
+    );
     
     if (dashboardLinks.length > 0) {
       const mainDashboardLink = dashboardLinks.find(link => 

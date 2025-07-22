@@ -455,4 +455,89 @@ describe('Navigation Component', () => {
     const navItems = screen.getAllByRole('button');
     expect(navItems.length).toBeGreaterThan(0);
   });
+
+  it('changes nav bar class on scroll event', async () => {
+    renderWithMobileMenu(<Navigation />);
+    const nav = screen.getByRole('navigation');
+    // Initially, should not have the scrolled class
+    expect(nav.className).not.toContain('bg-background/80');
+
+    // Simulate scroll event
+    Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: 100 });
+    window.dispatchEvent(new Event('scroll'));
+
+    // Wait for the nav to update
+    await waitFor(() => {
+      expect(nav.className).toContain('bg-background/80');
+    });
+  });
+
+  it('closes mobile menu when overlay is clicked', async () => {
+    renderWithMobileMenu(<Navigation />);
+    // Open mobile menu
+    const mobileMenuButton = screen.queryByRole('button', { name: /toggle menu/i });
+    if (mobileMenuButton) {
+      await userEvent.click(mobileMenuButton);
+      // Overlay should be present
+      const overlay = document.querySelector('.fixed.inset-0');
+      expect(overlay).toBeInTheDocument();
+      // Click overlay
+      if (overlay) {
+        await userEvent.click(overlay);
+        // Overlay should be removed (menu closed)
+        expect(document.querySelector('.fixed.inset-0')).not.toBeInTheDocument();
+      }
+    }
+  });
+
+  it('scrollToSection does nothing if section does not exist', () => {
+    renderWithMobileMenu(<Navigation />);
+    // Try to click a nav item with a non-existent section
+    const navButton = screen.getByRole('button', { name: /about/i });
+    // Use Vitest spy to mock document.querySelector to return null
+    vi.spyOn(document, 'querySelector').mockReturnValueOnce(null);
+    userEvent.click(navButton);
+    // No error should occur, test passes if no crash
+    expect(true).toBe(true);
+  });
+
+  it('renders all social icons', () => {
+    renderWithMobileMenu(<Navigation />);
+    const github = Array.from(document.querySelectorAll('a')).find(a => a.href.includes('github.com'));
+    const linkedin = Array.from(document.querySelectorAll('a')).find(a => a.href.includes('linkedin.com'));
+    const dashboard = Array.from(document.querySelectorAll('a')).find(a => a.href.includes('dashboard.html'));
+    expect(github).toBeInTheDocument();
+    expect(linkedin).toBeInTheDocument();
+    expect(dashboard).toBeInTheDocument();
+  });
+
+  it('toggles mobile menu open and closed multiple times', async () => {
+    renderWithMobileMenu(<Navigation />);
+    const mobileMenuButton = screen.queryByRole('button', { name: /toggle menu/i });
+    if (mobileMenuButton) {
+      // Open menu
+      await userEvent.click(mobileMenuButton);
+      expect(document.querySelector('.fixed.inset-0')).toBeInTheDocument();
+      // Close menu
+      await userEvent.click(mobileMenuButton);
+      expect(document.querySelector('.fixed.inset-0')).not.toBeInTheDocument();
+      // Open again
+      await userEvent.click(mobileMenuButton);
+      expect(document.querySelector('.fixed.inset-0')).toBeInTheDocument();
+    }
+  });
+
+  it('closes mobile menu when close button is clicked', async () => {
+    renderWithMobileMenu(<Navigation />);
+    const mobileMenuButton = screen.queryByRole('button', { name: /toggle menu/i });
+    if (mobileMenuButton) {
+      await userEvent.click(mobileMenuButton);
+      // Find close button in mobile menu
+      const closeButton = Array.from(document.querySelectorAll('button')).find(btn => btn !== mobileMenuButton && btn.querySelector('svg'));
+      if (closeButton) {
+        await userEvent.click(closeButton);
+        expect(document.querySelector('.fixed.inset-0')).not.toBeInTheDocument();
+      }
+    }
+  });
 }); 

@@ -167,4 +167,28 @@ describe('Utility Functions', () => {
       expect(getRollingWindow([], 0, 3)).toEqual([undefined, undefined, undefined]);
     });
   });
+
+  describe('getCardWidthClass edge cases', () => {
+    it('returns w-full for unexpected visible values', () => {
+      expect(getCardWidthClass(0, 'featured')).toBe('w-full');
+      expect(getCardWidthClass(10, 'other')).toBe('w-full');
+    });
+  });
+
+  describe('getRollingWindow edge cases', () => {
+    it('handles negative start index', () => {
+      const arr = [1, 2, 3, 4, 5];
+      expect(getRollingWindow(arr, -1, 3)).toEqual([5, 1, 2]);
+    });
+    it('handles count greater than array length', () => {
+      const arr = [1, 2];
+      expect(getRollingWindow(arr, 0, 5)).toEqual([1, 2, 1, 2, 1]);
+    });
+  });
+
+  describe('getImageUrl edge cases', () => {
+    it('returns url as is for non-http, non-/ string', () => {
+      expect(getImageUrl('foo.jpg')).toBe('foo.jpg');
+    });
+  });
 }); 

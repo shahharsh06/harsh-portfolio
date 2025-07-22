@@ -131,7 +131,7 @@ const Hero = () => {
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 text-justify">
+            <div className="flex flex-col sm:flex-row gap-4">
               <GradientButton
                 onClick={scrollToContact}
                 className="px-8 py-3"
@@ -150,7 +150,7 @@ const Hero = () => {
               </GradientButton>
             </div>
 
-            <div className="flex items-center space-x-8 text-sm text-muted-foreground text-justify">
+            <div className="flex items-center space-x-8 text-sm text-muted-foreground">
               <div className="flex flex-col items-center">
                 <span className="text-2xl font-bold text-gradient text-center">1+</span>
                 <p>Years Experience</p>

@@ -30,6 +30,25 @@ const SocialIconButton = ({
   </Button>
 );
 
+export const scrollToSection = (href: string, setIsMobileMenuOpen: (open: boolean) => void) => {
+  const element = document.querySelector(href);
+  element?.scrollIntoView({ behavior: "smooth" });
+  setIsMobileMenuOpen(false);
+};
+
+export const SocialIcons = ({ socialLinks }: { socialLinks: { label: string; href: string; icon: React.ComponentType<{ className?: string }> }[] }) => (
+  <div className="flex items-center space-x-3">
+    {socialLinks.map((link) => (
+      <SocialIconButton
+        key={link.label}
+        href={link.href}
+        icon={link.icon}
+        label={link.label}
+      />
+    ))}
+  </div>
+);
+
 const Navigation = () => {
   const { isMobileMenuOpen, setIsMobileMenuOpen } = useMobileMenu();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -57,25 +76,6 @@ const Navigation = () => {
     { label: "LinkedIn", href: SOCIAL_LINKS.linkedin, icon: LinkedinIcon },
   ];
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    element?.scrollIntoView({ behavior: "smooth" });
-    setIsMobileMenuOpen(false);
-  };
-
-  const SocialIcons = () => (
-    <div className="flex items-center space-x-3">
-      {socialLinks.map((link) => (
-        <SocialIconButton
-          key={link.label}
-          href={link.href}
-          icon={link.icon}
-          label={link.label}
-        />
-      ))}
-    </div>
-  );
-
   return (
     <nav className={`fixed top-0 w-full z-50 transition-smooth ${
       isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border" : "bg-transparent"
@@ -93,7 +93,7 @@ const Navigation = () => {
               {navItems.map((item) => (
                 <button
                   key={item.label}
-                  onClick={() => scrollToSection(item.href)}
+                  onClick={() => scrollToSection(item.href, setIsMobileMenuOpen)}
                   className="text-foreground hover:text-primary transition-fast px-3 py-2 rounded-md text-sm font-medium"
                 >
                   {item.label}
@@ -101,7 +101,7 @@ const Navigation = () => {
               ))}
               <div className="flex items-center space-x-3 ml-6">
                 <ThemeToggle />
-                <SocialIcons />
+                <SocialIcons socialLinks={socialLinks} />
               </div>
             </div>
           </div>
@@ -146,7 +146,7 @@ const Navigation = () => {
                 {navItems.map((item) => (
                   <button
                     key={item.label}
-                    onClick={() => scrollToSection(item.href)}
+                    onClick={() => scrollToSection(item.href, setIsMobileMenuOpen)}
                     className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-primary hover:bg-muted transition-fast w-full text-left"
                   >
                     {item.label}
@@ -154,7 +154,7 @@ const Navigation = () => {
                 ))}
                 <div className="flex items-center space-x-3 px-3 py-2">
                   <ThemeToggle />
-                  <SocialIcons />
+                  <SocialIcons socialLinks={socialLinks} />
                 </div>
               </div>
             </div>
