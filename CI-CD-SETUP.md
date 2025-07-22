@@ -69,8 +69,6 @@ on:
   workflow_run:
     workflows: ["CI/CD Pipeline", "Deploy to GitHub Pages"]
     types: [completed]
-  schedule:
-    - cron: '0 */6 * * *'  # Every 6 hours
   workflow_dispatch:
 
 jobs:

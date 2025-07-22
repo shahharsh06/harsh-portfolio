@@ -1,6 +1,6 @@
 # Harsh Shah - ML Engineer & Full Stack Developer Portfolio
 
-![Test Coverage](https://img.shields.io/badge/coverage-91.72%25-red?logo=vitesthttps://img.shields.io/badge/coverage-91.72%25-brightgreen?logo=viteststyle=flat&style=flat)
+![Test Coverage](https://img.shields.io/badge/coverage-91.72%25-brightgreen?logo=vitest&style=flat)
 ![Function Coverage](https://img.shields.io/badge/functions-74.35%25-green?logo=typescript&style=flat)
 ![Tests Passing](https://img.shields.io/badge/tests-352%20passing-brightgreen?logo=vitest&style=flat)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen?logo=github&style=flat)
@@ -434,15 +434,15 @@ npm run test
 
 </details>
 
-### Test Coverage: 96.5% ✅
+### Test Coverage: 91.72% ✅
 
-- **381 tests passing** across all components
+- **352 tests passing** across all components
 - **Component Tests**: 95+ tests covering all major components
 - **UI Tests**: 73+ tests for reusable UI components  
 - **Integration Tests**: 16+ tests for component interactions
 - **Utility Tests**: 27+ tests for helper functions
 - **Hook Tests**: 26+ tests for custom React hooks
-- **Function Coverage**: 82.71% (exceeds 65% threshold)
+- **Function Coverage**: 74.35% (exceeds 65% threshold)
 
 ### Test Categories
 - ✅ **Unit Tests**: All components and utilities

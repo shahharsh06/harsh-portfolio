@@ -1,12 +1,12 @@
 {
-  "lastUpdated": "2025-07-21T12:25:23Z",
+  "lastUpdated": "2024-12-01T00:00:00Z",
   "coverage": {
     "percentage": 91.72,
     "totalLines": 2030,
     "coveredLines": 1862
   },
   "tests": {
-    "count": 381,
+    "count": 352,
     "files": 18,
     "status": "passing"
   },
