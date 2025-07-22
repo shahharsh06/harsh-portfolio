@@ -30,6 +30,12 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:coverage
 
+      - name: Upload coverage to Qlty Cloud
+        uses: qltysh/qlty-action/coverage@v1
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: coverage/lcov.info
+
       - name: Upload coverage reports
         uses: actions/upload-artifact@v4
         with:

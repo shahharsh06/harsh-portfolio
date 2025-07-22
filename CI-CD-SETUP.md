@@ -9,7 +9,7 @@
 - **Test Coverage**: 91.72% (352 tests passing)
 - **Build Status**: ✅ Passing
 - **Deployment**: ✅ GitHub Pages
-- **Dashboard**: ✅ Live and Updated
+- **Dashboard**: ✅ Live and Updated (auto-updates on code commit or manual dispatch)
 
 ## 📊 Pipeline Metrics
 
