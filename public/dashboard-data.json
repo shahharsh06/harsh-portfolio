@@ -1,13 +1,13 @@
 {
-  "lastUpdated": "2025-07-22T21:48:41Z",
+  "lastUpdated": "2025-07-22T21:50:56Z",
   "coverage": {
-    "percentage": 91.52,
-    "totalLines": 2030,
-    "coveredLines": 1858
+    "percentage": 94.69,
+    "totalLines": 2092,
+    "coveredLines": 1981
   },
   "tests": {
     "count": 381,
-    "files": 18,
+    "files": 20,
     "status": "passing"
   },
   "workflows": {
