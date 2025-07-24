@@ -122,7 +122,7 @@ const Navigation = () => {
               onClick={() => setIsMobileMenuOpen(false)}
             />
             {/* Mobile menu */}
-            <div className="md:hidden fixed top-16 left-4 right-4 z-50">
+            <div className="md:hidden fixed top-16 left-0 right-0 z-50 px-4">
               <div className="px-2 pt-2 pb-3 space-y-1 bg-card rounded-lg card-shadow">
                 {/* Mobile menu header with close button */}
                 <div className="flex items-center justify-between px-3 py-2 border-b border-border">
