@@ -1,3 +1,5 @@
+import portfolioScreenshot from "../assets/profile/portfolio-screenshot.png";
+
 export interface Project {
   title: string;
   description: string;
@@ -56,12 +58,23 @@ export const projects: Project[] = [
   },
   {
     title: "Portfolio Website",
-    description: "A modern, responsive portfolio website built with React and TypeScript, featuring smooth animations and optimized performance.",
-    image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=500&h=300&fit=crop&crop=center",
-    technologies: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    liveUrl: "https://example.com",
-    githubUrl: "https://github.com",
-    featured: false
+    description: "A modern, high-performance portfolio built with React, TypeScript, and Tailwind CSS. Features dark/light mode, animated UI, a live dashboard with CI/CD-driven test coverage, and a fully tested, accessible codebase. Showcases best practices in frontend engineering, testing, and deployment.",
+    image: portfolioScreenshot,
+    technologies: [
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Jest/Vitest",
+      "React Testing Library",
+      "Framer Motion",
+      "Chart.js",
+      "CI/CD",
+      "GitHub Actions",
+      "Accessibility (a11y)"
+    ],
+    liveUrl: "https://shahharsh06.github.io/harsh-portfolio/",
+    githubUrl: "https://github.com/shahharsh06/harsh-portfolio",
+    featured: true
   },
   {
     title: "Recipe Finder App",

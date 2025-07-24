@@ -78,7 +78,7 @@
 
 ### Current Status vs Targets
 - **Overall Coverage**: 91.72% ✅ (Target: 80%)
-- **Function Coverage**: 74.35% ✅ (Target: 65%)
+- **Function Coverage**: 74.35% ✅ (Target: 80%)
 - **Branch Coverage**: 92.3% ✅ (Target: 80%)
 - **Line Coverage**: 91.72% ✅ (Target: 80%)
 

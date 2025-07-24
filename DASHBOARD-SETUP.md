@@ -16,7 +16,7 @@
 ### Core Metrics Display
 - **Overall Coverage**: 94.69% (Target: 80%)
 - **Total Tests**: 375+ (All passing)
-- **Function Coverage**: 84.7% (Target: 85%)
+- **Function Coverage**: 84.7% (Target: 80%)
 - **Security Score**: 95% (No high severity issues)
 
 ### Interactive Components
