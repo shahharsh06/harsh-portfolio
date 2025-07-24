@@ -72,11 +72,11 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-smooth ${
+    <nav className={`fixed top-0 w-full z-50 transition-smooth overflow-x-hidden ${
       isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border" : "bg-transparent"
     }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16 w-full">
           {/* Logo */}
           <div className="flex-shrink-0">
             <span className="text-xl font-bold text-gradient">{PERSONAL_INFO.name.split(' ')[0]}</span>

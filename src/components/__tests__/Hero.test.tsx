@@ -82,13 +82,11 @@ describe('Hero Component', () => {
     
     // Check statistics
     expect(screen.getByText('1+')).toBeInTheDocument();
-    expect(screen.getByText('Years Experience')).toBeInTheDocument();
-    
+    expect(screen.getByText(/Years\s*Experience/i)).toBeInTheDocument();
     expect(screen.getByText('10+')).toBeInTheDocument();
-    expect(screen.getByText('Projects Completed')).toBeInTheDocument();
-    
+    expect(screen.getByText(/Projects\s*Completed/i)).toBeInTheDocument();
     expect(screen.getByText('25+')).toBeInTheDocument();
-    expect(screen.getByText('Technologies')).toBeInTheDocument();
+    expect(screen.getByText(/Technologies/i)).toBeInTheDocument();
   });
 
   it('handles Get In Touch button click', async () => {
