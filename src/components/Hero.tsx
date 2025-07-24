@@ -150,18 +150,19 @@ const Hero = () => {
               </GradientButton>
             </div>
 
-            <div className="flex items-center space-x-8 text-sm text-muted-foreground">
-              <div className="flex flex-col items-center">
-                <span className="text-2xl font-bold text-gradient text-center">1+</span>
-                <p>Years Experience</p>
+            {/* Stats Section - Responsive */}
+            <div className="grid grid-cols-3 gap-4 text-center sm:flex sm:items-center sm:space-x-8 sm:text-left">
+              <div className="flex flex-col items-center sm:items-center">
+                <span className="text-2xl font-bold text-gradient">1+</span>
+                <p className="text-sm">Years<br className="sm:hidden" />Experience</p>
               </div>
-              <div className="flex flex-col items-center">
-                <span className="text-2xl font-bold text-gradient text-center">10+</span>
-                <p>Projects Completed</p>
+              <div className="flex flex-col items-center sm:items-center">
+                <span className="text-2xl font-bold text-gradient">10+</span>
+                <p className="text-sm">Projects<br className="sm:hidden" />Completed</p>
               </div>
-              <div className="flex flex-col items-center">
-                <span className="text-2xl font-bold text-gradient text-center">25+</span>
-                <p>Technologies</p>
+              <div className="flex flex-col items-center sm:items-center">
+                <span className="text-2xl font-bold text-gradient">25+</span>
+                <p className="text-sm">Technologies</p>
               </div>
             </div>
 
