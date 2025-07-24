@@ -12,7 +12,7 @@ jobs:
     permissions:
       contents: write
       actions: read
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,90 +26,64 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests with coverage
-        run: npm run test:coverage
+      - name: Run tests and generate coverage
+        run: npx vitest run --coverage
+
+      - name: Generate Vitest JSON report
+        run: npx vitest run --reporter=json --outputFile=vitest-report.json
 
       - name: Generate dashboard data
-        id: dashboard-data
-        run: |
-          # Parse coverage data from lcov.info
-          if [ -f "coverage/lcov.info" ]; then
-            TOTAL_LINES=$(grep -E "^LF:" coverage/lcov.info | awk -F: '{sum += $2} END {print sum}')
-            COVERED_LINES=$(grep -E "^LH:" coverage/lcov.info | awk -F: '{sum += $2} END {print sum}')
-            
-            if [ "$TOTAL_LINES" -gt 0 ]; then
-              COVERAGE_PERCENTAGE=$(echo "scale=2; $COVERED_LINES * 100 / $TOTAL_LINES" | bc)
-            else
-              COVERAGE_PERCENTAGE=0
-            fi
-          else
-            COVERAGE_PERCENTAGE=0
-            TOTAL_LINES=0
-            COVERED_LINES=0
-          fi
-          
-          # Count test files
-          TEST_FILES=$(find src -name "*.test.*" -o -name "*.spec.*" | wc -l)
-          
-          # Set default test count
-          TEST_COUNT=381
-          
-          echo "coverage=$COVERAGE_PERCENTAGE" >> $GITHUB_OUTPUT
-          echo "total_lines=$TOTAL_LINES" >> $GITHUB_OUTPUT
-          echo "covered_lines=$COVERED_LINES" >> $GITHUB_OUTPUT
-          echo "test_count=$TEST_COUNT" >> $GITHUB_OUTPUT
-          echo "test_files=$TEST_FILES" >> $GITHUB_OUTPUT
-          
-          # Create JSON data for dashboard
-          cat > public/dashboard-data.json << EOF
-          {
-            "lastUpdated": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
-            "coverage": {
-              "percentage": $COVERAGE_PERCENTAGE,
-              "totalLines": $TOTAL_LINES,
-              "coveredLines": $COVERED_LINES
-            },
-            "tests": {
-              "count": $TEST_COUNT,
-              "files": $TEST_FILES,
-              "status": "passing"
-            },
-            "workflows": {
-              "ci": "success",
-              "deploy": "success",
-              "coverage": "success"
-            },
-            "quality": {
-              "linting": "A+",
-              "typescript": "100%",
-              "security": "95%"
-            }
-          }
-          EOF
+        run: node scripts/coverage-summary.js
 
-      - name: Update dashboard HTML
+      # Optionally update dashboard.html if you want to inject metrics directly
+      # - name: Update dashboard HTML (optional)
+      #   run: |
+      #     # Example: sed or node script to inject values from dashboard-data.json
+      #     # This step can be customized as needed
+
+      - name: Check latest CI status
+        id: ci-status
         run: |
-          # Update coverage percentage in dashboard.html
-          sed -i "s/96\.5%/${{ steps.dashboard-data.outputs.coverage }}%/g" public/dashboard.html
-          sed -i "s/96\.5/${{ steps.dashboard-data.outputs.coverage }}/g" public/dashboard.html
-          
-          # Update test count
-          sed -i "s/381/${{ steps.dashboard-data.outputs.test_count }}/g" public/dashboard.html
+          gh run list --workflow="CI/CD Pipeline" --limit 1 --json conclusion -q '.[0].conclusion' > ci_status.txt
+          CI_STATUS=$(cat ci_status.txt)
+          if [ "$CI_STATUS" = "success" ]; then
+            CI_RESULT="success"
+          else
+            CI_RESULT="failed"
+          fi
+          jq --arg status "$CI_RESULT" '.workflows.ci = $status' public/dashboard-data.json > tmp.json && mv tmp.json public/dashboard-data.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check latest Deploy status
+        id: deploy-status
+        run: |
+          gh run list --workflow="Deploy to GitHub Pages" --limit 1 --json conclusion -q '.[0].conclusion' > deploy_status.txt
+          DEPLOY_STATUS=$(cat deploy_status.txt)
+          if [ "$DEPLOY_STATUS" = "success" ]; then
+            DEPLOY_RESULT="success"
+          else
+            DEPLOY_RESULT="failed"
+          fi
+          jq --arg status "$DEPLOY_RESULT" '.workflows.deploy = $status' public/dashboard-data.json > tmp.json && mv tmp.json public/dashboard-data.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit and push dashboard updates
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add public/dashboard.html public/dashboard-data.json
-          git commit -m "dashboard: update metrics - Coverage: ${{ steps.dashboard-data.outputs.coverage }}% - Tests: ${{ steps.dashboard-data.outputs.test_count }}" || echo "No changes to commit"
+          git add public/dashboard-data.json
+          git commit -m "dashboard: update metrics [ci skip]" || echo "No changes to commit"
           git push
 
       - name: Create dashboard summary
         run: |
           echo "## 📊 Dashboard Update Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Coverage**: ${{ steps.dashboard-data.outputs.coverage }}%" >> $GITHUB_STEP_SUMMARY
-          echo "**Tests**: ${{ steps.dashboard-data.outputs.test_count }} passing" >> $GITHUB_STEP_SUMMARY
-          echo "**Test Files**: ${{ steps.dashboard-data.outputs.test_files }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Coverage**: $(jq .coverage.percentage public/dashboard-data.json)%" >> $GITHUB_STEP_SUMMARY
+          echo "**Function Coverage**: $(jq .functions.percentage public/dashboard-data.json)%" >> $GITHUB_STEP_SUMMARY
+          echo "**Tests**: $(jq .tests.count public/dashboard-data.json) passing" >> $GITHUB_STEP_SUMMARY
+          echo "**Test Files**: $(jq .tests.files public/dashboard-data.json)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Dashboard available at: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/dashboard.html" >> $GITHUB_STEP_SUMMARY 

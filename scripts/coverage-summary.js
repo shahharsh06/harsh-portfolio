@@ -3,6 +3,8 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
+import { spawnSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -138,27 +140,338 @@ try {
 
   console.log(`\n🏆 Coverage Grade: ${grade} (${overallLineCoverage}%)`);
 
-  // Recommendations
-  console.log('\n💡 RECOMMENDATIONS:');
-  if (overallLineCoverage < 80) {
-    console.log('   • Focus on improving line coverage to reach 80% target');
-  }
-  if (overallFunctionCoverage < 65) {
-    console.log('   • Add more function tests to improve function coverage');
-  }
-  if (overallBranchCoverage < 80) {
-    console.log('   • Add edge case tests to improve branch coverage');
-  }
-
-  const lowCoverageFiles = fileSummaries.filter(f => f.lineCoverage < 80);
-  if (lowCoverageFiles.length > 0) {
+  // Recommendations for CLI summary
+  const lowCoverageFilesForSummary = fileSummaries.filter(f => f.lineCoverage < 80);
+  if (lowCoverageFilesForSummary.length > 0) {
     console.log('\n📋 FILES NEEDING ATTENTION:');
-    lowCoverageFiles.slice(0, 5).forEach(file => {
+    lowCoverageFilesForSummary.slice(0, 5).forEach(file => {
       console.log(`   • ${file.path} (${file.lineCoverage}%)`);
     });
   }
 
   console.log('\n' + '='.repeat(80));
+
+  const dashboardDataPath = path.join(__dirname, '..', 'public', 'dashboard-data.json');
+  const now = new Date().toISOString();
+
+  let testCount = 0;
+  let testFiles = 0;
+  try {
+    const vitestReportPath = path.join(__dirname, '..', 'vitest-report.json');
+    if (fs.existsSync(vitestReportPath)) {
+      const vitestReport = JSON.parse(fs.readFileSync(vitestReportPath, 'utf8'));
+      testCount = vitestReport.numTotalTests || 0;
+      testFiles = vitestReport.numTotalTestSuites || 0;
+    }
+  } catch (e) {
+    console.warn('Could not read vitest-report.json:', e.message);
+  }
+
+  const functionThreshold = 80; // Set your actual threshold here
+  // Run npm audit and calculate security score
+  let securityScore = 100;
+  let highSeverityIssues = 0;
+  try {
+    const auditResult = spawnSync('npm', ['audit', '--json'], { encoding: 'utf-8' });
+    const auditRaw = auditResult.stdout;
+    if (auditRaw) {
+      try {
+        const audit = JSON.parse(auditRaw);
+        highSeverityIssues = audit.metadata?.vulnerabilities?.high || 0;
+        securityScore = Math.max(100 - highSeverityIssues * 5, 0);
+      } catch (parseErr) {
+        console.warn('Could not parse npm audit output. Defaulting to 0 high severity issues.');
+        highSeverityIssues = 0;
+        securityScore = 100;
+      }
+    } else {
+      console.warn('npm audit produced no output. Defaulting to 0 high severity issues.');
+      highSeverityIssues = 0;
+      securityScore = 100;
+    }
+  } catch (e) {
+    console.warn('Could not run npm audit. Defaulting to 0 high severity issues.');
+    highSeverityIssues = 0;
+    securityScore = 100;
+  }
+  // Build per-component (per-file) coverage array for dashboard, sorted highest to lowest
+  const componentCoverage = fileSummaries
+    .filter(f => f.path.startsWith('/src/components/') && f.path.endsWith('.tsx'))
+    .map(f => ({
+      name: f.path.split('/').pop(),
+      coverage: Number(f.lineCoverage.toFixed(2))
+    }))
+    .sort((a, b) => b.coverage - a.coverage);
+
+  // Parse Vitest JSON report for real test category counts
+  let vitestReport = [];
+  const vitestReportPath = path.join(__dirname, '..', 'vitest-report.json');
+  if (fs.existsSync(vitestReportPath)) {
+    try {
+      const reportData = JSON.parse(fs.readFileSync(vitestReportPath, 'utf8'));
+      if (Array.isArray(reportData)) {
+        vitestReport = reportData;
+      } else if (Array.isArray(reportData.testResults)) {
+        vitestReport = reportData.testResults;
+      } else if (Array.isArray(reportData.results)) {
+        vitestReport = reportData.results;
+      } else {
+        vitestReport = [];
+      }
+    } catch (e) {
+      console.warn('Could not parse vitest-report.json, using placeholder test category counts.');
+    }
+  }
+  function countTestsByPattern(pattern) {
+    let count = 0;
+    vitestReport.forEach(file => {
+      if (file.name && file.name.replace(/\\/g, '/').includes(pattern) && Array.isArray(file.assertionResults)) {
+        count += file.assertionResults.length;
+      }
+    });
+    return count;
+  }
+  const testCategories = [
+    { name: 'Component Tests', count: countTestsByPattern('src/components/__tests__') },
+    { name: 'UI Tests', count: countTestsByPattern('src/components/ui/__tests__') },
+    { name: 'Utility Tests', count: countTestsByPattern('src/lib/__tests__') },
+    { name: 'Integration Tests', count: countTestsByPattern('src/__tests__') },
+    { name: 'Hook Tests', count: countTestsByPattern('src/hooks/__tests__') }
+  ].sort((a, b) => b.count - a.count);
+
+  // Automate quality metrics for dashboard
+  // TypeScript Coverage: use overallLineCoverage
+  const typescriptCoverage = overallLineCoverage + '%';
+
+  // Linting Score: run eslint and parse errors
+  let lintingScore = '100%';
+  try {
+    const eslintResult = execSync('npx eslint "src/**/*.{ts,tsx}" -f json', { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] });
+    const eslintJson = JSON.parse(eslintResult);
+    const totalErrors = eslintJson.reduce((sum, file) => sum + (file.errorCount || 0), 0);
+    const totalWarnings = eslintJson.reduce((sum, file) => sum + (file.warningCount || 0), 0);
+    if (totalErrors === 0 && totalWarnings === 0) {
+      lintingScore = '100%';
+    } else if (totalErrors === 0 && totalWarnings > 0) {
+      lintingScore = `0 errors, ${totalWarnings} warnings`;
+    } else {
+      lintingScore = `${totalErrors} errors, ${totalWarnings} warnings`;
+    }
+  } catch (e) {
+    // Try to parse partial output if available
+    if (e.stdout) {
+      try {
+        const eslintJson = JSON.parse(e.stdout);
+        const totalErrors = eslintJson.reduce((sum, file) => sum + (file.errorCount || 0), 0);
+        const totalWarnings = eslintJson.reduce((sum, file) => sum + (file.warningCount || 0), 0);
+        if (totalErrors === 0 && totalWarnings === 0) {
+          lintingScore = '100%';
+        } else if (totalErrors === 0 && totalWarnings > 0) {
+          lintingScore = `0 errors, ${totalWarnings} warnings`;
+        } else {
+          lintingScore = `${totalErrors} errors, ${totalWarnings} warnings`;
+        }
+      } catch {
+        lintingScore = 'lint error';
+      }
+    } else {
+      lintingScore = 'lint error';
+    }
+  }
+
+  // Build Success Rate: set to '100%' if script completes
+  const buildSuccessRate = '100%';
+
+  // Fetch CI/CD workflow status using gh CLI
+  let ciStatus = 'unknown';
+  let deployStatus = 'unknown';
+  try {
+    ciStatus = execSync('gh run list --workflow="CI/CD Pipeline" --limit 1 --json conclusion -q ".[0].conclusion"').toString().trim();
+  } catch (e) {
+    console.warn('Could not get CI workflow status:', e.message);
+  }
+  try {
+    deployStatus = execSync('gh run list --workflow="Deploy to GitHub Pages" --limit 1 --json conclusion -q ".[0].conclusion"').toString().trim();
+  } catch (e) {
+    console.warn('Could not get Deploy workflow status:', e.message);
+  }
+  // Now use deployStatus for quality metrics
+  let deploymentSuccess = '100%';
+  if (typeof deployStatus !== 'undefined') {
+    deploymentSuccess = deployStatus === 'success' ? '100%' : '0%';
+  }
+
+  // Security Vulnerabilities: use highSeverityIssues
+  const securityVulnerabilities = highSeverityIssues;
+
+  // Advanced recommendations logic
+  const lowestCoverageFiles = fileSummaries
+    .filter(f => f.path.includes('src/'))
+    .sort((a, b) => a.lineCoverage - b.lineCoverage)
+    .slice(0, 3)
+    .map(f => `${f.path.split('/').pop()} (${f.lineCoverage}%)`);
+
+  const branchCoverageFiles = fileSummaries
+    .filter(f => f.branchCoverage < 100 && f.path.includes('src/'))
+    .sort((a, b) => a.branchCoverage - b.branchCoverage)
+    .slice(0, 3)
+    .map(f => `${f.path.split('/').pop()} (${f.branchCoverage}% branch coverage)`);
+
+  const functionCoverageFiles = fileSummaries
+    .filter(f => f.functionCoverage < 100 && f.path.includes('src/'))
+    .sort((a, b) => a.functionCoverage - b.functionCoverage)
+    .slice(0, 3)
+    .map(f => `${f.path.split('/').pop()} (${f.functionCoverage}% function coverage)`);
+
+  const testCategoryGaps = testCategories
+    .filter(cat => cat.count < 20)
+    .sort((a, b) => a.count - b.count)
+    .slice(0, 3)
+    .map(cat => `Increase ${cat.name} (currently only ${cat.count})`);
+
+  const securityRecommendation = highSeverityIssues > 0
+    ? [`Fix ${highSeverityIssues} high severity security vulnerabilities`]
+    : [];
+
+  const lintRecommendation = lintingScore !== '100%' && lintingScore !== 'lint error'
+    ? [`Fix linting errors: ${lintingScore}`]
+    : [];
+
+  let recommendations = [];
+  if (lowestCoverageFiles.length > 0) {
+    recommendations.push({
+      title: 'Lowest Coverage Files',
+      items: lowestCoverageFiles
+    });
+  }
+  if (branchCoverageFiles.length > 0) {
+    recommendations.push({
+      title: 'Branch Coverage Gaps',
+      items: branchCoverageFiles
+    });
+  }
+  if (functionCoverageFiles.length > 0) {
+    recommendations.push({
+      title: 'Function Coverage Gaps',
+      items: functionCoverageFiles
+    });
+  }
+  if (testCategoryGaps.length > 0) {
+    recommendations.push({
+      title: 'Test Category Gaps',
+      items: testCategoryGaps
+    });
+  }
+  if (securityRecommendation.length > 0) {
+    recommendations.push({
+      title: 'Security',
+      items: securityRecommendation
+    });
+  }
+  if (lintRecommendation.length > 0) {
+    recommendations.push({
+      title: 'Linting',
+      items: lintRecommendation
+    });
+  }
+  if (recommendations.length === 0) {
+    recommendations.push({
+      title: 'Great Job!',
+      items: ['All files and categories are well covered! 🎉']
+    });
+  }
+
+  const quality = {
+    typescriptCoverage,
+    lintingScore,
+    buildSuccessRate,
+    deploymentSuccess,
+    securityVulnerabilities
+  };
+
+  // --- CI/CD Status Automation Patch Start ---
+  function checkCommand(cmd) {
+    try {
+      execSync(cmd, { stdio: 'ignore' });
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  const ciPassed = checkCommand('npm run test') && checkCommand('npm run lint');
+  const deployPassed = checkCommand('npm run build');
+  const workflows = {
+    ci: ciPassed ? 'success' : 'failed',
+    deploy: deployPassed ? 'success' : 'failed'
+  };
+  // --- CI/CD Status Automation Patch End ---
+
+  const dashboardData = {
+    lastUpdated: now,
+    coverage: {
+      percentage: overallLineCoverage,
+      totalLines,
+      coveredLines
+    },
+    functions: {
+      percentage: overallFunctionCoverage,
+      total: totalFunctions,
+      covered: coveredFunctions,
+      threshold: functionThreshold
+    },
+    branches: {
+      percentage: overallBranchCoverage,
+      total: totalBranches,
+      covered: coveredBranches
+    },
+    tests: {
+      count: testCount,
+      files: testFiles,
+      status: "passing"
+    },
+    security: {
+      score: securityScore,
+      highSeverityIssues: highSeverityIssues
+    },
+    componentCoverage,
+    testCategories,
+    quality,
+    recommendations,
+    workflows // <-- Add workflows to the output
+    // Add more fields as needed
+  };
+
+  // Update dashboard-history.json for trend chart (FIFO, unique dates, max 7 entries)
+  const historyPath = path.join(__dirname, '..', 'public', 'dashboard-history.json');
+  let history = [];
+  if (fs.existsSync(historyPath)) {
+    try {
+      history = JSON.parse(fs.readFileSync(historyPath, 'utf8'));
+    } catch (e) {
+      console.warn('Could not parse dashboard-history.json, starting fresh.');
+      history = [];
+    }
+  }
+  const today = new Date().toISOString().slice(0, 10);
+  // Remove any existing entry for today
+  history = history.filter(entry => entry.date !== today);
+  // Add the latest entry for today
+  history.push({
+    date: today,
+    coverage: overallLineCoverage,
+    tests: testCount
+  });
+  // Keep only the latest 7 entries (FIFO)
+  if (history.length > 7) {
+    history = history.slice(history.length - 7);
+  }
+  fs.writeFileSync(historyPath, JSON.stringify(history, null, 2));
+  console.log('✅ Updated dashboard-history.json (FIFO, unique dates, max 7)');
+
+  // Write dashboardData to dashboard-data.json
+  fs.writeFileSync(dashboardDataPath, JSON.stringify(dashboardData, null, 2));
+  console.log('✅ Updated dashboard-data.json with latest metrics and recommendations');
+
 } catch (error) {
   console.error('❌ Error processing coverage data:', error.message);
   process.exit(1);

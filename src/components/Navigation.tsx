@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { GithubIcon, LinkedinIcon, DashboardIcon } from "./icons";
-import { useMobileMenu } from "./MobileMenuContext";
+import { useMobileMenu } from "./MobileMenuContext.utils";
+import { scrollToSection } from "./Navigation.constants";
 import { PERSONAL_INFO, SOCIAL_LINKS } from "@/lib/constants";
 
 // Reusable social icon button component
@@ -29,12 +30,6 @@ const SocialIconButton = ({
     </a>
   </Button>
 );
-
-export const scrollToSection = (href: string, setIsMobileMenuOpen: (open: boolean) => void) => {
-  const element = document.querySelector(href);
-  element?.scrollIntoView({ behavior: "smooth" });
-  setIsMobileMenuOpen(false);
-};
 
 export const SocialIcons = ({ socialLinks }: { socialLinks: { label: string; href: string; icon: React.ComponentType<{ className?: string }> }[] }) => (
   <div className="flex items-center space-x-3">

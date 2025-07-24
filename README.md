@@ -1,10 +1,5 @@
 # Harsh Shah - ML Engineer & Software Engineer Portfolio
 
-![Test Coverage](https://img.shields.io/badge/coverage-94.69%25-red?logo=vitesthttps://img.shields.io/badge/coverage-94.69%25-brightgreen?logo=viteststyle=flatstyle=flat)
-![Function Coverage](https://img.shields.io/badge/functions-84.7%25-brightgreen?logo=typescript&style=flat)
-![Tests Passing](https://img.shields.io/badge/tests-375%20passing-brightgreen?logo=vitest&style=flat)
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen?logo=github&style=flat)
-
 A professional, accessible, and responsive portfolio website showcasing software development skills, projects, and experience. Built with React 18, TypeScript, and Tailwind CSS with modern development practices and optimized performance.
 
 > ⭐ **If you find this portfolio helpful, please give it a star!** ⭐

@@ -6,7 +6,8 @@ import Skills from "@/components/Skills";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CareerEducation from '../components/CareerEducation';
-import { MobileMenuProvider, useMobileMenu } from "@/components/MobileMenuContext";
+import { MobileMenuProvider } from "@/components/MobileMenuContext";
+import { useMobileMenu } from "@/components/MobileMenuContext.utils";
 
 const MainContent = () => {
   const { isMobileMenuOpen, setIsMobileMenuOpen } = useMobileMenu();

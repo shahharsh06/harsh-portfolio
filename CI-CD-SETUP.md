@@ -88,29 +88,6 @@ jobs:
       - Commit and push changes
 ```
 
-#### 3. Coverage Badge (`.github/workflows/coverage-badge.yml`)
-```yaml
-name: Update Coverage Badge
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-
-permissions:
-  contents: write
-
-jobs:
-  coverage-badge:
-    runs-on: ubuntu-latest
-    steps:
-      - Checkout code
-      - Setup Node.js 18
-      - Install dependencies
-      - Run tests with coverage
-      - Generate coverage percentage
-      - Update README with coverage badge
-```
-
 ## 🎯 Pipeline Optimizations
 
 ### Recent Improvements

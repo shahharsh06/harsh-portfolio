@@ -71,8 +71,7 @@ class PortfolioDashboard {
 
         const workflows = {
             'ci.yml': { name: 'Test Pipeline', status: 'unknown' },
-            'deploy.yml': { name: 'Deployment', status: 'unknown' },
-            'coverage-badge.yml': { name: 'Coverage Badge', status: 'unknown' }
+            'deploy.yml': { name: 'Deployment', status: 'unknown' }
         };
 
         workflowRuns.forEach(run => {
@@ -148,13 +147,50 @@ class PortfolioDashboard {
     }
 }
 
-// Initialize dashboard when page loads
+let lastCommitSha = null;
+
+async function getLatestCommitSha() {
+    const res = await fetch('https://api.github.com/repos/shahharsh06/harsh-portfolio/commits?per_page=1');
+    const data = await res.json();
+    return data[0]?.sha || null;
+}
+
+async function updateDashboardFromJson() {
+    const res = await fetch('dashboard-data.json', { cache: "no-store" });
+    const data = await res.json();
+
+    document.getElementById('overallCoverage').textContent = data.coverage.percentage + '%';
+    document.getElementById('functionCoverage').textContent = data.functions.percentage + '%';
+    document.getElementById('functionCoverageThreshold').textContent = `✓ Exceeds ${data.functions.threshold}% threshold`;
+    document.getElementById('totalTests').textContent = data.tests.count;
+    document.getElementById('securityScore').textContent = data.security.score + '%';
+    document.getElementById('securityStatus').textContent =
+        data.security.highSeverityIssues === 0
+            ? '✓ No high severity issues'
+            : `✗ ${data.security.highSeverityIssues} high severity issues`;
+    document.getElementById('ciStatus').textContent = data.workflows.ci === "success"
+        ? "✓ All checks passed"
+        : "✗ CI failed";
+    document.getElementById('deploymentStatus').textContent = data.workflows.deploy === "success"
+        ? "✓ GitHub Pages active"
+        : "✗ Deployment failed";
+    document.getElementById('coverageStatus').textContent = `✓ ${data.coverage.percentage}% coverage`;
+    document.getElementById('lastUpdated').textContent = new Date(data.lastUpdated).toLocaleString();
+    // Optionally update charts and other metrics as needed
+}
+
+async function checkForNewCommitAndUpdate() {
+    const sha = await getLatestCommitSha();
+    if (sha && sha !== lastCommitSha) {
+        lastCommitSha = sha;
+        await updateDashboardFromJson();
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    const dashboard = new PortfolioDashboard();
-    dashboard.init();
-    
-    // Add some interactivity
-    addDashboardInteractivity();
+    checkForNewCommitAndUpdate();
+    // Poll for new commits every 30 seconds (or adjust as needed for responsiveness)
+    setInterval(checkForNewCommitAndUpdate, 30000);
 });
 
 function addDashboardInteractivity() {

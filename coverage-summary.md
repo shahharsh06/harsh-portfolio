@@ -125,7 +125,6 @@
 ### Automated Testing
 - ✅ Tests run on every push and pull request
 - ✅ Coverage reports generated automatically
-- ✅ Coverage badges updated in README
 - ✅ Dashboard metrics updated via GitHub Actions
 
 ### Quality Gates

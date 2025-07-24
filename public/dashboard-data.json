@@ -1,23 +1,205 @@
 {
-  "lastUpdated": "2025-07-23T14:36:32Z",
+  "lastUpdated": "2025-07-24T19:32:43.935Z",
   "coverage": {
-    "percentage": 94.69,
-    "totalLines": 2092,
-    "coveredLines": 1981
+    "percentage": 95,
+    "totalLines": 2190,
+    "coveredLines": 2072
+  },
+  "functions": {
+    "percentage": 83,
+    "total": 92,
+    "covered": 76,
+    "threshold": 80
+  },
+  "branches": {
+    "percentage": 92,
+    "total": 307,
+    "covered": 282
   },
   "tests": {
-    "count": 381,
-    "files": 20,
+    "count": 376,
+    "files": 57,
     "status": "passing"
   },
+  "security": {
+    "score": 100,
+    "highSeverityIssues": 0
+  },
+  "componentCoverage": [
+    {
+      "name": "About.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "CareerEducation.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "CursorEffect.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "Navigation.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "SectionIcon.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "Skills.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "ThemeToggle.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "GradientButton.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "InteractiveCard.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "ProjectCard.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "SectionHeader.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "SkillTag.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "button.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "card.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "input.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "label.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "sonner.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "textarea.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "toast.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "toaster.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "tooltip.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "Footer.tsx",
+      "coverage": 96
+    },
+    {
+      "name": "Contact.tsx",
+      "coverage": 93
+    },
+    {
+      "name": "Projects.tsx",
+      "coverage": 92
+    },
+    {
+      "name": "Hero.tsx",
+      "coverage": 90
+    },
+    {
+      "name": "Navigation.utils.tsx",
+      "coverage": 90
+    }
+  ],
+  "testCategories": [
+    {
+      "name": "Component Tests",
+      "count": 208
+    },
+    {
+      "name": "UI Tests",
+      "count": 60
+    },
+    {
+      "name": "Utility Tests",
+      "count": 53
+    },
+    {
+      "name": "Hook Tests",
+      "count": 39
+    },
+    {
+      "name": "Integration Tests",
+      "count": 16
+    }
+  ],
+  "quality": {
+    "typescriptCoverage": "95%",
+    "lintingScore": "0 errors, 4 warnings",
+    "buildSuccessRate": "100%",
+    "deploymentSuccess": "100%",
+    "securityVulnerabilities": 0
+  },
+  "recommendations": [
+    {
+      "title": "Lowest Coverage Files",
+      "items": [
+        "sonner.utils.ts (0%)",
+        "use-toast.ts (57%)",
+        "MobileMenuContext.utils.ts (78%)"
+      ]
+    },
+    {
+      "title": "Branch Coverage Gaps",
+      "items": [
+        "sonner.utils.ts (0% branch coverage)",
+        "button.utils.ts (0% branch coverage)",
+        "card.tsx (0% branch coverage)"
+      ]
+    },
+    {
+      "title": "Function Coverage Gaps",
+      "items": [
+        "sonner.utils.ts (0% function coverage)",
+        "SectionIcon.tsx (0% function coverage)",
+        "button.tsx (0% function coverage)"
+      ]
+    },
+    {
+      "title": "Test Category Gaps",
+      "items": [
+        "Increase Integration Tests (currently only 16)"
+      ]
+    },
+    {
+      "title": "Linting",
+      "items": [
+        "Fix linting errors: 0 errors, 4 warnings"
+      ]
+    }
+  ],
   "workflows": {
     "ci": "success",
-    "deploy": "success",
-    "coverage": "success"
-  },
-  "quality": {
-    "linting": "A+",
-    "typescript": "100%",
-    "security": "95%"
+    "deploy": "success"
   }
 }

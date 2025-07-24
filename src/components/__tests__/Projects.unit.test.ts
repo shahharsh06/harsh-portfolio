@@ -6,7 +6,7 @@ import {
   scrollToOtherMobile,
   handleFeaturedHover,
   handleOtherHover
-} from '../Projects';
+} from '../Projects.utils';
 
 describe('Projects internal functions', () => {
   it('scrollToFeatured calls prev or next', () => {
@@ -80,7 +80,7 @@ describe('Projects internal functions', () => {
   it('scrollToFeatured calls next for invalid direction', () => {
     const prev = vi.fn();
     const next = vi.fn();
-    // @ts-expect-error
+    // @ts-expect-error: intentionally passing invalid direction to test fallback behavior
     scrollToFeatured('invalid', prev, next);
     expect(prev).not.toHaveBeenCalled();
     expect(next).toHaveBeenCalled();

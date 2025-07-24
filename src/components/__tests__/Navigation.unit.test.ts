@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { scrollToSection, SocialIcons } from '../Navigation';
+import { scrollToSection } from '../Navigation.constants';
+import { SocialIcons } from '../Navigation.utils';
 import React from 'react';
 import { render } from '@testing-library/react';
 
@@ -7,7 +8,7 @@ describe('Navigation internal functions', () => {
   it('scrollToSection scrolls to element and closes menu', () => {
     const mockSetIsMobileMenuOpen = vi.fn();
     const mockElement = { scrollIntoView: vi.fn() };
-    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as any);
+    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as unknown as Element);
     scrollToSection('#about', mockSetIsMobileMenuOpen);
     expect(document.querySelector).toHaveBeenCalledWith('#about');
     expect(mockElement.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
