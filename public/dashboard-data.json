@@ -1,24 +1,24 @@
 {
-  "lastUpdated": "2025-07-24T19:32:43.935Z",
+  "lastUpdated": "2025-07-24T19:43:05.493Z",
   "coverage": {
     "percentage": 95,
     "totalLines": 2190,
-    "coveredLines": 2072
+    "coveredLines": 2073
   },
   "functions": {
-    "percentage": 83,
-    "total": 92,
+    "percentage": 84,
+    "total": 91,
     "covered": 76,
     "threshold": 80
   },
   "branches": {
     "percentage": 92,
-    "total": 307,
+    "total": 306,
     "covered": 282
   },
   "tests": {
-    "count": 376,
-    "files": 57,
+    "count": 377,
+    "files": 59,
     "status": "passing"
   },
   "security": {
@@ -138,7 +138,7 @@
     },
     {
       "name": "UI Tests",
-      "count": 60
+      "count": 61
     },
     {
       "name": "Utility Tests",
@@ -157,32 +157,32 @@
     "typescriptCoverage": "95%",
     "lintingScore": "0 errors, 4 warnings",
     "buildSuccessRate": "100%",
-    "deploymentSuccess": "100%",
+    "deploymentSuccess": "0%",
     "securityVulnerabilities": 0
   },
   "recommendations": [
     {
       "title": "Lowest Coverage Files",
       "items": [
-        "sonner.utils.ts (0%)",
         "use-toast.ts (57%)",
-        "MobileMenuContext.utils.ts (78%)"
+        "MobileMenuContext.utils.ts (78%)",
+        "Hero.tsx (90%)"
       ]
     },
     {
       "title": "Branch Coverage Gaps",
       "items": [
-        "sonner.utils.ts (0% branch coverage)",
         "button.utils.ts (0% branch coverage)",
-        "card.tsx (0% branch coverage)"
+        "card.tsx (0% branch coverage)",
+        "label.tsx (0% branch coverage)"
       ]
     },
     {
       "title": "Function Coverage Gaps",
       "items": [
-        "sonner.utils.ts (0% function coverage)",
         "SectionIcon.tsx (0% function coverage)",
-        "button.tsx (0% function coverage)"
+        "button.tsx (0% function coverage)",
+        "button.utils.ts (0% function coverage)"
       ]
     },
     {
