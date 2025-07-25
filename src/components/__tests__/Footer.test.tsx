@@ -241,4 +241,13 @@ describe('Footer Component', () => {
     const links = screen.getAllByRole('link');
     expect(links.length).toBeGreaterThan(0);
   });
+
+  it('calls scrollToTop when Back to Top button is clicked', () => {
+    render(<Footer />);
+    const scrollToSpy = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+    const backToTopButton = screen.getByRole('button', { name: /back to top/i });
+    backToTopButton.click();
+    expect(scrollToSpy).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
+    scrollToSpy.mockRestore();
+  });
 }); 

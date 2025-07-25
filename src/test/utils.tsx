@@ -1,15 +1,6 @@
 import React, { ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
-import { ThemeProvider } from '@/components/ThemeProvider';
-import { BrowserRouter } from 'react-router-dom';
-
-const AllTheProviders = ({ children }: { children: React.ReactNode }) => (
-  <BrowserRouter>
-    <ThemeProvider>
-      {children}
-    </ThemeProvider>
-  </BrowserRouter>
-);
+import { AllTheProviders } from './providers';
 
 const customRender = (
   ui: ReactElement,

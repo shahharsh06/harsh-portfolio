@@ -32,12 +32,6 @@ describe('Navigation Component', () => {
       writable: true,
       value: vi.fn(),
     });
-    
-    // Mock document.querySelector
-    const mockElement = {
-      scrollIntoView: vi.fn(),
-    };
-    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as unknown as Element);
   });
 
   it('renders navigation with logo', () => {
@@ -70,10 +64,17 @@ describe('Navigation Component', () => {
     const user = userEvent.setup();
     renderWithMobileMenu(<Navigation />);
     
+    // Mock document.querySelector for this test
+    const mockElement = { scrollIntoView: vi.fn() };
+    const querySelectorSpy = vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as unknown as Element);
+    
     const aboutButton = screen.getByRole('button', { name: /about/i });
     await user.click(aboutButton);
     
-    expect(document.querySelector).toHaveBeenCalledWith('#about');
+    expect(querySelectorSpy).toHaveBeenCalledWith('#about');
+    
+    // Clean up
+    querySelectorSpy.mockRestore();
   });
 
   it('displays theme toggle in desktop view', () => {
@@ -539,5 +540,332 @@ describe('Navigation Component', () => {
         expect(document.querySelector('.fixed.inset-0')).not.toBeInTheDocument();
       }
     }
+  });
+
+  // Additional tests for better function coverage
+  it('handles scroll event and updates isScrolled state', async () => {
+    renderWithMobileMenu(<Navigation />);
+    const nav = screen.getByRole('navigation');
+    
+    // Initially should not have scrolled styling
+    expect(nav.className).not.toContain('bg-background/80');
+    
+    // Simulate scroll down
+    Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: 100 });
+    window.dispatchEvent(new Event('scroll'));
+    
+    await waitFor(() => {
+      expect(nav.className).toContain('bg-background/80');
+    });
+    
+    // Simulate scroll back to top
+    Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: 0 });
+    window.dispatchEvent(new Event('scroll'));
+    
+    await waitFor(() => {
+      expect(nav.className).not.toContain('bg-background/80');
+    });
+  });
+
+  it('handles scroll event cleanup on unmount', () => {
+    const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
+    const { unmount } = renderWithMobileMenu(<Navigation />);
+    
+    unmount();
+    
+    expect(removeEventListenerSpy).toHaveBeenCalledWith('scroll', expect.any(Function));
+    removeEventListenerSpy.mockRestore();
+  });
+
+  it('calls scrollToSection with correct parameters for each nav item', async () => {
+    const user = userEvent.setup();
+    const scrollToSectionSpy = vi.spyOn(document, 'querySelector');
+    const mockElement = { scrollIntoView: vi.fn() };
+    scrollToSectionSpy.mockReturnValue(mockElement as unknown as Element);
+    
+    renderWithMobileMenu(<Navigation />);
+    
+    const navItems = ['Home', 'About', 'Career & Education', 'Skills', 'Projects', 'Contact'];
+    
+    for (const item of navItems) {
+      const button = screen.getByRole('button', { name: new RegExp(item, 'i') });
+      await user.click(button);
+    }
+    
+    expect(scrollToSectionSpy).toHaveBeenCalledWith('#home');
+    expect(scrollToSectionSpy).toHaveBeenCalledWith('#about');
+    expect(scrollToSectionSpy).toHaveBeenCalledWith('#career-education');
+    expect(scrollToSectionSpy).toHaveBeenCalledWith('#skills');
+    expect(scrollToSectionSpy).toHaveBeenCalledWith('#projects');
+    expect(scrollToSectionSpy).toHaveBeenCalledWith('#contact');
+    
+    scrollToSectionSpy.mockRestore();
+  });
+
+  it('handles scrollToSection when element does not exist', async () => {
+    const user = userEvent.setup();
+    const scrollToSectionSpy = vi.spyOn(document, 'querySelector');
+    scrollToSectionSpy.mockReturnValue(null);
+    
+    renderWithMobileMenu(<Navigation />);
+    
+    const aboutButton = screen.getByRole('button', { name: /about/i });
+    await user.click(aboutButton);
+    
+    // Should not throw error when element doesn't exist
+    expect(scrollToSectionSpy).toHaveBeenCalledWith('#about');
+    
+    scrollToSectionSpy.mockRestore();
+  });
+
+  it('toggles mobile menu state correctly', async () => {
+    const user = userEvent.setup();
+    renderWithMobileMenu(<Navigation />);
+    
+    // Mock mobile viewport
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 375,
+    });
+    
+    window.dispatchEvent(new Event('resize'));
+    
+    const mobileMenuButton = screen.queryByRole('button', { name: /toggle menu/i });
+    if (mobileMenuButton) {
+      // Initially menu should be closed
+      expect(document.querySelector('.fixed.inset-0')).not.toBeInTheDocument();
+      
+      // Open menu
+      await user.click(mobileMenuButton);
+      expect(document.querySelector('.fixed.inset-0')).toBeInTheDocument();
+      
+      // Close menu
+      await user.click(mobileMenuButton);
+      expect(document.querySelector('.fixed.inset-0')).not.toBeInTheDocument();
+    }
+  });
+
+  it('renders SocialIconButton with correct props', () => {
+    renderWithMobileMenu(<Navigation />);
+    
+    const socialLinks = Array.from(document.querySelectorAll('a')).filter(link => 
+      link.getAttribute('href')?.includes('github.com') || 
+      link.getAttribute('href')?.includes('linkedin.com') ||
+      link.getAttribute('href')?.includes('dashboard.html')
+    );
+    
+    socialLinks.forEach(link => {
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+      expect(link).toHaveClass('hover-glow');
+    });
+  });
+
+  it('renders SocialIcons component with all social links', () => {
+    renderWithMobileMenu(<Navigation />);
+    
+    // Check for all expected social links
+    const github = Array.from(document.querySelectorAll('a')).find(a => a.href.includes('github.com'));
+    const linkedin = Array.from(document.querySelectorAll('a')).find(a => a.href.includes('linkedin.com'));
+    const dashboard = Array.from(document.querySelectorAll('a')).find(a => a.href.includes('dashboard.html'));
+    
+    expect(github).toBeInTheDocument();
+    expect(linkedin).toBeInTheDocument();
+    expect(dashboard).toBeInTheDocument();
+    
+    // Check they have proper styling
+    [github, linkedin, dashboard].forEach(link => {
+      if (link) {
+        expect(link).toHaveClass('hover-glow');
+      }
+    });
+  });
+
+  it('handles mobile menu navigation item clicks', async () => {
+    const user = userEvent.setup();
+    renderWithMobileMenu(<Navigation />);
+    
+    // Mock mobile viewport
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 375,
+    });
+    
+    window.dispatchEvent(new Event('resize'));
+    
+    const mobileMenuButton = screen.queryByRole('button', { name: /toggle menu/i });
+    if (mobileMenuButton) {
+      // Open mobile menu
+      await user.click(mobileMenuButton);
+      
+      // Click on a mobile menu item
+      const aboutButton = screen.getByRole('button', { name: /about/i });
+      await user.click(aboutButton);
+      
+      // Menu should close after navigation
+      expect(document.querySelector('.fixed.inset-0')).not.toBeInTheDocument();
+    }
+  });
+
+  it('handles mobile menu overlay click to close', async () => {
+    const user = userEvent.setup();
+    renderWithMobileMenu(<Navigation />);
+    
+    // Mock mobile viewport
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 375,
+    });
+    
+    window.dispatchEvent(new Event('resize'));
+    
+    const mobileMenuButton = screen.queryByRole('button', { name: /toggle menu/i });
+    if (mobileMenuButton) {
+      // Open mobile menu
+      await user.click(mobileMenuButton);
+      
+      // Click on overlay
+      const overlay = document.querySelector('.fixed.inset-0');
+      if (overlay) {
+        await user.click(overlay);
+        
+        // Menu should close
+        expect(document.querySelector('.fixed.inset-0')).not.toBeInTheDocument();
+      }
+    }
+  });
+
+  it('handles mobile menu close button click', async () => {
+    const user = userEvent.setup();
+    renderWithMobileMenu(<Navigation />);
+    
+    // Mock mobile viewport
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 375,
+    });
+    
+    window.dispatchEvent(new Event('resize'));
+    
+    const mobileMenuButton = screen.queryByRole('button', { name: /toggle menu/i });
+    if (mobileMenuButton) {
+      // Open mobile menu
+      await user.click(mobileMenuButton);
+      
+      // Find and click the close button (X button in mobile menu)
+      const closeButtons = Array.from(document.querySelectorAll('button')).filter(btn => 
+        btn !== mobileMenuButton && btn.querySelector('svg')
+      );
+      
+      if (closeButtons.length > 0) {
+        await user.click(closeButtons[0]);
+        
+        // Menu should close
+        expect(document.querySelector('.fixed.inset-0')).not.toBeInTheDocument();
+      }
+    }
+  });
+
+  it('applies correct styling based on scroll state', async () => {
+    renderWithMobileMenu(<Navigation />);
+    const nav = screen.getByRole('navigation');
+    
+    // Test initial state (not scrolled)
+    expect(nav.className).toContain('bg-transparent');
+    expect(nav.className).not.toContain('bg-background/80');
+    
+    // Test scrolled state
+    Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: 100 });
+    window.dispatchEvent(new Event('scroll'));
+    
+    await waitFor(() => {
+      expect(nav.className).toContain('bg-background/80');
+      expect(nav.className).toContain('backdrop-blur-md');
+      expect(nav.className).toContain('border-b');
+      expect(nav.className).toContain('border-border');
+    });
+  });
+
+  it('handles window resize events correctly', () => {
+    renderWithMobileMenu(<Navigation />);
+    
+    // Test mobile viewport
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 375,
+    });
+    
+    window.dispatchEvent(new Event('resize'));
+    
+    // Navigation should still be functional
+    expect(screen.getByRole('navigation')).toBeInTheDocument();
+    
+    // Test desktop viewport
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 1440,
+    });
+    
+    window.dispatchEvent(new Event('resize'));
+    
+    // Navigation should still be functional
+    expect(screen.getByRole('navigation')).toBeInTheDocument();
+  });
+
+  it('handles edge case: scroll event with invalid scrollY', async () => {
+    renderWithMobileMenu(<Navigation />);
+    const nav = screen.getByRole('navigation');
+    
+    // Test with negative scrollY
+    Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: -10 });
+    window.dispatchEvent(new Event('scroll'));
+    
+    await waitFor(() => {
+      expect(nav.className).not.toContain('bg-background/80');
+    });
+    
+    // Test with very large scrollY
+    Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: 10000 });
+    window.dispatchEvent(new Event('scroll'));
+    
+    await waitFor(() => {
+      expect(nav.className).toContain('bg-background/80');
+    });
+  });
+
+  it('handles multiple rapid scroll events', async () => {
+    renderWithMobileMenu(<Navigation />);
+    const nav = screen.getByRole('navigation');
+    
+    // Simulate rapid scroll events
+    for (let i = 0; i < 5; i++) {
+      Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: i * 20 });
+      window.dispatchEvent(new Event('scroll'));
+    }
+    
+    // Should handle rapid events without crashing
+    expect(nav).toBeInTheDocument();
+  });
+
+  it('handles component unmount during scroll event', () => {
+    const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
+    const { unmount } = renderWithMobileMenu(<Navigation />);
+    
+    // Trigger scroll event
+    Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: 100 });
+    window.dispatchEvent(new Event('scroll'));
+    
+    // Unmount component
+    unmount();
+    
+    // Should clean up event listeners
+    expect(removeEventListenerSpy).toHaveBeenCalledWith('scroll', expect.any(Function));
+    removeEventListenerSpy.mockRestore();
   });
 }); 

@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { GithubIcon, LinkedinIcon, DashboardIcon } from "./icons";
 import { useMobileMenu } from "./MobileMenuContext.utils";
-import { scrollToSection } from "./Navigation.constants";
+import { scrollToSection } from "./Navigation.utils";
 import { PERSONAL_INFO, SOCIAL_LINKS } from "@/lib/constants";
 
 // Reusable social icon button component

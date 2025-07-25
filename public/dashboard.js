@@ -156,27 +156,85 @@ async function getLatestCommitSha() {
 }
 
 async function updateDashboardFromJson() {
-    const res = await fetch('dashboard-data.json', { cache: "no-store" });
-    const data = await res.json();
+    try {
+        console.log('Fetching dashboard data...');
+        const res = await fetch('dashboard-data.json', { cache: "no-store" });
+        
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        
+        const data = await res.json();
+        console.log('Dashboard data loaded:', data);
 
-    document.getElementById('overallCoverage').textContent = data.coverage.percentage + '%';
-    document.getElementById('functionCoverage').textContent = data.functions.percentage + '%';
-    document.getElementById('functionCoverageThreshold').textContent = `✓ Exceeds ${data.functions.threshold}% threshold`;
-    document.getElementById('totalTests').textContent = data.tests.count;
-    document.getElementById('securityScore').textContent = data.security.score + '%';
-    document.getElementById('securityStatus').textContent =
-        data.security.highSeverityIssues === 0
-            ? '✓ No high severity issues'
-            : `✗ ${data.security.highSeverityIssues} high severity issues`;
-    document.getElementById('ciStatus').textContent = data.workflows.ci === "success"
-        ? "✓ All checks passed"
-        : "✗ CI failed";
-    document.getElementById('deploymentStatus').textContent = data.workflows.deploy === "success"
-        ? "✓ GitHub Pages active"
-        : "✗ Deployment failed";
-    document.getElementById('coverageStatus').textContent = `✓ ${data.coverage.percentage}% coverage`;
-    document.getElementById('lastUpdated').textContent = new Date(data.lastUpdated).toLocaleString();
-    // Optionally update charts and other metrics as needed
+        // Update function coverage
+        const functionCoverageElement = document.getElementById('functionCoverage');
+        const functionCoverageThresholdElement = document.getElementById('functionCoverageThreshold');
+        
+        if (functionCoverageElement) {
+            functionCoverageElement.textContent = data.functions.percentage + '%';
+            console.log('Updated function coverage to:', data.functions.percentage + '%');
+        } else {
+            console.error('Function coverage element not found');
+        }
+        
+        if (functionCoverageThresholdElement) {
+            functionCoverageThresholdElement.textContent = `✓ Exceeds ${data.functions.threshold}% threshold`;
+        } else {
+            console.error('Function coverage threshold element not found');
+        }
+
+        // Update other metrics
+        const overallCoverageElement = document.getElementById('overallCoverage');
+        if (overallCoverageElement) {
+            overallCoverageElement.textContent = data.coverage.percentage + '%';
+        }
+        
+        const totalTestsElement = document.getElementById('totalTests');
+        if (totalTestsElement) {
+            totalTestsElement.textContent = data.tests.count;
+        }
+        
+        const securityScoreElement = document.getElementById('securityScore');
+        if (securityScoreElement) {
+            securityScoreElement.textContent = data.security.score + '%';
+        }
+        
+        const securityStatusElement = document.getElementById('securityStatus');
+        if (securityStatusElement) {
+            securityStatusElement.textContent = data.security.highSeverityIssues === 0
+                ? '✓ No high severity issues'
+                : `✗ ${data.security.highSeverityIssues} high severity issues`;
+        }
+        
+        const ciStatusElement = document.getElementById('ciStatus');
+        if (ciStatusElement) {
+            ciStatusElement.textContent = data.workflows.ci === "success"
+                ? "✓ All checks passed"
+                : "✗ CI failed";
+        }
+        
+        const deploymentStatusElement = document.getElementById('deploymentStatus');
+        if (deploymentStatusElement) {
+            deploymentStatusElement.textContent = data.workflows.deploy === "success"
+                ? "✓ GitHub Pages active"
+                : "✗ Deployment failed";
+        }
+        
+        const coverageStatusElement = document.getElementById('coverageStatus');
+        if (coverageStatusElement) {
+            coverageStatusElement.textContent = `✓ ${data.coverage.percentage}% coverage`;
+        }
+        
+        const lastUpdatedElement = document.getElementById('lastUpdated');
+        if (lastUpdatedElement) {
+            lastUpdatedElement.textContent = new Date(data.lastUpdated).toLocaleString();
+        }
+        
+        console.log('Dashboard updated successfully');
+    } catch (error) {
+        console.error('Error updating dashboard:', error);
+    }
 }
 
 async function checkForNewCommitAndUpdate() {
@@ -188,6 +246,8 @@ async function checkForNewCommitAndUpdate() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Initial load of dashboard data
+    updateDashboardFromJson();
     checkForNewCommitAndUpdate();
     // Poll for new commits every 30 seconds (or adjust as needed for responsiveness)
     setInterval(checkForNewCommitAndUpdate, 30000);

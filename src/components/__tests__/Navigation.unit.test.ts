@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { scrollToSection } from '../Navigation.constants';
-import { SocialIcons } from '../Navigation.utils';
+import { scrollToSection } from '../Navigation.utils';
+import { SocialIcons } from '../Navigation.components';
 import React from 'react';
 import { render } from '@testing-library/react';
 

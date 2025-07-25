@@ -2,12 +2,6 @@
 import { GithubIcon, LinkedinIcon, DashboardIcon } from "./icons";
 import { SOCIAL_LINKS } from "@/lib/constants";
 
-export const scrollToSection = (href: string, setIsMobileMenuOpen: (open: boolean) => void) => {
-  const element = document.querySelector(href);
-  element?.scrollIntoView({ behavior: "smooth" });
-  setIsMobileMenuOpen(false);
-};
-
 export const navItems = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
@@ -17,9 +11,7 @@ export const navItems = [
   { label: "Contact", href: "#contact" },
 ];
 
-export type SocialLinksType = { label: string; href: string; icon: React.ComponentType<{ className?: string }> }[];
-
-export const socialLinks: SocialLinksType = [
+export const socialLinks = [
   { label: "Dashboard", href: "/harsh-portfolio/dashboard.html", icon: DashboardIcon },
   { label: "GitHub", href: SOCIAL_LINKS.github, icon: GithubIcon },
   { label: "LinkedIn", href: SOCIAL_LINKS.linkedin, icon: LinkedinIcon },

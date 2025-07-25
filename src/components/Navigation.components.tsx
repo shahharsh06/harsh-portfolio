@@ -1,36 +1,12 @@
-// Utility functions and constants for Navigation
-import { Button } from "@/components/ui/button";
-import { GithubIcon, LinkedinIcon, DashboardIcon } from "./icons";
-import { ThemeToggle } from "./ThemeToggle";
-import { PERSONAL_INFO, SOCIAL_LINKS } from "@/lib/constants";
 import React from "react";
-
-export const scrollToSection = (href: string, setIsMobileMenuOpen: (open: boolean) => void) => {
-  const element = document.querySelector(href);
-  element?.scrollIntoView({ behavior: "smooth" });
-  setIsMobileMenuOpen(false);
-};
-
-export const navItems = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Career & Education", href: "#career-education" },
-  { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  { label: "Contact", href: "#contact" },
-];
-
-export const socialLinks = [
-  { label: "Dashboard", href: "/harsh-portfolio/dashboard.html", icon: DashboardIcon },
-  { label: "GitHub", href: SOCIAL_LINKS.github, icon: GithubIcon },
-  { label: "LinkedIn", href: SOCIAL_LINKS.linkedin, icon: LinkedinIcon },
-];
+import { Button } from "@/components/ui/button";
 
 interface SocialIconButtonProps {
   href: string;
   icon: React.ComponentType<{ className?: string }>;
   label: string;
 }
+
 export const SocialIconButton: React.FC<SocialIconButtonProps> = ({ href, icon: Icon, label }) => {
   return (
     <Button
@@ -51,6 +27,7 @@ export const SocialIconButton: React.FC<SocialIconButtonProps> = ({ href, icon: 
 interface SocialIconsProps {
   socialLinks: { label: string; href: string; icon: React.ComponentType<{ className?: string }> }[];
 }
+
 export const SocialIcons: React.FC<SocialIconsProps> = ({ socialLinks }) => {
   return (
     <div className="flex items-center space-x-3">

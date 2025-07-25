@@ -304,82 +304,13 @@ try {
   // Security Vulnerabilities: use highSeverityIssues
   const securityVulnerabilities = highSeverityIssues;
 
-  // Advanced recommendations logic
-  const lowestCoverageFiles = fileSummaries
-    .filter(f => f.path.includes('src/'))
-    .sort((a, b) => a.lineCoverage - b.lineCoverage)
-    .slice(0, 3)
-    .map(f => `${f.path.split('/').pop()} (${f.lineCoverage}%)`);
-
-  const branchCoverageFiles = fileSummaries
-    .filter(f => f.branchCoverage < 100 && f.path.includes('src/'))
-    .sort((a, b) => a.branchCoverage - b.branchCoverage)
-    .slice(0, 3)
-    .map(f => `${f.path.split('/').pop()} (${f.branchCoverage}% branch coverage)`);
-
-  const functionCoverageFiles = fileSummaries
-    .filter(f => f.functionCoverage < 100 && f.path.includes('src/'))
-    .sort((a, b) => a.functionCoverage - b.functionCoverage)
-    .slice(0, 3)
-    .map(f => `${f.path.split('/').pop()} (${f.functionCoverage}% function coverage)`);
-
-  const testCategoryGaps = testCategories
-    .filter(cat => cat.count < 20)
-    .sort((a, b) => a.count - b.count)
-    .slice(0, 3)
-    .map(cat => `Increase ${cat.name} (currently only ${cat.count})`);
-
-  const securityRecommendation = highSeverityIssues > 0
-    ? [`Fix ${highSeverityIssues} high severity security vulnerabilities`]
-    : [];
-
-  const lintRecommendation = lintingScore !== '100%' && lintingScore !== 'lint error'
-    ? [`Fix linting errors: ${lintingScore}`]
-    : [];
-
-  let recommendations = [];
-  if (lowestCoverageFiles.length > 0) {
-    recommendations.push({
-      title: 'Lowest Coverage Files',
-      items: lowestCoverageFiles
-    });
-  }
-  if (branchCoverageFiles.length > 0) {
-    recommendations.push({
-      title: 'Branch Coverage Gaps',
-      items: branchCoverageFiles
-    });
-  }
-  if (functionCoverageFiles.length > 0) {
-    recommendations.push({
-      title: 'Function Coverage Gaps',
-      items: functionCoverageFiles
-    });
-  }
-  if (testCategoryGaps.length > 0) {
-    recommendations.push({
-      title: 'Test Category Gaps',
-      items: testCategoryGaps
-    });
-  }
-  if (securityRecommendation.length > 0) {
-    recommendations.push({
-      title: 'Security',
-      items: securityRecommendation
-    });
-  }
-  if (lintRecommendation.length > 0) {
-    recommendations.push({
-      title: 'Linting',
-      items: lintRecommendation
-    });
-  }
-  if (recommendations.length === 0) {
-    recommendations.push({
-      title: 'Great Job!',
-      items: ['All files and categories are well covered! 🎉']
-    });
-  }
+  // Simple message without title
+  let recommendations = [
+    {
+      title: '',
+      items: ['Great job! Your code coverage is excellent. 🎉']
+    }
+  ];
 
   const quality = {
     typescriptCoverage,
