@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-07-25T22:13:55.447Z",
+  "lastUpdated": "2025-07-25T22:20:22.106Z",
   "coverage": {
     "percentage": 97,
     "totalLines": 2184,
@@ -13,8 +13,8 @@
   },
   "branches": {
     "percentage": 93,
-    "total": 327,
-    "covered": 304
+    "total": 326,
+    "covered": 303
   },
   "tests": {
     "count": 434,
@@ -157,7 +157,7 @@
     "typescriptCoverage": "97%",
     "lintingScore": "100%",
     "buildSuccessRate": "100%",
-    "deploymentSuccess": "100%",
+    "deploymentSuccess": "0%",
     "securityVulnerabilities": 0
   },
   "recommendations": [
