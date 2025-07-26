@@ -33,7 +33,7 @@ jobs:
       - name: Run Vitest and generate JSON report
         run: npx vitest run --reporter=json --outputFile=vitest-report.json
 
-      - name: Update dashboard metrics
+      - name: Generate dashboard data
         run: node scripts/coverage-summary.js
 
       - name: Upload coverage to Qlty Cloud
@@ -47,6 +47,13 @@ jobs:
         with:
           name: coverage-reports
           path: coverage/
+          retention-days: 30
+
+      - name: Upload dashboard data
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-data
+          path: public/dashboard-data.json
           retention-days: 30
 
       - name: Comment PR with coverage summary
@@ -112,6 +119,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Download dashboard data
+        uses: actions/download-artifact@v4
+        with:
+          name: dashboard-data
+          path: public/
 
       - name: Build application
         run: npm run build

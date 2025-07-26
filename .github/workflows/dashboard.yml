@@ -1,9 +1,10 @@
-name: Update Dashboard
+name: Update Dashboard (Manual Only)
 
 on:
-  workflow_run:
-    workflows: ["CI/CD Pipeline", "Deploy to GitHub Pages"]
-    types: [completed]
+  # Disabled automatic triggers to prevent infinite loops
+  # workflow_run:
+  #   workflows: ["CI/CD Pipeline", "Deploy to GitHub Pages"]
+  #   types: [completed]
   workflow_dispatch:
 
 jobs:
