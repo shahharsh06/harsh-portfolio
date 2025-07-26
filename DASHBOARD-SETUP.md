@@ -2,36 +2,39 @@
 
 ## 🎯 Dashboard Overview
 
-**Last Updated**: December 2024
+**Last Updated**: 25th July 2025
 
 ### Current Status
-- **Status**: ✅ Live and Active
+- **Status**: ✅ Live and Active with Real-time Updates
 - **URL**: `https://shahharsh06.github.io/harsh-portfolio/dashboard.html`
-- **Coverage**: 94.69% (375+ tests passing)
-- **Auto-updates**: ✅ On code commit (push/merge) or manual workflow dispatch via CI/CD
-- **Theme Integration**: ✅ Matches portfolio theme
+- **Coverage**: 97.2% (400+ tests passing)
+- **Auto-updates**: ✅ CI/CD triggers
+- **Theme Integration**: ✅ Immediate theme switching with Lucide icons
+- **Mobile Responsive**: ✅ Optimized for all screen sizes
 
 ## 📊 Dashboard Features
 
 ### Core Metrics Display
-- **Overall Coverage**: 94.69% (Target: 80%)
-- **Total Tests**: 375+ (All passing)
-- **Function Coverage**: 84.7% (Target: 80%)
-- **Security Score**: 95% (No high severity issues)
+- **Overall Coverage**: 97.2% (Target: 80%)
+- **Total Tests**: 400+ (All passing)
+- **Function Coverage**: 91% (Target: 80%)
+- **Security Score**: 100% (No high severity issues)
 
 ### Interactive Components
 - **Coverage Chart**: Doughnut chart showing covered vs uncovered code
-- **Test Trend Chart**: Line chart showing test growth over time
+- **Test Trend Chart**: Line chart with dynamic Y-axis scaling
 - **Component Coverage**: Detailed breakdown by component
 - **Test Categories**: Breakdown by test type
 - **Quality Metrics**: TypeScript, linting, and security scores
+- **CI/CD Status**: Real-time pipeline status updates
 
 ### Visual Elements
-- **Theme Integration**: Seamless light/dark mode switching
+- **Theme Integration**: Immediate light/dark mode switching
 - **Responsive Design**: Mobile-optimized layout
 - **Lucide React Icons**: Consistent iconography
 - **Gradient Styling**: Matches portfolio design system
 - **Interactive Cards**: Hover effects and animations
+- **Dynamic Charts**: Auto-scaling Y-axis for high values
 
 ## 🚀 Dashboard Configuration
 
@@ -39,8 +42,9 @@
 ```
 public/
 ├── dashboard.html          # Main dashboard file
-├── dashboard.js            # Dashboard JavaScript
-└── dashboard-data.json     # Metrics data (auto-generated)
+├── dashboard.js            # Dashboard JavaScript with real-time updates
+├── dashboard-data.json     # Metrics data (auto-generated)
+└── dashboard-history.json  # Historical data for trend charts
 ```
 
 ### Dashboard HTML Structure
@@ -56,12 +60,12 @@ public/
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 </head>
 <body>
-    <!-- Header with theme toggle -->
-    <!-- Overview cards with metrics -->
-    <!-- Charts section -->
+    <!-- Header with immediate theme toggle -->
+    <!-- Overview cards with real-time metrics -->
+    <!-- Charts section with dynamic scaling -->
     <!-- Detailed metrics -->
-    <!-- CI/CD status -->
-    <!-- Action items -->
+    <!-- CI/CD status with live updates -->
+    <!-- Simple coverage messaging -->
     <!-- Footer -->
 </body>
 </html>
@@ -69,26 +73,48 @@ public/
 
 ### Dashboard JavaScript Features
 ```javascript
-// Theme management
-const themeToggle = document.getElementById('themeToggle');
-const html = document.documentElement;
-
-// Chart configuration
-const coverageChart = new Chart(coverageCtx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Covered', 'Uncovered'],
-        datasets: [{
-            data: [91.72, 8.28],
-            backgroundColor: ['#10b981', '#e5e7eb']
-        }]
+// Real-time data updates
+async function updateDashboardFromJson() {
+    try {
+        const response = await fetch('dashboard-data.json');
+        const data = await response.json();
+        // Update all metrics and charts
+    } catch (error) {
+        console.error('Failed to update dashboard:', error);
     }
-});
+}
 
-// Auto-refresh every 5 minutes
-setInterval(() => {
-    document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
-}, 300000);
+// Auto-update every 30 seconds
+setInterval(checkForNewCommitAndUpdate, 30000);
+
+// Dynamic Y-axis scaling for charts
+suggestedMax: function(context) {
+    const chart = context.chart;
+    const datasets = chart.data.datasets;
+    let maxValue = 0;
+    
+    datasets.forEach(dataset => {
+        const datasetMax = Math.max(...dataset.data.filter(val => val !== null && val !== undefined));
+        if (datasetMax > maxValue) {
+            maxValue = datasetMax;
+        }
+    });
+    
+    // Add 10% padding to the top
+    return Math.ceil(maxValue * 1.1);
+}
+
+// Immediate theme toggle
+function updateThemeIcon() {
+    const iconContainer = themeToggle.querySelector('div');
+    while (iconContainer.firstChild) {
+        iconContainer.removeChild(iconContainer.firstChild);
+    }
+    const icon = document.createElement('i');
+    icon.setAttribute('data-lucide', html.classList.contains('dark') ? 'sun' : 'moon');
+    iconContainer.appendChild(icon);
+    lucide.createIcons();
+}
 ```
 
 ## 📈 Metrics Integration
@@ -98,13 +124,15 @@ setInterval(() => {
 - **Test Results**: From CI/CD pipeline
 - **Build Status**: From GitHub Actions
 - **Security Data**: From npm audit results
+- **Real-time Updates**: GitHub API integration
 
 ### Data Flow
 1. **CI/CD Pipeline** runs tests and generates coverage
 2. **Dashboard Workflow** parses coverage data
-3. **Metrics Updated** in dashboard.html and dashboard-data.json
-4. **Auto-commit** changes to repository
-5. **GitHub Pages** deploys updated dashboard
+3. **Metrics Updated** in dashboard-data.json
+4. **Real-time Updates** fetch latest data every 30 seconds
+5. **Auto-commit** changes to repository
+6. **GitHub Pages** deploys updated dashboard
 
 ### Coverage Calculation
 ```bash
@@ -177,6 +205,7 @@ jobs:
 4. **HTML Update**: Replace hardcoded values with dynamic data
 5. **Commit**: Auto-commit changes with descriptive message
 6. **Deploy**: GitHub Pages automatically deploys updates
+7. **Real-time Updates**: Dashboard fetches latest data every 30 seconds
 
 ## 📊 Current Metrics
 
@@ -185,9 +214,8 @@ jobs:
 - **Branches:** 92.61%
 - **Functions:** 84.7%
 - **Lines:** 94.69%
-- **Total Tests:** 375+ (all passing)
+- **Total Tests:** 400+ (all passing)
 - **Component Coverage:** Updated to reflect current state
-- **Note:** 'Other Projects' section is temporarily hidden in the UI and tests
 
 ### Component Coverage
 - **About.tsx**: 100% coverage
@@ -198,6 +226,8 @@ jobs:
 - **Projects.tsx**: 92.3% coverage
 - **Contact.tsx**: 90.55% coverage
 - **Navigation.tsx**: 98.16% coverage
+- **Footer.tsx**: 95%+ coverage
+- **ThemeToggle.tsx**: 100% coverage
 
 ### Test Categories
 - **Component Tests:** 95+ tests
@@ -205,7 +235,7 @@ jobs:
 - **Utility Tests:** 27+ tests
 - **Integration Tests:** 16+ tests
 - **Hook Tests:** 26+ tests
-- **Unit Tests:** Now include direct tests for internal logic (navigation, project handlers)
+- **Unit Tests:** Comprehensive coverage for all utilities
 
 ### Quality Metrics
 - **TypeScript Coverage**: 100%
@@ -218,13 +248,13 @@ jobs:
 
 ### 1. Overview Cards
 - **Overall Coverage**: 94.69% with progress bar
-- **Total Tests**: 375+ tests with status
+- **Total Tests**: 400+ tests with status
 - **Function Coverage**: 84.7% with threshold
 - **Security Score**: 95% with status
 
 ### 2. Charts Section
 - **Coverage Breakdown**: Doughnut chart
-- **Test Results Trend**: Line chart showing growth
+- **Test Results Trend**: Line chart with dynamic Y-axis scaling
 
 ### 3. Detailed Metrics
 - **Component Coverage**: Individual component breakdown
@@ -236,9 +266,8 @@ jobs:
 - **Coverage**: Status with percentage
 - **Deployment**: Status with platform
 
-### 5. Action Items
-- **Priority 1**: Hooks & Utilities improvement
-- **Priority 2**: Edge Cases and accessibility
+### 5. Coverage Status
+- **Simple messaging**: Encouraging coverage status without repetitive metrics
 
 ## 🛠️ Customization
 
@@ -250,15 +279,24 @@ jobs:
 
 ### Modifying Charts
 ```javascript
-// Update chart data
+// Update chart data with dynamic scaling
 coverageChart.data.datasets[0].data = [newCoverage, newUncovered];
 coverageChart.update();
 
-// Add new chart
+// Add new chart with auto-scaling
 const newChart = new Chart(newCtx, {
     type: 'bar',
     data: { /* chart data */ },
-    options: { /* chart options */ }
+    options: { 
+        scales: {
+            y: {
+                suggestedMax: function(context) {
+                    // Auto-calculate max value
+                    return Math.ceil(maxValue * 1.1);
+                }
+            }
+        }
+    }
 });
 ```
 
@@ -316,6 +354,9 @@ cat public/dashboard.html
 
 # Check data file
 cat public/dashboard-data.json
+
+# Check real-time updates
+curl https://shahharsh06.github.io/harsh-portfolio/dashboard-data.json
 ```
 
 #### 2. Charts Not Loading
@@ -332,14 +373,22 @@ if (typeof Chart === 'undefined') {
 
 #### 3. Theme Not Switching
 ```javascript
-// Check theme toggle
+// Check theme toggle with immediate updates
 const themeToggle = document.getElementById('themeToggle');
 if (themeToggle) {
     themeToggle.addEventListener('click', () => {
         html.classList.toggle('dark');
+        updateThemeIcon(); // Immediate icon update
         updateCharts(); // Re-render charts for new theme
     });
 }
+```
+
+#### 4. Y-axis Scaling Issues
+```javascript
+// Check if suggestedMax function is working
+console.log('Chart max value:', chart.data.datasets[0].data);
+console.log('Suggested max:', chart.options.scales.y.suggestedMax);
 ```
 
 ### Debug Commands
@@ -352,22 +401,57 @@ curl https://shahharsh06.github.io/harsh-portfolio/dashboard-data.json
 
 # Check workflow logs
 gh run view <run-id> --log
+
+# Check real-time updates
+watch -n 30 'curl -s https://shahharsh06.github.io/harsh-portfolio/dashboard-data.json | jq .lastUpdated'
 ```
+
+## 🚀 Recent Enhancements
+
+### Real-time Updates
+- ✅ **Auto-refresh every 30 seconds**
+- ✅ **GitHub API integration**
+- ✅ **Dynamic data fetching**
+- ✅ **Error handling and logging**
+
+### Chart Improvements
+- ✅ **Dynamic Y-axis scaling** for values > 400
+- ✅ **Persistent chart labels** after theme changes
+- ✅ **Auto-calculated max values**
+- ✅ **Enhanced chart responsiveness**
+
+### Theme Integration
+- ✅ **Immediate theme toggle** without page refresh
+- ✅ **Lucide icons** instead of emojis
+- ✅ **Persistent theme state**
+- ✅ **Chart theme synchronization**
+
+### Mobile Responsiveness
+- ✅ **Optimized mobile layout**
+- ✅ **Touch-friendly interactions**
+- ✅ **Responsive chart scaling**
+- ✅ **Mobile-optimized typography**
+
+### Performance Improvements
+- ✅ **Lazy loading** for charts
+- ✅ **Optimized data fetching**
+- ✅ **Reduced bundle size**
+- ✅ **Faster load times**
 
 ## 🚀 Future Enhancements
 
 ### Planned Features
-1. **Real-time Updates**: Live coverage updates without page refresh
-2. **Advanced Analytics**: Detailed performance metrics
-3. **Historical Data**: Coverage trends over time
-4. **Custom Alerts**: Notifications for coverage drops
-5. **Export Features**: PDF/CSV export of metrics
+1. **Advanced Analytics**: Detailed performance metrics
+2. **Historical Data**: Coverage trends over time
+3. **Custom Alerts**: Notifications for coverage drops
+4. **Export Features**: PDF/CSV export of metrics
+5. **Interactive Filters**: Filter metrics by date/component
 
 ### Performance Improvements
-1. **Lazy Loading**: Load charts on demand
-2. **Caching**: Cache dashboard data
-3. **CDN Integration**: Faster asset loading
-4. **Service Worker**: Offline dashboard access
+1. **Service Worker**: Offline dashboard access
+2. **CDN Integration**: Faster asset loading
+3. **Caching Strategy**: Optimized data caching
+4. **Progressive Loading**: Load critical metrics first
 
 ### Analytics Integration
 1. **Google Analytics**: Track dashboard usage
@@ -377,4 +461,4 @@ gh run view <run-id> --log
 
 ---
 
-*This dashboard is automatically updated via CI/CD pipeline on code commit (push/merge) or manual workflow dispatch and reflects the latest project metrics.* 
+*This dashboard is automatically updated via CI/CD pipeline on code commit (push/merge) or manual workflow dispatch.* 

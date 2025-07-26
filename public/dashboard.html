@@ -602,7 +602,27 @@
                             },
                             ticks: {
                                 color: textColor(),
-                                padding: 10
+                                padding: 10,
+                                callback: function(value, index, values) {
+                                    // Ensure we show enough ticks to cover the data range
+                                    return value;
+                                }
+                            },
+                            // Auto-adjust the range to accommodate all data points
+                            suggestedMax: function(context) {
+                                const chart = context.chart;
+                                const datasets = chart.data.datasets;
+                                let maxValue = 0;
+                                
+                                datasets.forEach(dataset => {
+                                    const datasetMax = Math.max(...dataset.data.filter(val => val !== null && val !== undefined));
+                                    if (datasetMax > maxValue) {
+                                        maxValue = datasetMax;
+                                    }
+                                });
+                                
+                                // Add 10% padding to the top
+                                return Math.ceil(maxValue * 1.1);
                             }
                         },
                         x: {

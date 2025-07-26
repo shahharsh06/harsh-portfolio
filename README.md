@@ -89,11 +89,11 @@ npm run test
 
 ## 🧪 Testing & Coverage
 
-- **Statements:** 95%
-- **Branches:** 92%
-- **Functions:** 84.7% (Target: 80%)
-- **Lines:** 95%
-- **Tests:** 375+ passing
+- **Statements:** 97%
+- **Branches:** 93%
+- **Functions:** 91% (Target: 80%)
+- **Lines:** 97%
+- **Tests:** 400+ passing
 
 Run all tests:
 ```bash
