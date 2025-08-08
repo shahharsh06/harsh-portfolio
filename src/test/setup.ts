@@ -65,4 +65,20 @@ global.console = {
   // info: vi.fn(),
   // warn: vi.fn(),
   // error: vi.fn(),
-}; 
+};
+
+// Mock disposable-email-domains package
+vi.mock('disposable-email-domains', () => ({
+  default: [
+    '10minutemail.com',
+    'tempmail.org',
+    'guerrillamail.com',
+    'mailinator.com',
+    'yopmail.com',
+    'temp-mail.org',
+    'sharklasers.com',
+    'getairmail.com',
+    'mailnesia.com',
+    'trashmail.com'
+  ]
+})); 
