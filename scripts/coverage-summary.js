@@ -22,8 +22,27 @@ const readJson = (filePath) => {
 
 const normalizePath = (absPath) => ('/' + path.relative(process.cwd(), absPath)).replace(/\\/g, '/');
 
-const computeGrade = (pct) =>
-  pct >= 90 ? 'A+' : pct >= 85 ? 'A' : pct >= 80 ? 'B+' : pct >= 75 ? 'B' : pct >= 70 ? 'C+' : pct >= 65 ? 'C' : 'D';
+// Replace nested ternaries with a simple threshold table
+const computeGrade = (pct) => {
+  const thresholds = [
+    { min: 90, grade: 'A+' },
+    { min: 85, grade: 'A' },
+    { min: 80, grade: 'B+' },
+    { min: 75, grade: 'B' },
+    { min: 70, grade: 'C+' },
+    { min: 65, grade: 'C' }
+  ];
+  for (const { min, grade } of thresholds) {
+    if (pct >= min) return grade;
+  }
+  return 'D';
+};
+
+const computeStatusIcon = (lineCoveragePct) => {
+  if (lineCoveragePct >= 80) return '✅';
+  if (lineCoveragePct >= 60) return '⚠️';
+  return '❌';
+};
 
 const parseVitestReport = (reportPath) => {
   const json = readJson(reportPath);
@@ -34,20 +53,25 @@ const parseVitestReport = (reportPath) => {
   if (json) {
     numTotalTests = json.numTotalTests || 0;
     numTotalTestSuites = json.numTotalTestSuites || 0;
-    const maybe = json.testResults && Array.isArray(json.testResults.tests)
-      ? json.testResults.tests
-      : json.testResults;
-    testResults = Array.isArray(maybe) ? maybe : Array.isArray(json.results) ? json.results : [];
+    if (json.testResults) {
+      if (Array.isArray(json.testResults.tests)) {
+        testResults = json.testResults.tests;
+      } else if (Array.isArray(json.testResults)) {
+        testResults = json.testResults;
+      }
+    } else if (Array.isArray(json.results)) {
+      testResults = json.results;
+    }
   }
 
   const safeArray = (val) => (Array.isArray(val) ? val : []);
   const countByPattern = (pattern) => {
     let count = 0;
-    testResults.forEach((file) => {
+    for (const file of testResults) {
       const fileName = (file.name || file.file || '').toString().replace(/\\/g, '/');
       const assertions = safeArray(file.assertionResults || file.assertions);
       if (fileName.includes(pattern)) count += assertions.length;
-    });
+    }
     return count;
   };
 
@@ -161,8 +185,7 @@ try {
   console.log('\n📁 FILE-BY-FILE COVERAGE:\n');
 
   fileSummaries.forEach(file => {
-    const status = file.lineCoverage >= 80 ? '✅' : file.lineCoverage >= 60 ? '⚠️' : '❌';
-    console.log(`${status} ${file.path}`);
+    console.log(`${computeStatusIcon(file.lineCoverage)} ${file.path}`);
     console.log(`   Lines: ${file.coveredLines}/${file.lines} (${file.lineCoverage}%)`);
     console.log(`   Functions: ${file.coveredFunctions}/${file.functions} (${file.functionCoverage}%)`);
     console.log(`   Branches: ${file.coveredBranches}/${file.branches} (${file.branchCoverage}%)`);
@@ -205,31 +228,31 @@ try {
 
   const functionThreshold = 80; // Set your actual threshold here
   // Run npm audit and calculate security score
-  let securityScore = 100;
-  let highSeverityIssues = 0;
-  try {
-    const auditResult = spawnSync('npm', ['audit', '--json'], { encoding: 'utf-8' });
-    const auditRaw = auditResult.stdout;
-    if (auditRaw) {
+  const getSecurity = () => {
+    let score = 100;
+    let high = 0;
+    try {
+      const auditResult = spawnSync('npm', ['audit', '--json'], { encoding: 'utf-8' });
+      const auditRaw = auditResult.stdout;
+      if (!auditRaw) {
+        console.warn('npm audit produced no output. Assuming no high severity issues.');
+        return { score, high };
+      }
       try {
         const audit = JSON.parse(auditRaw);
-        highSeverityIssues = audit.metadata?.vulnerabilities?.high || 0;
-        securityScore = Math.max(100 - highSeverityIssues * 5, 0);
-      } catch (parseErr) {
-        console.warn('Could not parse npm audit output. Defaulting to 0 high severity issues.');
-        highSeverityIssues = 0;
-        securityScore = 100;
+        high = audit.metadata?.vulnerabilities?.high || 0;
+        score = Math.max(100 - high * 5, 0);
+        return { score, high };
+      } catch {
+        console.warn('Could not parse npm audit output. Assuming no high severity issues.');
+        return { score, high };
       }
-    } else {
-      console.warn('npm audit produced no output. Defaulting to 0 high severity issues.');
-      highSeverityIssues = 0;
-      securityScore = 100;
+    } catch {
+      console.warn('Could not run npm audit. Assuming no high severity issues.');
+      return { score, high };
     }
-  } catch (e) {
-    console.warn('Could not run npm audit. Defaulting to 0 high severity issues.');
-    highSeverityIssues = 0;
-    securityScore = 100;
-  }
+  };
+  const { score: securityScore, high: highSeverityIssues } = getSecurity();
   // Build per-component (per-file) coverage array for dashboard, sorted highest to lowest
   const componentCoverage = fileSummaries
     .filter(f => (f.path.startsWith('/src/components/') || f.path.startsWith('src/components/')) && f.path.endsWith('.tsx'))
@@ -251,67 +274,53 @@ try {
   const typescriptCoverage = overallLineCoverage + '%';
 
   // Linting Score: run eslint and parse errors
-  let lintingScore = '100%';
-  try {
-    const eslintResult = execSync('npx eslint "src/**/*.{ts,tsx}" -f json', { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] });
-    const eslintJson = JSON.parse(eslintResult);
-    const totalErrors = eslintJson.reduce((sum, file) => sum + (file.errorCount || 0), 0);
-    const totalWarnings = eslintJson.reduce((sum, file) => sum + (file.warningCount || 0), 0);
-    if (totalErrors === 0 && totalWarnings === 0) {
-      lintingScore = '100%';
-    } else if (totalErrors === 0 && totalWarnings > 0) {
-      lintingScore = `0 errors, ${totalWarnings} warnings`;
-    } else {
-      lintingScore = `${totalErrors} errors, ${totalWarnings} warnings`;
-    }
-  } catch (e) {
-    // Try to parse partial output if available
-    if (e.stdout) {
-      try {
-        const eslintJson = JSON.parse(e.stdout);
-        const totalErrors = eslintJson.reduce((sum, file) => sum + (file.errorCount || 0), 0);
-        const totalWarnings = eslintJson.reduce((sum, file) => sum + (file.warningCount || 0), 0);
-        if (totalErrors === 0 && totalWarnings === 0) {
-          lintingScore = '100%';
-        } else if (totalErrors === 0 && totalWarnings > 0) {
-          lintingScore = `0 errors, ${totalWarnings} warnings`;
-        } else {
-          lintingScore = `${totalErrors} errors, ${totalWarnings} warnings`;
-        }
-      } catch {
-        lintingScore = 'lint error';
+  const getLintingScore = () => {
+    const compute = (json) => {
+      const totalErrors = json.reduce((sum, file) => sum + (file.errorCount || 0), 0);
+      const totalWarnings = json.reduce((sum, file) => sum + (file.warningCount || 0), 0);
+      if (totalErrors === 0 && totalWarnings === 0) return '100%';
+      if (totalErrors === 0 && totalWarnings > 0) return `0 errors, ${totalWarnings} warnings`;
+      return `${totalErrors} errors, ${totalWarnings} warnings`;
+    };
+    try {
+      const eslintResult = execSync('npx eslint "src/**/*.{ts,tsx}" -f json', { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] });
+      return compute(JSON.parse(eslintResult));
+    } catch (e) {
+      if (e.stdout) {
+        try { return compute(JSON.parse(e.stdout)); } catch { return 'lint error'; }
       }
-    } else {
-      lintingScore = 'lint error';
+      return 'lint error';
     }
-  }
+  };
+  const lintingScore = getLintingScore();
 
   // Build Success Rate: set to '100%' if script completes
   const buildSuccessRate = '100%';
 
   // Fetch CI/CD workflow status using gh CLI
-  let ciStatus = 'unknown';
-  let deployStatus = 'unknown';
-  try {
-    ciStatus = execSync('gh run list --workflow="CI/CD Pipeline" --limit 1 --json conclusion -q ".[0].conclusion"').toString().trim();
-  } catch (e) {
-    console.warn('Could not get CI workflow status:', e.message);
-  }
-  try {
-    deployStatus = execSync('gh run list --workflow="Deploy to GitHub Pages" --limit 1 --json conclusion -q ".[0].conclusion"').toString().trim();
-  } catch (e) {
-    console.warn('Could not get Deploy workflow status:', e.message);
-  }
+  const getWorkflowsStatus = () => {
+    let ci = 'unknown';
+    let deploy = 'unknown';
+    try {
+      ci = execSync('gh run list --workflow="CI/CD Pipeline" --limit 1 --json conclusion -q ".[0].conclusion"').toString().trim();
+    } catch (e) {
+      console.warn('Could not get CI workflow status:', e.message);
+    }
+    try {
+      deploy = execSync('gh run list --workflow="Deploy to GitHub Pages" --limit 1 --json conclusion -q ".[0].conclusion"').toString().trim();
+    } catch (e) {
+      console.warn('Could not get Deploy workflow status:', e.message);
+    }
+    return { ciStatus: ci, deployStatus: deploy };
+  };
+  const { ciStatus, deployStatus } = getWorkflowsStatus();
   
   // Now use deployStatus for quality metrics with better error handling
-  let deploymentSuccess = '100%';
-  if (deployStatus && deployStatus !== 'unknown' && deployStatus !== '') {
-    deploymentSuccess = deployStatus === 'success' ? '100%' : '0%';
-  } else {
-    // If we can't get the status, assume success if the script is running
-    // (since this script runs as part of the CI/CD pipeline)
-    deploymentSuccess = '100%';
-  }
+  const computeDeploymentSuccess = (status) => {
+    if (!status || status === 'unknown') return '100%';
+    return status === 'success' ? '100%' : '0%';
+  };
+  const deploymentSuccess = computeDeploymentSuccess(deployStatus);
 
   // Security Vulnerabilities: use highSeverityIssues
   const securityVulnerabilities = highSeverityIssues;

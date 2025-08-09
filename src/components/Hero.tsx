@@ -92,7 +92,7 @@ const Hero = () => {
                   src={heroImage}
                   alt="Harsh Shah — Machine Learning & Software Engineer"
                   loading="eager"
-                  fetchpriority="high"
+                  fetchPriority="high"
                   decoding="async"
                   width="640"
                   height="768"
