@@ -3,6 +3,7 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { render } from '@/test/utils';
 import Navigation from '../Navigation';
+import { SocialIconButton, SocialIcons } from '../Navigation.components';
 import { MobileMenuProvider } from '../MobileMenuContext';
 
 // Custom render function that includes the MobileMenuProvider
@@ -867,5 +868,53 @@ describe('Navigation Component', () => {
     // Should clean up event listeners
     expect(removeEventListenerSpy).toHaveBeenCalledWith('scroll', expect.any(Function));
     removeEventListenerSpy.mockRestore();
+  });
+
+  // Combined from Navigation.functions.test.tsx
+  it('clicking nav items triggers scrollToSection logic (sections present)', async () => {
+    const user = userEvent.setup();
+    Element.prototype.scrollIntoView = vi.fn();
+    document.body.innerHTML += `
+      <section id="home"></section>
+      <section id="about"></section>
+      <section id="career-education"></section>
+      <section id="skills"></section>
+      <section id="projects"></section>
+      <section id="contact"></section>
+    `;
+
+    renderWithMobileMenu(<Navigation />);
+
+    await user.click(screen.getByRole('button', { name: /about/i }));
+    await user.click(screen.getByRole('button', { name: /projects/i }));
+
+    expect(Element.prototype.scrollIntoView).toHaveBeenCalled();
+  });
+
+  // Combined from Navigation.components.test.tsx
+  it('renders SocialIconButton with link and icon (components file)', () => {
+    render(
+      <SocialIconButton href="https://example.com" icon={(props) => <svg data-testid="dummy-icon" {...props} />} label="Example" />
+    );
+
+    const link = screen.getByRole('link');
+    expect(link).toHaveAttribute('href', 'https://example.com');
+    expect(screen.getByTestId('dummy-icon')).toBeInTheDocument();
+  });
+
+  it('renders list of SocialIcons (components file)', () => {
+    render(
+      <SocialIcons
+        socialLinks={[
+          { label: 'One', href: 'https://one.example', icon: (props) => <svg data-testid="icon-1" {...props} /> },
+          { label: 'Two', href: 'https://two.example', icon: (props) => <svg data-testid="icon-2" {...props} /> },
+        ]}
+      />
+    );
+
+    const links = screen.getAllByRole('link');
+    expect(links).toHaveLength(2);
+    expect(links[0]).toHaveAttribute('href', 'https://one.example');
+    expect(links[1]).toHaveAttribute('href', 'https://two.example');
   });
 }); 

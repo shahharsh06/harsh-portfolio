@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,7 @@ import InteractiveCard from "./ui/InteractiveCard";
 import { GradientButton } from "./ui/GradientButton";
 import { SectionHeader } from "./ui/SectionHeader";
 import { PERSONAL_INFO, SOCIAL_LINKS } from "@/lib/constants";
+import { ContactFormData } from "@/types";
 import emailjs from '@emailjs/browser';
 import disposableDomains from 'disposable-email-domains';
 
@@ -22,13 +23,11 @@ function isValidEmail(email: string) {
 
 function isDisposableEmail(email: string) {
   const domain = email.split('@')[1]?.toLowerCase();
-  // Debug log
-  console.log('Checking domain:', domain);
   return disposableDomains.some(d => domain === d || domain.endsWith('.' + d));
 }
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
     subject: "",
@@ -213,4 +212,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default memo(Contact);

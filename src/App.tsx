@@ -5,6 +5,7 @@ import { HashRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import CursorEffect from "./components/CursorEffect";
+import ErrorBoundary from "./components/ErrorBoundary";
 import React, { useEffect, useState } from "react";
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
   }, []);
 
   return (
+    <ErrorBoundary>
       <TooltipProvider>
         <Toaster />
         <Sonner />
@@ -33,14 +35,15 @@ const App = () => {
             speed={1.2}
           />
         )}
-      <HashRouter>
+        <HashRouter>
           <Routes>
             <Route path="/" element={<Index />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-      </HashRouter>
+        </HashRouter>
       </TooltipProvider>
+    </ErrorBoundary>
   );
 };
 

@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { screen } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { render } from '@/test/utils';
 import ProjectCard from '../ProjectCard';
 import userEvent from '@testing-library/user-event';
-import { fireEvent, waitFor } from '@testing-library/react';
+// Combined from ProjectCard.extra.test.tsx: cover image load/error handlers
 
 describe('ProjectCard Component', () => {
   const mockProps = {
@@ -222,6 +222,30 @@ describe('ProjectCard Component', () => {
     await waitFor(() => {
       const projectTitles = screen.getAllByText('Test Project');
       expect(projectTitles.length).toBeGreaterThan(0);
+    });
+  });
+
+  it('covers image handlers: load and error (combined)', async () => {
+    render(
+      <ProjectCard
+        title="Sample Project"
+        description="A project for testing"
+        technologies={['React']}
+        githubUrl="https://github.com/example/repo"
+        liveUrl="https://example.com"
+        featured
+        image="image.png"
+      />
+    );
+
+    const img = screen.getByRole('img', { name: /sample project/i });
+    fireEvent.load(img);
+    expect(img).toBeInTheDocument();
+
+    fireEvent.error(img);
+    await waitFor(() => {
+      const titles = screen.getAllByText('Sample Project', { exact: true });
+      expect(titles.length).toBeGreaterThanOrEqual(1);
     });
   });
 

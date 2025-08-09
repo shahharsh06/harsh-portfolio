@@ -157,15 +157,13 @@ async function getLatestCommitSha() {
 
 async function updateDashboardFromJson() {
     try {
-        console.log('Fetching dashboard data...');
-        const res = await fetch('dashboard-data.json', { cache: "no-store" });
+        const res = await fetch('dashboard-data.json?ts=' + Date.now(), { cache: "no-store" });
         
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }
         
         const data = await res.json();
-        console.log('Dashboard data loaded:', data);
 
         // Update function coverage
         const functionCoverageElement = document.getElementById('functionCoverage');
@@ -173,7 +171,6 @@ async function updateDashboardFromJson() {
         
         if (functionCoverageElement) {
             functionCoverageElement.textContent = data.functions.percentage + '%';
-            console.log('Updated function coverage to:', data.functions.percentage + '%');
         } else {
             console.error('Function coverage element not found');
         }
@@ -231,7 +228,7 @@ async function updateDashboardFromJson() {
             lastUpdatedElement.textContent = new Date(data.lastUpdated).toLocaleString();
         }
         
-        console.log('Dashboard updated successfully');
+        // Dashboard updated successfully
     } catch (error) {
         console.error('Error updating dashboard:', error);
     }

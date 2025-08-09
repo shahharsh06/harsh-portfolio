@@ -89,11 +89,12 @@ npm run test
 
 ## 🧪 Testing & Coverage
 
-- **Statements:** 97%
-- **Branches:** 93%
-- **Functions:** 91% (Target: 80%)
-- **Lines:** 97%
-- **Tests:** 400+ passing
+- Current from latest run (approx):
+  - **Statements:** ~98%
+  - **Branches:** ~95%
+  - **Functions:** ~92% (Target: 80%+)
+  - **Lines:** ~98%
+  - **Tests:** 450+ passing
 
 Run all tests:
 ```bash
@@ -103,6 +104,11 @@ npm run test
 View coverage report:
 ```bash
 npm run test:coverage
+```
+
+Generate dashboard data locally (updates `public/dashboard-data.json` and history):
+```bash
+npm run dashboard:update
 ```
 
 ---

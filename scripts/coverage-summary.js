@@ -3,11 +3,64 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { execSync } from 'child_process';
-import { spawnSync } from 'child_process';
+import { execSync, spawnSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Small helpers
+const readJson = (filePath) => {
+  try {
+    if (fs.existsSync(filePath)) {
+      return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    }
+  } catch (e) {
+    console.warn(`Could not parse ${filePath}:`, e.message);
+  }
+  return null;
+};
+
+const normalizePath = (absPath) => ('/' + path.relative(process.cwd(), absPath)).replace(/\\/g, '/');
+
+const computeGrade = (pct) =>
+  pct >= 90 ? 'A+' : pct >= 85 ? 'A' : pct >= 80 ? 'B+' : pct >= 75 ? 'B' : pct >= 70 ? 'C+' : pct >= 65 ? 'C' : 'D';
+
+const parseVitestReport = (reportPath) => {
+  const json = readJson(reportPath);
+  let numTotalTests = 0;
+  let numTotalTestSuites = 0;
+  let testResults = [];
+
+  if (json) {
+    numTotalTests = json.numTotalTests || 0;
+    numTotalTestSuites = json.numTotalTestSuites || 0;
+    const maybe = json.testResults && Array.isArray(json.testResults.tests)
+      ? json.testResults.tests
+      : json.testResults;
+    testResults = Array.isArray(maybe) ? maybe : Array.isArray(json.results) ? json.results : [];
+  }
+
+  const safeArray = (val) => (Array.isArray(val) ? val : []);
+  const countByPattern = (pattern) => {
+    let count = 0;
+    testResults.forEach((file) => {
+      const fileName = (file.name || file.file || '').toString().replace(/\\/g, '/');
+      const assertions = safeArray(file.assertionResults || file.assertions);
+      if (fileName.includes(pattern)) count += assertions.length;
+    });
+    return count;
+  };
+
+  const testCategories = [
+    { name: 'Component Tests', count: countByPattern('src/components/__tests__') },
+    { name: 'UI Tests', count: countByPattern('src/components/ui/__tests__') },
+    { name: 'Utility Tests', count: countByPattern('src/lib/__tests__') },
+    { name: 'Integration Tests', count: countByPattern('src/__tests__') },
+    { name: 'Hook Tests', count: countByPattern('src/hooks/__tests__') },
+  ].sort((a, b) => b.count - a.count);
+
+  return { numTotalTests, numTotalTestSuites, testCategories };
+};
 
 // Read coverage data
 const coveragePath = path.join(__dirname, '..', 'coverage', 'coverage-final.json');
@@ -34,7 +87,7 @@ try {
 
   // Process each file
   Object.entries(coverageData).forEach(([filePath, fileData]) => {
-    const relativePath = filePath.replace(process.cwd(), '').replace(/\\/g, '/');
+    const relativePath = normalizePath(filePath);
     
     if (!relativePath.includes('src/') || relativePath.includes('test/') || relativePath.includes('.test.') || relativePath.includes('.spec.')) {
       return; // Skip test files and non-source files
@@ -129,14 +182,7 @@ try {
   console.log(`🌿 Branches:  ${coveredBranches}/${totalBranches} (${overallBranchCoverage}%)`);
 
   // Coverage grade
-  let grade = 'F';
-  if (overallLineCoverage >= 90) grade = 'A+';
-  else if (overallLineCoverage >= 85) grade = 'A';
-  else if (overallLineCoverage >= 80) grade = 'B+';
-  else if (overallLineCoverage >= 75) grade = 'B';
-  else if (overallLineCoverage >= 70) grade = 'C+';
-  else if (overallLineCoverage >= 65) grade = 'C';
-  else if (overallLineCoverage >= 60) grade = 'D';
+  const grade = computeGrade(overallLineCoverage);
 
   console.log(`\n🏆 Coverage Grade: ${grade} (${overallLineCoverage}%)`);
 
@@ -156,16 +202,6 @@ try {
 
   let testCount = 0;
   let testFiles = 0;
-  try {
-    const vitestReportPath = path.join(__dirname, '..', 'vitest-report.json');
-    if (fs.existsSync(vitestReportPath)) {
-      const vitestReport = JSON.parse(fs.readFileSync(vitestReportPath, 'utf8'));
-      testCount = vitestReport.numTotalTests || 0;
-      testFiles = vitestReport.numTotalTestSuites || 0;
-    }
-  } catch (e) {
-    console.warn('Could not read vitest-report.json:', e.message);
-  }
 
   const functionThreshold = 80; // Set your actual threshold here
   // Run npm audit and calculate security score
@@ -196,48 +232,19 @@ try {
   }
   // Build per-component (per-file) coverage array for dashboard, sorted highest to lowest
   const componentCoverage = fileSummaries
-    .filter(f => f.path.startsWith('/src/components/') && f.path.endsWith('.tsx'))
+    .filter(f => (f.path.startsWith('/src/components/') || f.path.startsWith('src/components/')) && f.path.endsWith('.tsx'))
     .map(f => ({
       name: f.path.split('/').pop(),
       coverage: Number(f.lineCoverage.toFixed(2))
     }))
     .sort((a, b) => b.coverage - a.coverage);
 
-  // Parse Vitest JSON report for real test category counts
-  let vitestReport = [];
+  // Vitest totals and categories
   const vitestReportPath = path.join(__dirname, '..', 'vitest-report.json');
-  if (fs.existsSync(vitestReportPath)) {
-    try {
-      const reportData = JSON.parse(fs.readFileSync(vitestReportPath, 'utf8'));
-      if (Array.isArray(reportData)) {
-        vitestReport = reportData;
-      } else if (Array.isArray(reportData.testResults)) {
-        vitestReport = reportData.testResults;
-      } else if (Array.isArray(reportData.results)) {
-        vitestReport = reportData.results;
-      } else {
-        vitestReport = [];
-      }
-    } catch (e) {
-      console.warn('Could not parse vitest-report.json, using placeholder test category counts.');
-    }
-  }
-  function countTestsByPattern(pattern) {
-    let count = 0;
-    vitestReport.forEach(file => {
-      if (file.name && file.name.replace(/\\/g, '/').includes(pattern) && Array.isArray(file.assertionResults)) {
-        count += file.assertionResults.length;
-      }
-    });
-    return count;
-  }
-  const testCategories = [
-    { name: 'Component Tests', count: countTestsByPattern('src/components/__tests__') },
-    { name: 'UI Tests', count: countTestsByPattern('src/components/ui/__tests__') },
-    { name: 'Utility Tests', count: countTestsByPattern('src/lib/__tests__') },
-    { name: 'Integration Tests', count: countTestsByPattern('src/__tests__') },
-    { name: 'Hook Tests', count: countTestsByPattern('src/hooks/__tests__') }
-  ].sort((a, b) => b.count - a.count);
+  const vitestParsed = parseVitestReport(vitestReportPath);
+  testCount = vitestParsed.numTotalTests;
+  testFiles = vitestParsed.numTotalTestSuites;
+  const testCategories = vitestParsed.testCategories;
 
   // Automate quality metrics for dashboard
   // TypeScript Coverage: use overallLineCoverage
@@ -411,4 +418,4 @@ try {
 } catch (error) {
   console.error('❌ Error processing coverage data:', error.message);
   process.exit(1);
-} 
+}

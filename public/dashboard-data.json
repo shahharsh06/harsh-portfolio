@@ -1,24 +1,24 @@
 {
-  "lastUpdated": "2025-07-26T00:24:14.001Z",
+  "lastUpdated": "2025-08-09T19:13:12.763Z",
   "coverage": {
-    "percentage": 97,
-    "totalLines": 2184,
-    "coveredLines": 2123
+    "percentage": 98,
+    "totalLines": 2215,
+    "coveredLines": 2167
   },
   "functions": {
-    "percentage": 91,
-    "total": 90,
-    "covered": 82,
+    "percentage": 92,
+    "total": 95,
+    "covered": 87,
     "threshold": 80
   },
   "branches": {
-    "percentage": 93,
-    "total": 326,
-    "covered": 303
+    "percentage": 94,
+    "total": 340,
+    "covered": 320
   },
   "tests": {
-    "count": 434,
-    "files": 75,
+    "count": 451,
+    "files": 84,
     "status": "passing"
   },
   "security": {
@@ -36,6 +36,10 @@
     },
     {
       "name": "CursorEffect.tsx",
+      "coverage": 100
+    },
+    {
+      "name": "ErrorBoundary.tsx",
       "coverage": 100
     },
     {
@@ -120,25 +124,25 @@
     },
     {
       "name": "Contact.tsx",
-      "coverage": 93
+      "coverage": 97
+    },
+    {
+      "name": "Hero.tsx",
+      "coverage": 95
     },
     {
       "name": "Projects.tsx",
       "coverage": 92
-    },
-    {
-      "name": "Hero.tsx",
-      "coverage": 90
     }
   ],
   "testCategories": [
     {
       "name": "Component Tests",
-      "count": 252
+      "count": 265
     },
     {
       "name": "UI Tests",
-      "count": 61
+      "count": 65
     },
     {
       "name": "Utility Tests",
@@ -154,7 +158,7 @@
     }
   ],
   "quality": {
-    "typescriptCoverage": "97%",
+    "typescriptCoverage": "98%",
     "lintingScore": "100%",
     "buildSuccessRate": "100%",
     "deploymentSuccess": "100%",

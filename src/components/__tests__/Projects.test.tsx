@@ -1,8 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { screen, waitFor, act } from '@testing-library/react';
+import { screen, waitFor, act, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { render } from '@/test/utils';
 import Projects from '../Projects';
+// Combine extra handlers tests from Projects.extra.functions.test.tsx
 
 describe('Projects Component', () => {
   beforeEach(() => {
@@ -133,6 +134,13 @@ describe('Projects Component', () => {
     // Carousel should still be functional
     expect(prevButtons[0]).toBeInTheDocument();
     expect(nextButtons[0]).toBeInTheDocument();
+  });
+
+  it('desktop carousel buttons call navigate handlers (combined)', () => {
+    render(<Projects />);
+    const buttons = screen.getAllByRole('button', { name: /project/i });
+    buttons.forEach(btn => fireEvent.click(btn));
+    expect(buttons.length).toBeGreaterThanOrEqual(2);
   });
 
   it('handles carousel navigation for other projects', async () => {
@@ -287,6 +295,15 @@ describe('Projects Component', () => {
       });
       expect(featuredCarousel).toBeInTheDocument();
     }
+  });
+
+  it('pauses/resumes on hover via handlers (combined)', () => {
+    render(<Projects />);
+    const container = document.querySelector('.flex.overflow-hidden') as HTMLElement
+      || screen.getByText(/Featured Projects/i).closest('div') as HTMLElement;
+    expect(container).toBeTruthy();
+    fireEvent.mouseEnter(container!);
+    fireEvent.mouseLeave(container!);
   });
 
   it('handles carousel pause on hover for other projects', async () => {

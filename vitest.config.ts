@@ -41,6 +41,7 @@ export default defineConfig({
         'src/components/icons/**', // Icon components are simple
         'src/components/ThemeProvider.tsx', // Context provider, minimal logic
         'src/components/MobileMenuContext.tsx', // Context provider, minimal logic
+        'src/types/**', // Type-only modules, no runtime logic
       ],
       include: [
         'src/**/*.{ts,tsx}',

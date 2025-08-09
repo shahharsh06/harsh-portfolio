@@ -17,7 +17,9 @@
     "test:coverage:watch": "vitest --coverage --watch",
     "test:watch": "vitest --watch",
     "test:coverage:detailed": "vitest run --coverage && node scripts/coverage-summary.js",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "test:coverage:json": "vitest run --coverage --reporter=json --outputFile vitest-report.json",
+    "dashboard:update": "npm run test:coverage:json && node scripts/coverage-summary.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
