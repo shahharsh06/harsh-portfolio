@@ -90,7 +90,12 @@ const Hero = () => {
                 <div className="w-full h-full rounded-3xl overflow-hidden">
                 <img
                   src={heroImage}
-                  alt="Harsh - ML Engineer & Software Engineer"
+                  alt="Harsh Shah — Machine Learning & Software Engineer"
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
+                  width="640"
+                  height="768"
                   className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                 />
                 </div>

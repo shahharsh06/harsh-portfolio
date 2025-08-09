@@ -46,8 +46,8 @@ describe('Hero Component', () => {
     const heroSection = screen.getByTestId('hero-section');
     expect(heroSection).toBeInTheDocument();
     
-    // Check hero image
-    const heroImage = screen.getByAltText('Harsh - ML Engineer & Software Engineer');
+    // Check hero image (alt text may evolve; match broadly)
+    const heroImage = screen.getByAltText(/Harsh Shah.*Engineer/i);
     expect(heroImage).toBeInTheDocument();
     expect(heroImage).toHaveAttribute('src', '/mock-profile-image.jpg');
   });
@@ -141,7 +141,7 @@ describe('Hero Component', () => {
     render(<Hero />);
     
     // Check image alt text
-    const heroImage = screen.getByAltText('Harsh - ML Engineer & Software Engineer');
+    const heroImage = screen.getByAltText(/Harsh Shah.*Engineer/i);
     expect(heroImage).toBeInTheDocument();
     
     // Check button accessibility
