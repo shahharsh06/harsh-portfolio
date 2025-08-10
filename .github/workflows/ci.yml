@@ -41,7 +41,7 @@ jobs:
         run: npx vitest run --reporter=json --outputFile=vitest-report.json
 
       - name: Generate dashboard data
-        run: node scripts/coverage-summary.js
+        run: npm run dashboard:update
 
       - name: Upload coverage to Qlty Cloud
         uses: qltysh/qlty-action/coverage@v1

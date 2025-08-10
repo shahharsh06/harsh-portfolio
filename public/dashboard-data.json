@@ -1,24 +1,24 @@
 {
-  "lastUpdated": "2025-08-10T16:16:35.616Z",
+  "lastUpdated": "2025-08-10T21:29:26.518Z",
   "coverage": {
     "percentage": 98,
-    "totalLines": 2222,
-    "coveredLines": 2168
+    "totalLines": 2349,
+    "coveredLines": 2300
   },
   "functions": {
-    "percentage": 92,
-    "total": 95,
-    "covered": 87,
+    "percentage": 93,
+    "total": 100,
+    "covered": 93,
     "threshold": 80
   },
   "branches": {
     "percentage": 94,
-    "total": 338,
-    "covered": 317
+    "total": 336,
+    "covered": 315
   },
   "tests": {
-    "count": 451,
-    "files": 84,
+    "count": 479,
+    "files": 101,
     "status": "passing"
   },
   "security": {
@@ -32,10 +32,6 @@
     },
     {
       "name": "CareerEducation.tsx",
-      "coverage": 100
-    },
-    {
-      "name": "CursorEffect.tsx",
       "coverage": 100
     },
     {
@@ -72,10 +68,6 @@
     },
     {
       "name": "InteractiveCard.tsx",
-      "coverage": 100
-    },
-    {
-      "name": "ProjectCard.tsx",
       "coverage": 100
     },
     {
@@ -123,22 +115,30 @@
       "coverage": 100
     },
     {
+      "name": "Projects.tsx",
+      "coverage": 98
+    },
+    {
       "name": "Contact.tsx",
       "coverage": 97
     },
     {
-      "name": "Projects.tsx",
-      "coverage": 92
+      "name": "CursorEffect.tsx",
+      "coverage": 96
+    },
+    {
+      "name": "ProjectCard.tsx",
+      "coverage": 95
     },
     {
       "name": "Hero.tsx",
-      "coverage": 91
+      "coverage": 92
     }
   ],
   "testCategories": [
     {
       "name": "Component Tests",
-      "count": 265
+      "count": 293
     },
     {
       "name": "UI Tests",

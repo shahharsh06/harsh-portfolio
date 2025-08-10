@@ -1,17 +1,27 @@
-name: Update Dashboard (Manual Only)
+name: Update Dashboard (Auto)
 
 on:
-  # Disabled automatic triggers to prevent infinite loops
-  # workflow_run:
-  #   workflows: ["CI/CD Pipeline", "Deploy to GitHub Pages"]
-  #   types: [completed]
+  # Automatically trigger on commits to main branch
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '**/*.test.*'
+      - '**/*.spec.*'
+      - 'vitest.config.*'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'yarn.lock'
+      - 'pnpm-lock.yaml'
+  # Keep manual trigger for testing
   workflow_dispatch:
 
 jobs:
   update-dashboard:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       actions: read
       pull-requests: read
       issues: read
@@ -31,20 +41,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests and generate coverage
-        run: npx vitest run --coverage
-
-      - name: Generate Vitest JSON report
-        run: npx vitest run --reporter=json --outputFile=vitest-report.json
-
-      - name: Generate dashboard data
-        run: node scripts/coverage-summary.js
-
-      # Optionally update dashboard.html if you want to inject metrics directly
-      # - name: Update dashboard HTML (optional)
-      #   run: |
-      #     # Example: sed or node script to inject values from dashboard-data.json
-      #     # This step can be customized as needed
+      - name: Update Dashboard with Comprehensive Script
+        run: npm run dashboard:update
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check latest CI status
         id: ci-status
@@ -78,19 +78,19 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add public/dashboard-data.json
-          git commit -m "dashboard: update metrics [ci skip]" || echo "No changes to commit"
+          git add public/dashboard-data.json public/dashboard-history.json
+          git commit -m "dashboard: auto-update metrics [ci skip]" || echo "No changes to commit"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.DASHBOARD_TOKEN }}
 
       - name: Create dashboard summary
         run: |
-          echo "## 📊 Dashboard Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "## 📊 Dashboard Auto-Update Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Coverage**: $(jq .coverage.percentage public/dashboard-data.json)%" >> $GITHUB_STEP_SUMMARY
           echo "**Function Coverage**: $(jq .functions.percentage public/dashboard-data.json)%" >> $GITHUB_STEP_SUMMARY
           echo "**Tests**: $(jq .tests.count public/dashboard-data.json) passing" >> $GITHUB_STEP_SUMMARY
           echo "**Test Files**: $(jq .tests.files public/dashboard-data.json)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Dashboard available at: https://${{ github.event.repository.owner }}.github.io/${{ github.event.repository.name }}/dashboard.html" >> $GITHUB_STEP_SUMMARY 
+          echo "🔄 **Auto-updated on commit** - Dashboard available at: https://${{ github.event.repository.owner }}.github.io/${{ github.event.repository.name }}/dashboard.html" >> $GITHUB_STEP_SUMMARY 
