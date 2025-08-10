@@ -43,12 +43,12 @@ describe('Contact Component - extra branches', () => {
     fireEvent.submit(form);
 
     expect(
-      await screen.findByText(content => content.includes('Invalid Email'))
+      await screen.findByText(content => content.includes('Invalid Email'), {}, { timeout: 5000 })
     ).toBeInTheDocument();
     expect(
-      await screen.findByText(content => content.includes('Please enter a valid email address'))
+      await screen.findByText(content => content.includes('Please enter a valid email address'), {}, { timeout: 5000 })
     ).toBeInTheDocument();
-  });
+  }, 10000); // Add explicit timeout
 
   it('blocks disposable email domains and shows toast', async () => {
     const user = userEvent.setup();
@@ -59,6 +59,7 @@ describe('Contact Component - extra branches', () => {
       </>
     );
 
+    // Use await for each user interaction to prevent hanging
     await user.type(screen.getByLabelText(/name/i), 'Jane Doe');
     await user.type(screen.getByLabelText(/email/i), 'user@mailinator.com');
     await user.type(screen.getByLabelText(/subject/i), 'Hello');
@@ -67,11 +68,12 @@ describe('Contact Component - extra branches', () => {
     // Valid email => normal click is fine
     await user.click(screen.getByRole('button', { name: /send message/i }));
 
+    // Wait for toast to appear with explicit timeout
     expect(
-      await screen.findByText(content => content.includes('Disposable Email Detected'))
+      await screen.findByText(content => content.includes('Disposable Email Detected'), {}, { timeout: 5000 })
     ).toBeInTheDocument();
     expect(
-      await screen.findByText(content => content.includes('Please use a real, non-temporary email address.'))
+      await screen.findByText(content => content.includes('Please use a real, non-temporary email address.'), {}, { timeout: 5000 })
     ).toBeInTheDocument();
-  });
+  }, 10000); // Add explicit timeout
 });

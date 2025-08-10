@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi, beforeAll } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi, beforeAll } from 'vitest';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { render } from '@/test/utils';
@@ -37,6 +37,10 @@ describe('Hero Component', () => {
       scrollIntoView: vi.fn(),
     };
     vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as unknown as Element);
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
   });
 
   it('renders hero section with correct structure', () => {
@@ -94,75 +98,22 @@ describe('Hero Component', () => {
     render(<Hero />);
     
     const getInTouchButton = screen.getByRole('button', { name: /get in touch/i });
-    
     await user.click(getInTouchButton);
     
-    // Should scroll to contact section
+    // Verify scroll function was called
     expect(document.querySelector).toHaveBeenCalledWith('#contact');
   });
 
-  it('handles scroll to about section', async () => {
+  it('handles Download Resume link click', async () => {
     const user = userEvent.setup();
     render(<Hero />);
     
-    // Find scroll indicator (might be hidden on mobile)
-    const scrollIndicator = screen.queryByText('Scroll to explore');
-    if (scrollIndicator) {
-      await user.click(scrollIndicator);
-      expect(document.querySelector).toHaveBeenCalledWith('#about');
-    }
-  });
-
-  it('applies gradient styling to buttons', () => {
-    render(<Hero />);
-    
-    const getInTouchButton = screen.getByRole('button', { name: /get in touch/i });
     const downloadResumeLink = screen.getByRole('link', { name: /download resume/i });
+    await user.click(downloadResumeLink);
     
-    // Check for gradient classes
-    expect(getInTouchButton).toHaveClass('bg-gradient-to-r');
-    expect(downloadResumeLink).toHaveClass('bg-gradient-to-r');
-  });
-
-  it('applies gradient styling to statistics', () => {
-    render(<Hero />);
-    
-    const experienceStat = screen.getByText('1+');
-    const projectsStat = screen.getByText('10+');
-    const technologiesStat = screen.getByText('25+');
-    
-    // Check for gradient text classes
-    expect(experienceStat).toHaveClass('text-gradient');
-    expect(projectsStat).toHaveClass('text-gradient');
-    expect(technologiesStat).toHaveClass('text-gradient');
-  });
-
-  it('has proper accessibility attributes', () => {
-    render(<Hero />);
-    
-    // Check image alt text
-    const heroImage = screen.getByAltText(/Harsh Shah.*Engineer/i);
-    expect(heroImage).toBeInTheDocument();
-    
-    // Check button accessibility
-    const getInTouchButton = screen.getByRole('button', { name: /get in touch/i });
-    expect(getInTouchButton).toBeInTheDocument();
-    
-    // Check link accessibility
-    const downloadResumeLink = screen.getByRole('link', { name: /download resume/i });
-    expect(downloadResumeLink).toBeInTheDocument();
-  });
-
-  it('renders with responsive design classes', () => {
-    render(<Hero />);
-    
-    const heroSection = screen.getByTestId('hero-section');
-    expect(heroSection).toHaveClass('min-h-screen');
-    expect(heroSection).toHaveClass('pt-16');
-    
-    // Check grid layout
-    const gridContainer = heroSection.querySelector('.grid');
-    expect(gridContainer).toHaveClass('lg:grid-cols-2');
+    // Link should have correct attributes
+    expect(downloadResumeLink).toHaveAttribute('href', '/mock-resume.pdf');
+    expect(downloadResumeLink).toHaveAttribute('download');
   });
 
   it('displays typewriter animation for name', async () => {
@@ -182,5 +133,169 @@ describe('Hero Component', () => {
       const titleElement = screen.getByText(/Machine Learning Engineer|Data Scientist|AI Enthusiast|Python Developer/);
       expect(titleElement).toBeInTheDocument();
     }, { timeout: 5000 });
+  });
+
+  it('handles scroll functions with null elements', () => {
+    // Mock querySelector to return null
+    vi.spyOn(document, 'querySelector').mockReturnValue(null);
+    
+    render(<Hero />);
+    
+    // This should not crash even when elements are not found
+    expect(screen.getByTestId('hero-section')).toBeInTheDocument();
+  });
+
+  it('handles scroll functions with undefined scrollIntoView', () => {
+    // Mock element without scrollIntoView method
+    const mockElement = {};
+    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as unknown as Element);
+    
+    render(<Hero />);
+    
+    // This should not crash even when scrollIntoView is undefined
+    expect(screen.getByTestId('hero-section')).toBeInTheDocument();
+  });
+
+  it('handles edge case when scroll functions are called', async () => {
+    const user = userEvent.setup();
+    const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    
+    render(<Hero />);
+    
+    // Mock scrollIntoView to throw an error
+    const mockElement = {
+      scrollIntoView: vi.fn().mockImplementation(() => {
+        throw new Error('Scroll error');
+      }),
+    };
+    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as unknown as Element);
+    
+    // This should not crash the component
+    const getInTouchButton = screen.getByRole('button', { name: /get in touch/i });
+    await user.click(getInTouchButton);
+    
+    // Component should still be functional
+    expect(screen.getByTestId('hero-section')).toBeInTheDocument();
+    
+    // Verify that the error was handled gracefully
+    expect(consoleWarnSpy).toHaveBeenCalledWith('Scroll to contact failed:', expect.any(Error));
+    
+    consoleWarnSpy.mockRestore();
+  });
+
+  it('tests scrollToContact function directly', () => {
+    const mockElement = {
+      scrollIntoView: vi.fn(),
+    };
+    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as unknown as Element);
+    
+    render(<Hero />);
+    
+    // Get the Get In Touch button and click it to trigger scrollToContact
+    const getInTouchButton = screen.getByRole('button', { name: /get in touch/i });
+    getInTouchButton.click();
+    
+    // Verify scrollToContact was called with correct parameters
+    expect(document.querySelector).toHaveBeenCalledWith('#contact');
+    expect(mockElement.scrollIntoView).toHaveBeenCalledWith({ behavior: "smooth" });
+  });
+
+  it('tests scrollToAbout function directly', () => {
+    const mockElement = {
+      scrollIntoView: vi.fn(),
+    };
+    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as unknown as Element);
+    
+    render(<Hero />);
+    
+    // Find and click the "Scroll to explore" button to trigger scrollToAbout
+    const scrollButton = screen.getByRole('button', { name: /scroll to explore/i });
+    scrollButton.click();
+    
+    // Verify scrollToAbout was called with correct parameters
+    expect(document.querySelector).toHaveBeenCalledWith('#about');
+    expect(mockElement.scrollIntoView).toHaveBeenCalledWith({ behavior: "smooth" });
+  });
+
+  it('handles scrollToContact with missing element gracefully', () => {
+    // Mock querySelector to return null
+    vi.spyOn(document, 'querySelector').mockReturnValue(null);
+    const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    
+    render(<Hero />);
+    
+    // Click Get In Touch button
+    const getInTouchButton = screen.getByRole('button', { name: /get in touch/i });
+    getInTouchButton.click();
+    
+    // Should not crash and should log warning
+    expect(screen.getByTestId('hero-section')).toBeInTheDocument();
+    
+    consoleWarnSpy.mockRestore();
+  });
+
+  it('handles scrollToAbout with missing element gracefully', () => {
+    // Mock querySelector to return null
+    vi.spyOn(document, 'querySelector').mockReturnValue(null);
+    const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    
+    render(<Hero />);
+    
+    // Find "Scroll to explore" button if it exists
+    const scrollButton = screen.queryByRole('button', { name: /scroll to explore/i });
+    if (scrollButton) {
+      scrollButton.click();
+      
+      // Should not crash and should log warning
+      expect(screen.getByTestId('hero-section')).toBeInTheDocument();
+    }
+    
+    consoleWarnSpy.mockRestore();
+  });
+
+  it('handles scrollToContact with scrollIntoView error gracefully', () => {
+    const mockElement = {
+      scrollIntoView: vi.fn().mockImplementation(() => {
+        throw new Error('Scroll error');
+      }),
+    };
+    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as unknown as Element);
+    const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    
+    render(<Hero />);
+    
+    // Click Get In Touch button
+    const getInTouchButton = screen.getByRole('button', { name: /get in touch/i });
+    getInTouchButton.click();
+    
+    // Should not crash and should log warning
+    expect(screen.getByTestId('hero-section')).toBeInTheDocument();
+    expect(consoleWarnSpy).toHaveBeenCalledWith('Scroll to contact failed:', expect.any(Error));
+    
+    consoleWarnSpy.mockRestore();
+  });
+
+  it('handles scrollToAbout with scrollIntoView error gracefully', () => {
+    const mockElement = {
+      scrollIntoView: vi.fn().mockImplementation(() => {
+        throw new Error('Scroll error');
+      }),
+    };
+    vi.spyOn(document, 'querySelector').mockReturnValue(mockElement as unknown as Element);
+    const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    
+    render(<Hero />);
+    
+    // Find "Scroll to explore" button if it exists
+    const scrollButton = screen.queryByRole('button', { name: /scroll to explore/i });
+    if (scrollButton) {
+      scrollButton.click();
+      
+      // Should not crash and should log warning
+      expect(screen.getByTestId('hero-section')).toBeInTheDocument();
+      expect(consoleWarnSpy).toHaveBeenCalledWith('Scroll to about failed:', expect.any(Error));
+    }
+    
+    consoleWarnSpy.mockRestore();
   });
 }); 

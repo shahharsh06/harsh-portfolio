@@ -117,14 +117,13 @@ describe('Skills Component', () => {
 
   it('handles component lifecycle', () => {
     const { unmount } = render(<Skills />);
-
-    // Should mount properly
-    const skillsSection = document.getElementById('skills');
-    expect(skillsSection).toBeInTheDocument();
-
+    
+    // Should mount successfully
+    expect(screen.getByTestId('skills-section')).toBeInTheDocument();
+    
     // Should unmount cleanly
     unmount();
-    expect(document.querySelector('#skills')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('skills-section')).not.toBeInTheDocument();
   });
 
   it('handles error boundaries', () => {

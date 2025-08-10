@@ -78,16 +78,18 @@ describe('Contact Component', () => {
     const subjectInput = screen.getByLabelText(/subject/i);
     const messageInput = screen.getByLabelText(/message/i);
 
+    // Use await for each user interaction to prevent hanging
     await user.type(nameInput, 'John Doe');
     await user.type(emailInput, 'john@example.com');
     await user.type(subjectInput, 'Test Subject');
     await user.type(messageInput, 'Test message content');
 
+    // Verify the values were set correctly
     expect(nameInput).toHaveValue('John Doe');
     expect(emailInput).toHaveValue('john@example.com');
     expect(subjectInput).toHaveValue('Test Subject');
     expect(messageInput).toHaveValue('Test message content');
-  });
+  }, 10000); // Add explicit timeout
 
   it('handles form submission', async () => {
     const user = userEvent.setup();

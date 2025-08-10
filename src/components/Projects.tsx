@@ -4,12 +4,84 @@ import { ExternalLink, ChevronLeft, ChevronRight, Code2 } from "lucide-react";
 import { GithubIcon } from "./icons";
 import SectionIcon from "./SectionIcon";
 import { ProjectCard } from "./ui/ProjectCard";
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo, useCallback } from "react";
 import { Project, featuredProjects, otherProjects } from "@/data/projects";
 import { useCarousel } from "@/hooks/useCarousel";
 import { useResponsive } from "@/hooks/useResponsive";
 import { CAROUSEL_INTERVALS } from "@/lib/constants";
 import { getCardWidthClass, getCardPadding, getCoverflowStyle, getRollingWindow } from "@/lib/utils";
+
+// Types for better organization
+interface CarouselConfig {
+  autoPlay: boolean;
+  interval: number;
+  pauseOnHover: boolean;
+  type: 'featured' | 'other';
+  isMobile: boolean;
+}
+
+interface CarouselState {
+  currentIndex: number;
+  next: () => void;
+  prev: () => void;
+  pause: () => void;
+  resume: () => void;
+}
+
+// Custom hook to manage carousel state
+const useProjectCarousel = (projects: Project[], type: 'featured' | 'other', isMobile: boolean): CarouselState => {
+  const interval = isMobile ? CAROUSEL_INTERVALS.FEATURED : 
+    (type === 'featured' ? CAROUSEL_INTERVALS.FEATURED : CAROUSEL_INTERVALS.OTHER);
+  
+  return useCarousel(projects.length, 0, {
+    autoPlay: true,
+    interval,
+    pauseOnHover: true,
+    type,
+    isMobile
+  });
+};
+
+// Custom hook to manage hover state and carousel control
+const useProjectHover = (featuredCarousel: CarouselState, otherCarousel: CarouselState) => {
+  const [isFeaturedHovered, setIsFeaturedHovered] = useState(false);
+  const [isOtherHovered, setIsOtherHovered] = useState(false);
+
+  const handleFeaturedHover = useCallback((isHovered: boolean) => {
+    setIsFeaturedHovered(isHovered);
+    if (isHovered) {
+      featuredCarousel.pause();
+    } else {
+      featuredCarousel.resume();
+    }
+  }, [featuredCarousel]);
+
+  const handleOtherHover = useCallback((isHovered: boolean) => {
+    setIsOtherHovered(isHovered);
+    if (isHovered) {
+      otherCarousel.pause();
+    } else {
+      otherCarousel.resume();
+    }
+  }, [otherCarousel]);
+
+  return {
+    isFeaturedHovered,
+    isOtherHovered,
+    handleFeaturedHover,
+    handleOtherHover
+  };
+};
+
+// Generic scroll handler
+const createScrollHandler = (carousel: CarouselState) => 
+  (direction: 'prev' | 'next') => {
+    if (direction === 'prev') {
+      carousel.prev();
+    } else {
+      carousel.next();
+    }
+  };
 
 // Reusable navigation button component
 const NavigationButton = ({ 
@@ -55,9 +127,37 @@ const CoverflowCarousel = ({
   isHovered: boolean; 
   type?: 'featured' | 'other';
 }) => {
-  // For mobile coverflow, we use single-step navigation for consistent UX
-  // The auto-scroll will still work with the multi-step pattern, but display will be smooth
   const displayIndex = currentIndex % projects.length;
+
+  const getProjectStyle = useCallback((index: number) => {
+    const n = projects.length;
+    let offset = (index - displayIndex + n) % n;
+    if (offset > n / 2) offset -= n;
+    
+    if (offset === 0) {
+      return {
+        transform: 'scale(1) rotateY(0deg) translateX(0px) translate(-50%, -50%)',
+        zIndex: 10,
+        opacity: 1,
+        filter: 'none',
+      };
+    } else if (offset === -1 || offset === 1) {
+      return {
+        transform: `scale(0.85) rotateY(${offset === -1 ? 30 : -30}deg) translateX(${offset === -1 ? -40 : 40}px) translate(-50%, -50%)`,
+        zIndex: 5,
+        opacity: 0.7,
+        filter: 'blur(0.5px)',
+      };
+    } else {
+      return {
+        transform: `scale(0.7) translateX(${offset * 60}px) translate(-50%, -50%)`,
+        zIndex: 1,
+        opacity: 0.3,
+        filter: 'blur(1px)',
+        pointerEvents: 'none',
+      };
+    }
+  }, [displayIndex, projects.length]);
 
   return (
     <div className="flex items-center justify-center h-96">
@@ -68,34 +168,7 @@ const CoverflowCarousel = ({
           onMouseLeave={onMouseLeave}
         >
           {projects.map((project, index) => {
-            const n = projects.length;
-            let offset = (index - displayIndex + n) % n;
-            if (offset > n / 2) offset -= n;
-            
-            let style;
-            if (offset === 0) {
-              style = {
-                transform: 'scale(1) rotateY(0deg) translateX(0px) translate(-50%, -50%)',
-                zIndex: 10,
-                opacity: 1,
-                filter: 'none',
-              };
-            } else if (offset === -1 || offset === 1) {
-              style = {
-                transform: `scale(0.85) rotateY(${offset === -1 ? 30 : -30}deg) translateX(${offset === -1 ? -40 : 40}px) translate(-50%, -50%)`,
-                zIndex: 5,
-                opacity: 0.7,
-                filter: 'blur(0.5px)',
-              };
-            } else {
-              style = {
-                transform: `scale(0.7) translateX(${offset * 60}px) translate(-50%, -50%)`,
-                zIndex: 1,
-                opacity: 0.3,
-                filter: 'blur(1px)',
-                pointerEvents: 'none',
-              };
-            }
+            const style = getProjectStyle(index);
             
             return (
               <div 
@@ -200,172 +273,96 @@ const DesktopCarousel = ({
   </div>
 );
 
-const Projects = () => {
-  const [isFeaturedHovered, setIsFeaturedHovered] = useState(false);
-  const [isOtherHovered, setIsOtherHovered] = useState(false);
-  
-  const { isSmallScreen, visibleFeatured, visibleOther } = useResponsive();
-  
-  // Enhanced carousel hooks with auto-scrolling for desktop (multi-step)
-  const {
-    currentIndex: currentFeaturedIndex,
-    next: nextFeatured,
-    prev: prevFeatured,
-    pause: pauseFeatured,
-    resume: resumeFeatured,
-  } = useCarousel(featuredProjects.length, 0, {
-    autoPlay: true,
-    interval: CAROUSEL_INTERVALS.FEATURED,
-    pauseOnHover: true,
-    type: 'featured',
-    isMobile: false
-  });
+// Projects section header component
+const ProjectsHeader = () => (
+  <div className="text-center mb-16">
+    <h2 className="text-3xl md:text-4xl font-bold mb-4 flex items-center justify-center gap-2">
+      <SectionIcon icon={<Code2 />} size={28} padding="p-3" interactive={true} />
+      <span>Featured <span className="text-gradient">Projects</span></span>
+    </h2>
+    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Here are some of my recent projects that showcase my skills and passion for development.
+    </p>
+  </div>
+);
 
-  const {
-    currentIndex: currentOtherIndex,
-    next: nextOther,
-    prev: prevOther,
-    pause: pauseOther,
-    resume: resumeOther,
-  } = useCarousel(otherProjects.length, 0, {
-    autoPlay: true,
-    interval: CAROUSEL_INTERVALS.OTHER,
-    pauseOnHover: true,
-    type: 'other',
-    isMobile: false
-  });
-
-  // Mobile carousel hooks with single-step navigation for consistent UX
-  const {
-    currentIndex: currentFeaturedMobileIndex,
-    next: nextFeaturedMobile,
-    prev: prevFeaturedMobile,
-    pause: pauseFeaturedMobile,
-    resume: resumeFeaturedMobile,
-  } = useCarousel(featuredProjects.length, 0, {
-    autoPlay: true,
-    interval: CAROUSEL_INTERVALS.FEATURED,
-    pauseOnHover: true,
-    type: 'featured',
-    isMobile: true
-  });
-
-  const {
-    currentIndex: currentOtherMobileIndex,
-    next: nextOtherMobile,
-    prev: prevOtherMobile,
-    pause: pauseOtherMobile,
-    resume: resumeOtherMobile,
-  } = useCarousel(otherProjects.length, 0, {
-    autoPlay: true,
-    interval: CAROUSEL_INTERVALS.OTHER,
-    pauseOnHover: true,
-    type: 'other',
-    isMobile: true
-  });
-
-  const scrollToFeatured = (direction: 'prev' | 'next') => {
-    if (direction === 'prev') {
-      prevFeatured();
-    } else {
-      nextFeatured();
-    }
-  };
-
-  const scrollToOther = (direction: 'prev' | 'next') => {
-    if (direction === 'prev') {
-      prevOther();
-    } else {
-      nextOther();
-    }
-  };
-
-  const scrollToFeaturedMobile = (direction: 'prev' | 'next') => {
-    if (direction === 'prev') {
-      prevFeaturedMobile();
-    } else {
-      nextFeaturedMobile();
-    }
-  };
-
-  const scrollToOtherMobile = (direction: 'prev' | 'next') => {
-    if (direction === 'prev') {
-      prevOtherMobile();
-    } else {
-      nextOtherMobile();
-    }
-  };
-
-  // Handle hover events for auto-scroll pause/resume
-  const handleFeaturedHover = (isHovered: boolean) => {
-    setIsFeaturedHovered(isHovered);
-    if (isHovered) {
-      pauseFeatured();
-      pauseFeaturedMobile();
-    } else {
-      resumeFeatured();
-      resumeFeaturedMobile();
-    }
-  };
-
-  const handleOtherHover = (isHovered: boolean) => {
-    setIsOtherHovered(isHovered);
-    if (isHovered) {
-      pauseOther();
-      pauseOtherMobile();
-    } else {
-      resumeOther();
-      resumeOtherMobile();
-    }
-  };
+// Featured projects section component
+const FeaturedProjectsSection = ({ 
+  isSmallScreen, 
+  visibleFeatured, 
+  featuredCarousel, 
+  handleFeaturedHover, 
+  isFeaturedHovered 
+}: {
+  isSmallScreen: boolean;
+  visibleFeatured: number;
+  featuredCarousel: CarouselState;
+  handleFeaturedHover: (isHovered: boolean) => void;
+  isFeaturedHovered: boolean;
+}) => {
+  const scrollToFeatured = useMemo(() => createScrollHandler(featuredCarousel), [featuredCarousel]);
 
   return (
-    <section id="projects" className="py-20">
+    <div className="mb-16">
+      {isSmallScreen ? (
+        <CoverflowCarousel
+          projects={featuredProjects}
+          currentIndex={featuredCarousel.currentIndex}
+          onNavigate={scrollToFeatured}
+          onMouseEnter={() => handleFeaturedHover(true)}
+          onMouseLeave={() => handleFeaturedHover(false)}
+          isHovered={isFeaturedHovered}
+          type="featured"
+        />
+      ) : (
+        <DesktopCarousel
+          projects={featuredProjects}
+          currentIndex={featuredCarousel.currentIndex}
+          visibleCount={visibleFeatured}
+          onNavigate={scrollToFeatured}
+          onMouseEnter={() => handleFeaturedHover(true)}
+          onMouseLeave={() => handleFeaturedHover(false)}
+          type="featured"
+        />
+      )}
+    </div>
+  );
+};
+
+const Projects = () => {
+  const { isSmallScreen, visibleFeatured, visibleOther } = useResponsive();
+  
+  // Carousel states
+  const featuredCarousel = useProjectCarousel(featuredProjects, 'featured', false);
+  const otherCarousel = useProjectCarousel(otherProjects, 'other', false);
+  const featuredMobileCarousel = useProjectCarousel(featuredProjects, 'featured', true);
+  const otherMobileCarousel = useProjectCarousel(otherProjects, 'other', true);
+  
+  // Hover management
+  const { isFeaturedHovered, handleFeaturedHover } = useProjectHover(featuredCarousel, otherCarousel);
+
+  return (
+    <section id="projects" data-testid="projects-section" className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 flex items-center justify-center gap-2">
-            <SectionIcon icon={<Code2 />} size={28} padding="p-3" interactive={true} />
-            <span>Featured <span className="text-gradient">Projects</span></span>
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Here are some of my recent projects that showcase my skills and passion for development.
-          </p>
-        </div>
+        <ProjectsHeader />
+        
+        <FeaturedProjectsSection
+          isSmallScreen={isSmallScreen}
+          visibleFeatured={visibleFeatured}
+          featuredCarousel={featuredCarousel}
+          handleFeaturedHover={handleFeaturedHover}
+          isFeaturedHovered={isFeaturedHovered}
+        />
 
-        {/* Featured Projects Section */}
-        <div className="mb-16">
-          {isSmallScreen ? (
-            <CoverflowCarousel
-              projects={featuredProjects}
-              currentIndex={currentFeaturedMobileIndex}
-              onNavigate={scrollToFeaturedMobile}
-              onMouseEnter={() => handleFeaturedHover(true)}
-              onMouseLeave={() => handleFeaturedHover(false)}
-              isHovered={isFeaturedHovered}
-              type="featured"
-            />
-          ) : (
-            <DesktopCarousel
-              projects={featuredProjects}
-              currentIndex={currentFeaturedIndex}
-              visibleCount={visibleFeatured}
-              onNavigate={scrollToFeatured}
-              onMouseEnter={() => handleFeaturedHover(true)}
-              onMouseLeave={() => handleFeaturedHover(false)}
-              type="featured"
-            />
-          )}
-        </div>
-
-        {/* Other Projects Section */}
+        {/* Other Projects Section - Commented out as in original */}
         {/**
         <div className="relative">
           <h3 className="text-2xl font-semibold mb-8 text-center">Other Projects</h3>
           {isSmallScreen ? (
             <CoverflowCarousel
               projects={otherProjects}
-              currentIndex={currentOtherMobileIndex}
-              onNavigate={scrollToOtherMobile}
+              currentIndex={otherMobileCarousel.currentIndex}
+              onNavigate={createScrollHandler(otherMobileCarousel)}
               onMouseEnter={() => handleOtherHover(true)}
               onMouseLeave={() => handleOtherHover(false)}
               isHovered={isOtherHovered}
@@ -374,9 +371,9 @@ const Projects = () => {
           ) : (
             <DesktopCarousel
               projects={otherProjects}
-              currentIndex={currentOtherIndex}
+              currentIndex={otherCarousel.currentIndex}
               visibleCount={visibleOther}
-              onNavigate={scrollToOther}
+              onNavigate={createScrollHandler(otherCarousel)}
               onMouseEnter={() => handleOtherHover(true)}
               onMouseLeave={() => handleOtherHover(false)}
               type="other"

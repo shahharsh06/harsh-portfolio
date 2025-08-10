@@ -63,7 +63,8 @@ describe('About Component', () => {
   it('has consistent styling with theme', () => {
     render(<About />);
     
-    const aboutSection = document.querySelector('#about');
+    // Get the actual DOM element, not a mock
+    const aboutSection = screen.getByTestId('about-section');
     expect(aboutSection).toHaveClass('bg-muted/30');
   });
 }); 

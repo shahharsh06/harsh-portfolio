@@ -66,13 +66,27 @@ const Hero = () => {
   }, [titleDisplayText, isDeleting, titleIndex, titles]);
 
   const scrollToContact = () => {
-    const element = document.querySelector("#contact");
-    element?.scrollIntoView({ behavior: "smooth" });
+    try {
+      const element = document.querySelector("#contact");
+      if (element && typeof element.scrollIntoView === 'function') {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } catch (error) {
+      // Silently handle scroll errors to prevent crashes
+      console.warn('Scroll to contact failed:', error);
+    }
   };
 
   const scrollToAbout = () => {
-    const element = document.querySelector("#about");
-    element?.scrollIntoView({ behavior: "smooth" });
+    try {
+      const element = document.querySelector("#about");
+      if (element && typeof element.scrollIntoView === 'function') {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } catch (error) {
+      // Silently handle scroll errors to prevent crashes
+      console.warn('Scroll to about failed:', error);
+    }
   };
 
   return (

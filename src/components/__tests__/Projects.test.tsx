@@ -648,11 +648,12 @@ describe('Projects Component', () => {
   it('handles carousel cleanup on unmount', () => {
     const { unmount } = render(<Projects />);
     
-    // Should clean up properly on unmount
-    unmount();
+    // Component should mount without errors
+    expect(screen.getByTestId('projects-section')).toBeInTheDocument();
     
     // Component should unmount without errors
-    expect(document.querySelector('#projects')).not.toBeInTheDocument();
+    unmount();
+    expect(screen.queryByTestId('projects-section')).not.toBeInTheDocument();
   });
 
   it('handles carousel error handling', () => {

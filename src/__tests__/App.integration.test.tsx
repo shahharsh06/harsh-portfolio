@@ -101,13 +101,58 @@ describe('App Integration Tests', () => {
     const aboutButton = screen.getByRole('button', { name: /about/i });
     await user.click(aboutButton);
     
-    expect(document.querySelector).toHaveBeenCalledWith('#about');
+    // Mock the scrollIntoView call to prevent hanging
+    const mockScrollIntoView = vi.fn();
+    const mockElement = {
+      scrollIntoView: mockScrollIntoView,
+      getBoundingClientRect: () => ({ top: 0, left: 0, width: 100, height: 100 }),
+    };
     
-    // Navigate to Projects section
-    const projectsButton = screen.getByRole('button', { name: /projects/i });
-    await user.click(projectsButton);
+    // Mock document.querySelector only for specific elements we need
+    const originalQuerySelector = document.querySelector;
+    const mockQuerySelector = vi.fn((selector: string) => {
+      if (selector === '#about') return mockElement as unknown as HTMLElement;
+      if (selector === '#projects') return mockElement as unknown as HTMLElement;
+      if (selector === '#skills') return mockElement as unknown as HTMLElement;
+      if (selector === '#career-education') return mockElement as unknown as HTMLElement;
+      if (selector === '#contact') return mockElement as unknown as HTMLElement;
+      // For other selectors, use the original
+      return originalQuerySelector.call(document, selector);
+    });
+    document.querySelector = mockQuerySelector;
     
-    expect(document.querySelector).toHaveBeenCalledWith('#projects');
+    try {
+      // Navigate to About section first
+      const aboutButton = screen.getByRole('button', { name: /about/i });
+      await user.click(aboutButton);
+      
+      // Navigate to Projects section
+      const projectsButton = screen.getByRole('button', { name: /projects/i });
+      await user.click(projectsButton);
+      
+      // Navigate to Skills section
+      const skillsButton = screen.getByRole('button', { name: /skills/i });
+      await user.click(skillsButton);
+      
+      // Navigate to Career & Education section
+      const careerButton = screen.getByRole('button', { name: /career & education/i });
+      await user.click(careerButton);
+      
+      // Navigate to Contact section
+      const contactButton = screen.getByRole('button', { name: /contact/i });
+      await user.click(contactButton);
+      
+      // Verify that scrollIntoView was called for each section (5 total)
+      expect(mockScrollIntoView).toHaveBeenCalledTimes(5);
+      expect(mockQuerySelector).toHaveBeenCalledWith('#about');
+      expect(mockQuerySelector).toHaveBeenCalledWith('#projects');
+      expect(mockQuerySelector).toHaveBeenCalledWith('#skills');
+      expect(mockQuerySelector).toHaveBeenCalledWith('#career-education');
+      expect(mockQuerySelector).toHaveBeenCalledWith('#contact');
+    } finally {
+      // Restore original querySelector
+      document.querySelector = originalQuerySelector;
+    }
   });
 
   it('handles mobile navigation', async () => {

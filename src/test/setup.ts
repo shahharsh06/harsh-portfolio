@@ -47,6 +47,19 @@ Object.defineProperty(window, 'scrollIntoView', {
   value: vi.fn(),
 });
 
+// Mock document.querySelector to prevent hanging
+const originalQuerySelector = document.querySelector;
+document.querySelector = vi.fn((selector: string) => {
+  // Return a mock element for navigation tests
+  if (selector.startsWith('#')) {
+    return {
+      scrollIntoView: vi.fn(),
+      getBoundingClientRect: () => ({ top: 0, left: 0, width: 100, height: 100 }),
+    } as unknown as HTMLElement;
+  }
+  return originalQuerySelector.call(document, selector);
+});
+
 // Suppress React Router warnings
 const originalWarn = console.warn;
 console.warn = (...args) => {
@@ -81,4 +94,10 @@ vi.mock('disposable-email-domains', () => ({
     'mailnesia.com',
     'trashmail.com'
   ]
-})); 
+}));
+
+// Ensure proper cleanup after each test
+afterEach(() => {
+  vi.clearAllMocks();
+  vi.clearAllTimers();
+}); 

@@ -11,7 +11,7 @@ jobs:
   update-dashboard:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       actions: read
       pull-requests: read
       issues: read
@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.DASHBOARD_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -79,6 +81,8 @@ jobs:
           git add public/dashboard-data.json
           git commit -m "dashboard: update metrics [ci skip]" || echo "No changes to commit"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.DASHBOARD_TOKEN }}
 
       - name: Create dashboard summary
         run: |
@@ -89,4 +93,4 @@ jobs:
           echo "**Tests**: $(jq .tests.count public/dashboard-data.json) passing" >> $GITHUB_STEP_SUMMARY
           echo "**Test Files**: $(jq .tests.files public/dashboard-data.json)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Dashboard available at: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/dashboard.html" >> $GITHUB_STEP_SUMMARY 
+          echo "Dashboard available at: https://${{ github.event.repository.owner }}.github.io/${{ github.event.repository.name }}/dashboard.html" >> $GITHUB_STEP_SUMMARY 

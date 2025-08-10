@@ -110,14 +110,13 @@ describe('CareerEducation Component', () => {
 
   it('handles component lifecycle', () => {
     const { unmount } = render(<CareerEducation />);
-
-    // Should mount properly
-    const careerSection = document.getElementById('career-education');
-    expect(careerSection).toBeInTheDocument();
-
+    
+    // Should mount successfully
+    expect(screen.getByTestId('career-education-section')).toBeInTheDocument();
+    
     // Should unmount cleanly
     unmount();
-    expect(document.querySelector('#career-education')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('career-education-section')).not.toBeInTheDocument();
   });
 
   it('handles error boundaries', () => {

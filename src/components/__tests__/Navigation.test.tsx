@@ -873,22 +873,34 @@ describe('Navigation Component', () => {
   // Combined from Navigation.functions.test.tsx
   it('clicking nav items triggers scrollToSection logic (sections present)', async () => {
     const user = userEvent.setup();
-    Element.prototype.scrollIntoView = vi.fn();
-    document.body.innerHTML += `
-      <section id="home"></section>
-      <section id="about"></section>
-      <section id="career-education"></section>
-      <section id="skills"></section>
-      <section id="projects"></section>
-      <section id="contact"></section>
-    `;
+    const mockScrollIntoView = vi.fn();
+    
+    // Create real DOM elements with mocked scrollIntoView
+    const mockElement = {
+      scrollIntoView: mockScrollIntoView,
+    };
+    
+    // Mock document.querySelector to return elements with scrollIntoView
+    const originalQuerySelector = document.querySelector;
+    document.querySelector = vi.fn((selector: string) => {
+      if (selector.startsWith('#')) {
+        return mockElement as unknown as HTMLElement;
+      }
+      return originalQuerySelector.call(document, selector);
+    });
+    
+    try {
+      renderWithMobileMenu(<Navigation />);
 
-    renderWithMobileMenu(<Navigation />);
+      await user.click(screen.getByRole('button', { name: /about/i }));
+      await user.click(screen.getByRole('button', { name: /projects/i }));
 
-    await user.click(screen.getByRole('button', { name: /about/i }));
-    await user.click(screen.getByRole('button', { name: /projects/i }));
-
-    expect(Element.prototype.scrollIntoView).toHaveBeenCalled();
+      expect(mockScrollIntoView).toHaveBeenCalledTimes(2);
+      expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: "smooth" });
+    } finally {
+      // Restore original querySelector
+      document.querySelector = originalQuerySelector;
+    }
   });
 
   // Combined from Navigation.components.test.tsx

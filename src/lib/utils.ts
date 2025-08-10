@@ -10,8 +10,8 @@ export function cn(...inputs: ClassValue[]) {
 export function getImageUrl(url: string, fallback?: string): string {
   if (!url) return fallback || '';
   
-  // If it's already a full URL, return it
-  if (url.startsWith('http')) {
+  // If it's already a full URL, return it as-is
+  if (url.startsWith('http://') || url.startsWith('https://')) {
     return url;
   }
   
@@ -20,24 +20,39 @@ export function getImageUrl(url: string, fallback?: string): string {
     return `${window.location.origin}${url}`;
   }
   
+  // For other cases, return the URL as-is
   return url;
 }
+
+// Project emoji mapping for better maintainability
+const PROJECT_EMOJI_MAP: Record<string, string> = {
+  'recipe': '🍽️',
+  'food': '🍽️',
+  'weather': '🌤️',
+  'e-commerce': '🛒',
+  'shop': '🛒',
+  'task': '📋',
+  'todo': '📋',
+  'ai': '🤖',
+  'chat': '🤖',
+  'data': '📊',
+  'analytics': '📊',
+  'fitness': '💪',
+  'workout': '💪',
+  'blog': '📝',
+  'portfolio': '🎨'
+};
 
 // Utility function to get project-specific fallback emoji
 export function getProjectFallbackEmoji(title: string): string {
   const lowerTitle = title.toLowerCase();
   
-  if (lowerTitle.includes('recipe') || lowerTitle.includes('food')) return '🍽️';
-  if (lowerTitle.includes('weather')) return '🌤️';
-  if (lowerTitle.includes('e-commerce') || lowerTitle.includes('shop')) return '🛒';
-  if (lowerTitle.includes('task') || lowerTitle.includes('todo')) return '📋';
-  if (lowerTitle.includes('ai') || lowerTitle.includes('chat')) return '🤖';
-  if (lowerTitle.includes('data') || lowerTitle.includes('analytics')) return '📊';
-  if (lowerTitle.includes('fitness') || lowerTitle.includes('workout')) return '💪';
-  if (lowerTitle.includes('blog')) return '📝';
-  if (lowerTitle.includes('portfolio')) return '🎨';
+  // Use find method instead of for loop with early return
+  const matchedEmoji = Object.entries(PROJECT_EMOJI_MAP).find(([keyword]) => 
+    lowerTitle.includes(keyword)
+  );
   
-  return '💻'; // Default fallback
+  return matchedEmoji ? matchedEmoji[1] : '💻';
 }
 
 // Helper to get card width class based on visible count
@@ -56,40 +71,41 @@ export const getCardPadding = (index: number, total: number) =>
 export const getCoverflowStyle = (index: number, currentIndex: number) => {
   const offset = index - currentIndex;
   
-  if (offset === 0) {
-    // Center card
-    return {
+  // Define style configurations for different positions
+  const styleConfigs = {
+    0: { // Center card
       transform: `scale(${COVERFLOW_CONFIG.CENTER_SCALE}) rotateY(0deg) translateX(0px)`,
       zIndex: 10,
       opacity: 1,
       filter: 'none',
-    };
-  } else if (offset === -1) {
-    // Left card
-    return {
+    },
+    [-1]: { // Left card
       transform: `scale(${COVERFLOW_CONFIG.SIDE_SCALE}) rotateY(${COVERFLOW_CONFIG.ANGLE}deg) translateX(-${COVERFLOW_CONFIG.TRANSLATE_X}px)`,
       zIndex: 5,
       opacity: COVERFLOW_CONFIG.SIDE_OPACITY,
       filter: 'blur(0.5px)',
-    };
-  } else if (offset === 1) {
-    // Right card
-    return {
+    },
+    [1]: { // Right card
       transform: `scale(${COVERFLOW_CONFIG.SIDE_SCALE}) rotateY(-${COVERFLOW_CONFIG.ANGLE}deg) translateX(${COVERFLOW_CONFIG.TRANSLATE_X}px)`,
       zIndex: 5,
       opacity: COVERFLOW_CONFIG.SIDE_OPACITY,
       filter: 'blur(0.5px)',
-    };
-  } else {
-    // Further cards
-    return {
-      transform: `scale(${COVERFLOW_CONFIG.FAR_SCALE}) translateX(${offset * COVERFLOW_CONFIG.FAR_TRANSLATE}px)`,
-      zIndex: 1,
-      opacity: COVERFLOW_CONFIG.FAR_OPACITY,
-      filter: 'blur(1px)',
-      pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
-    };
+    }
+  };
+  
+  // Return specific style or default for further cards
+  if (styleConfigs[offset as keyof typeof styleConfigs]) {
+    return styleConfigs[offset as keyof typeof styleConfigs];
   }
+  
+  // Further cards - default case
+  return {
+    transform: `scale(${COVERFLOW_CONFIG.FAR_SCALE}) translateX(${offset * COVERFLOW_CONFIG.FAR_TRANSLATE}px)`,
+    zIndex: 1,
+    opacity: COVERFLOW_CONFIG.FAR_OPACITY,
+    filter: 'blur(1px)',
+    pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
+  };
 };
 
 // Helper to get rolling window of items
