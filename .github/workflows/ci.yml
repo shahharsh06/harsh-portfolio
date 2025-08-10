@@ -6,6 +6,13 @@ on:
   pull_request:
     branches: [ main, develop ]
 
+# Add restrictive permissions to fix security vulnerability
+permissions:
+  contents: read
+  actions: read
+  checks: write
+  pull-requests: write
+
 env:
   NODE_VERSION: '18'
 
