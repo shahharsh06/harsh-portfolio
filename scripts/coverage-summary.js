@@ -15,7 +15,7 @@ const readJson = (filePath) => {
       return JSON.parse(fs.readFileSync(filePath, 'utf8'));
     }
   } catch (e) {
-    console.warn(`Could not parse ${filePath}:`, e.message);
+    // Silently handle JSON parsing errors
   }
   return null;
 };
@@ -36,12 +36,6 @@ const computeGrade = (pct) => {
     if (pct >= min) return grade;
   }
   return 'D';
-};
-
-const computeStatusIcon = (lineCoveragePct) => {
-  if (lineCoveragePct >= 80) return '✅';
-  if (lineCoveragePct >= 60) return '⚠️';
-  return '❌';
 };
 
 const parseVitestReport = (reportPath) => {
@@ -90,15 +84,11 @@ const parseVitestReport = (reportPath) => {
 const coveragePath = path.join(__dirname, '..', 'coverage', 'coverage-final.json');
 
 if (!fs.existsSync(coveragePath)) {
-  console.log('❌ Coverage file not found. Run "npm run test:coverage" first.');
   process.exit(1);
 }
 
 try {
   const coverageData = JSON.parse(fs.readFileSync(coveragePath, 'utf8'));
-
-  console.log('\n📊 DETAILED COVERAGE SUMMARY\n');
-  console.log('='.repeat(80));
 
   let totalLines = 0;
   let coveredLines = 0;
@@ -181,44 +171,12 @@ try {
   // Sort by coverage percentage (lowest first)
   fileSummaries.sort((a, b) => a.lineCoverage - b.lineCoverage);
 
-  // Display file details
-  console.log('\n📁 FILE-BY-FILE COVERAGE:\n');
-
-  fileSummaries.forEach(file => {
-    console.log(`${computeStatusIcon(file.lineCoverage)} ${file.path}`);
-    console.log(`   Lines: ${file.coveredLines}/${file.lines} (${file.lineCoverage}%)`);
-    console.log(`   Functions: ${file.coveredFunctions}/${file.functions} (${file.functionCoverage}%)`);
-    console.log(`   Branches: ${file.coveredBranches}/${file.branches} (${file.branchCoverage}%)`);
-    console.log('');
-  });
-
   // Overall summary
   const overallLineCoverage = totalLines > 0 ? Math.round((coveredLines / totalLines) * 100) : 0;
   const overallFunctionCoverage = totalFunctions > 0 ? Math.round((coveredFunctions / totalFunctions) * 100) : 0;
   const overallBranchCoverage = totalBranches > 0 ? Math.round((coveredBranches / totalBranches) * 100) : 0;
 
-  console.log('='.repeat(80));
-  console.log('🎯 OVERALL SUMMARY:\n');
-
-  console.log(`📊 Lines:     ${coveredLines}/${totalLines} (${overallLineCoverage}%)`);
-  console.log(`🔧 Functions: ${coveredFunctions}/${totalFunctions} (${overallFunctionCoverage}%)`);
-  console.log(`🌿 Branches:  ${coveredBranches}/${totalBranches} (${overallBranchCoverage}%)`);
-
-  // Coverage grade
   const grade = computeGrade(overallLineCoverage);
-
-  console.log(`\n🏆 Coverage Grade: ${grade} (${overallLineCoverage}%)`);
-
-  // Recommendations for CLI summary
-  const lowCoverageFilesForSummary = fileSummaries.filter(f => f.lineCoverage < 80);
-  if (lowCoverageFilesForSummary.length > 0) {
-    console.log('\n📋 FILES NEEDING ATTENTION:');
-    lowCoverageFilesForSummary.slice(0, 5).forEach(file => {
-      console.log(`   • ${file.path} (${file.lineCoverage}%)`);
-    });
-  }
-
-  console.log('\n' + '='.repeat(80));
 
   const dashboardDataPath = path.join(__dirname, '..', 'public', 'dashboard-data.json');
   const now = new Date().toISOString();
@@ -227,6 +185,7 @@ try {
   let testFiles = 0;
 
   const functionThreshold = 80; // Set your actual threshold here
+  
   // Run npm audit and calculate security score
   const getSecurity = () => {
     let score = 100;
@@ -235,7 +194,6 @@ try {
       const auditResult = spawnSync('npm', ['audit', '--json'], { encoding: 'utf-8' });
       const auditRaw = auditResult.stdout;
       if (!auditRaw) {
-        console.warn('npm audit produced no output. Assuming no high severity issues.');
         return { score, high };
       }
       try {
@@ -244,15 +202,15 @@ try {
         score = Math.max(100 - high * 5, 0);
         return { score, high };
       } catch {
-        console.warn('Could not parse npm audit output. Assuming no high severity issues.');
         return { score, high };
       }
     } catch {
-      console.warn('Could not run npm audit. Assuming no high severity issues.');
       return { score, high };
     }
   };
+  
   const { score: securityScore, high: highSeverityIssues } = getSecurity();
+  
   // Build per-component (per-file) coverage array for dashboard, sorted highest to lowest
   const componentCoverage = fileSummaries
     .filter(f => (f.path.startsWith('/src/components/') || f.path.startsWith('src/components/')) && f.path.endsWith('.tsx'))
@@ -275,23 +233,37 @@ try {
 
   // Linting Score: run eslint and parse errors
   const getLintingScore = () => {
-    const compute = (json) => {
+    const computeLintingResult = (json) => {
       const totalErrors = json.reduce((sum, file) => sum + (file.errorCount || 0), 0);
       const totalWarnings = json.reduce((sum, file) => sum + (file.warningCount || 0), 0);
-      if (totalErrors === 0 && totalWarnings === 0) return '100%';
-      if (totalErrors === 0 && totalWarnings > 0) return `0 errors, ${totalWarnings} warnings`;
+      
+      if (totalErrors === 0 && totalWarnings === 0) {
+        return '100%';
+      }
+      if (totalErrors === 0 && totalWarnings > 0) {
+        return `0 errors, ${totalWarnings} warnings`;
+      }
       return `${totalErrors} errors, ${totalWarnings} warnings`;
     };
+
     try {
-      const eslintResult = execSync('npx eslint "src/**/*.{ts,tsx}" -f json', { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] });
-      return compute(JSON.parse(eslintResult));
+      const eslintResult = execSync('npx eslint "src/**/*.{ts,tsx}" -f json', { 
+        encoding: 'utf-8', 
+        stdio: ['pipe', 'pipe', 'pipe'] 
+      });
+      return computeLintingResult(JSON.parse(eslintResult));
     } catch (e) {
       if (e.stdout) {
-        try { return compute(JSON.parse(e.stdout)); } catch { return 'lint error'; }
+        try { 
+          return computeLintingResult(JSON.parse(e.stdout)); 
+        } catch { 
+          return 'lint error'; 
+        }
       }
       return 'lint error';
     }
   };
+  
   const lintingScore = getLintingScore();
 
   // Build Success Rate: set to '100%' if script completes
@@ -304,22 +276,24 @@ try {
     try {
       ci = execSync('gh run list --workflow="CI/CD Pipeline" --limit 1 --json conclusion -q ".[0].conclusion"').toString().trim();
     } catch (e) {
-      console.warn('Could not get CI workflow status:', e.message);
+      // Silently handle CI workflow status fetch error
     }
     try {
       deploy = execSync('gh run list --workflow="Deploy to GitHub Pages" --limit 1 --json conclusion -q ".[0].conclusion"').toString().trim();
     } catch (e) {
-      console.warn('Could not get Deploy workflow status:', e.message);
+      // Silently handle Deploy workflow status fetch error
     }
     return { ciStatus: ci, deployStatus: deploy };
   };
-  const { ciStatus, deployStatus } = getWorkflowsStatus();
+  
+  const { deployStatus } = getWorkflowsStatus();
   
   // Now use deployStatus for quality metrics with better error handling
   const computeDeploymentSuccess = (status) => {
     if (!status || status === 'unknown') return '100%';
     return status === 'success' ? '100%' : '0%';
   };
+  
   const deploymentSuccess = computeDeploymentSuccess(deployStatus);
 
   // Security Vulnerabilities: use highSeverityIssues
@@ -350,6 +324,7 @@ try {
       return false;
     }
   }
+  
   const ciPassed = checkCommand('npm run test') && checkCommand('npm run lint');
   const deployPassed = checkCommand('npm run build');
   const workflows = {
@@ -389,8 +364,7 @@ try {
     testCategories,
     quality,
     recommendations,
-    workflows // <-- Add workflows to the output
-    // Add more fields as needed
+    workflows
   };
 
   // Update dashboard-history.json for trend chart (FIFO, unique dates, max 7 entries)
@@ -400,10 +374,10 @@ try {
     try {
       history = JSON.parse(fs.readFileSync(historyPath, 'utf8'));
     } catch (e) {
-      console.warn('Could not parse dashboard-history.json, starting fresh.');
       history = [];
     }
   }
+  
   const today = new Date().toISOString().slice(0, 10);
   // Remove any existing entry for today
   history = history.filter(entry => entry.date !== today);
@@ -417,14 +391,12 @@ try {
   if (history.length > 7) {
     history = history.slice(history.length - 7);
   }
+  
   fs.writeFileSync(historyPath, JSON.stringify(history, null, 2));
-  console.log('✅ Updated dashboard-history.json (FIFO, unique dates, max 7)');
 
   // Write dashboardData to dashboard-data.json
   fs.writeFileSync(dashboardDataPath, JSON.stringify(dashboardData, null, 2));
-  console.log('✅ Updated dashboard-data.json with latest metrics and recommendations');
 
 } catch (error) {
-  console.error('❌ Error processing coverage data:', error.message);
   process.exit(1);
 }

@@ -19,7 +19,10 @@ class PortfolioDashboard {
 
     async updateLastUpdated() {
         const now = new Date();
-        document.getElementById('lastUpdated').textContent = now.toLocaleString();
+        const lastUpdatedElement = document.getElementById('lastUpdated');
+        if (lastUpdatedElement) {
+            lastUpdatedElement.textContent = now.toLocaleString();
+        }
     }
 
     async fetchWorkflowRuns() {
@@ -31,7 +34,7 @@ class PortfolioDashboard {
                 this.updateWorkflowStatus(data.workflow_runs);
             }
         } catch (error) {
-            console.log('Could not fetch workflow runs:', error);
+            // Silently handle workflow fetch errors
         }
     }
 
@@ -46,7 +49,7 @@ class PortfolioDashboard {
                 await this.fetchCoverageFromArtifacts(runId);
             }
         } catch (error) {
-            console.log('Could not fetch coverage data:', error);
+            // Silently handle coverage fetch errors
         }
     }
 
@@ -61,7 +64,7 @@ class PortfolioDashboard {
                 this.updateCoverageDisplay();
             }
         } catch (error) {
-            console.log('Could not fetch coverage artifacts:', error);
+            // Silently handle artifact fetch errors
         }
     }
 
@@ -88,16 +91,9 @@ class PortfolioDashboard {
     }
 
     updateWorkflowCard(workflow) {
-        const statusClass = workflow.status === 'success' ? 'bg-green-50' : 
-                           workflow.status === 'failure' ? 'bg-red-50' : 'bg-yellow-50';
-        const iconClass = workflow.status === 'success' ? 'text-green-600' : 
-                         workflow.status === 'failure' ? 'text-red-600' : 'text-yellow-600';
-        const bgClass = workflow.status === 'success' ? 'bg-green-100' : 
-                       workflow.status === 'failure' ? 'bg-red-100' : 'bg-yellow-100';
-
-        // Update the workflow status in the UI
-        const statusText = workflow.status === 'success' ? '✓ Running successfully' :
-                          workflow.status === 'failure' ? '✗ Failed' : '⏳ In progress';
+        // Update workflow status display logic would go here
+        // Currently this method is called but the implementation is incomplete
+        // Keeping the method structure for future implementation
     }
 
     updateCoverageDisplay() {
@@ -106,27 +102,38 @@ class PortfolioDashboard {
         const bar = document.getElementById('coverageBar');
         const coverageText = document.getElementById('overallCoverage');
         
-        if (coverage >= 80) {
-            bar.className = 'coverage-excellent h-2 rounded-full';
-        } else if (coverage >= 60) {
-            bar.className = 'coverage-good h-2 rounded-full';
-        } else {
-            bar.className = 'coverage-poor h-2 rounded-full';
+        if (bar && coverageText) {
+            if (coverage >= 80) {
+                bar.className = 'coverage-excellent h-2 rounded-full';
+            } else if (coverage >= 60) {
+                bar.className = 'coverage-good h-2 rounded-full';
+            } else {
+                bar.className = 'coverage-poor h-2 rounded-full';
+            }
+            
+            bar.style.width = coverage + '%';
+            coverageText.textContent = coverage + '%';
         }
-        
-        bar.style.width = coverage + '%';
-        coverageText.textContent = coverage + '%';
     }
 
     updateMetrics() {
         // Update test count
-        document.getElementById('totalTests').textContent = '62';
+        const totalTestsElement = document.getElementById('totalTests');
+        if (totalTestsElement) {
+            totalTestsElement.textContent = '62';
+        }
         
         // Update code quality
-        document.getElementById('codeQuality').textContent = 'A+';
+        const codeQualityElement = document.getElementById('codeQuality');
+        if (codeQualityElement) {
+            codeQualityElement.textContent = 'A+';
+        }
         
         // Update security score
-        document.getElementById('securityScore').textContent = '95%';
+        const securityScoreElement = document.getElementById('securityScore');
+        if (securityScoreElement) {
+            securityScoreElement.textContent = '95%';
+        }
     }
 
     async refresh() {
@@ -134,30 +141,23 @@ class PortfolioDashboard {
         await this.fetchWorkflowRuns();
         await this.fetchCoverageData();
     }
-
-    // Method to simulate real-time updates
-    simulateRealTimeUpdates() {
-        setInterval(() => {
-            // Simulate small changes in metrics
-            const currentCoverage = parseFloat(document.getElementById('overallCoverage').textContent);
-            const newCoverage = Math.max(0, Math.min(100, currentCoverage + (Math.random() - 0.5) * 2));
-            
-            this.updateCoverageDisplay();
-        }, 30000); // Every 30 seconds
-    }
 }
 
 let lastCommitSha = null;
 
 async function getLatestCommitSha() {
-    const res = await fetch('https://api.github.com/repos/shahharsh06/harsh-portfolio/commits?per_page=1');
-    const data = await res.json();
-    return data[0]?.sha || null;
+    try {
+        const res = await fetch('https://api.github.com/repos/shahharsh06/harsh-portfolio/commits?per_page=1');
+        const data = await res.json();
+        return data[0]?.sha || null;
+    } catch (error) {
+        return null;
+    }
 }
 
 async function updateDashboardFromJson() {
     try {
-        const res = await fetch('dashboard-data.json?ts=' + Date.now(), { cache: "no-store" });
+        const res = await fetch(`dashboard-data.json?ts=${new Date().getTime()}`, { cache: "no-store" });
         
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
@@ -171,14 +171,10 @@ async function updateDashboardFromJson() {
         
         if (functionCoverageElement) {
             functionCoverageElement.textContent = data.functions.percentage + '%';
-        } else {
-            console.error('Function coverage element not found');
         }
         
         if (functionCoverageThresholdElement) {
             functionCoverageThresholdElement.textContent = `✓ Exceeds ${data.functions.threshold}% threshold`;
-        } else {
-            console.error('Function coverage threshold element not found');
         }
 
         // Update other metrics
@@ -228,9 +224,8 @@ async function updateDashboardFromJson() {
             lastUpdatedElement.textContent = new Date(data.lastUpdated).toLocaleString();
         }
         
-        // Dashboard updated successfully
     } catch (error) {
-        console.error('Error updating dashboard:', error);
+        // Silently handle dashboard update errors
     }
 }
 
@@ -246,39 +241,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial load of dashboard data
     updateDashboardFromJson();
     checkForNewCommitAndUpdate();
-    // Poll for new commits every 30 seconds (or adjust as needed for responsiveness)
+    // Poll for new commits every 30 seconds
     setInterval(checkForNewCommitAndUpdate, 30000);
 });
-
-function addDashboardInteractivity() {
-    // Add click handlers for cards
-    const cards = document.querySelectorAll('.card-hover');
-    cards.forEach(card => {
-        card.addEventListener('click', () => {
-            card.style.transform = 'scale(0.98)';
-            setTimeout(() => {
-                card.style.transform = '';
-            }, 150);
-        });
-    });
-
-    // Add tooltips for metrics
-    const metrics = document.querySelectorAll('[id$="Coverage"], [id$="Tests"], [id$="Quality"], [id$="Score"]');
-    metrics.forEach(metric => {
-        metric.addEventListener('mouseenter', (e) => {
-            const tooltip = document.createElement('div');
-            tooltip.className = 'absolute bg-gray-900 text-white text-xs rounded py-1 px-2 z-10';
-            tooltip.textContent = `Current value: ${e.target.textContent}`;
-            tooltip.style.left = e.pageX + 10 + 'px';
-            tooltip.style.top = e.pageY - 10 + 'px';
-            document.body.appendChild(tooltip);
-            
-            e.target.addEventListener('mouseleave', () => {
-                tooltip.remove();
-            });
-        });
-    });
-}
 
 // Export for potential use in other scripts
 window.PortfolioDashboard = PortfolioDashboard; 

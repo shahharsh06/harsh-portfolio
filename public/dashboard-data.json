@@ -1,9 +1,9 @@
 {
-  "lastUpdated": "2025-08-09T22:43:40.961Z",
+  "lastUpdated": "2025-08-10T16:16:35.616Z",
   "coverage": {
     "percentage": 98,
     "totalLines": 2222,
-    "coveredLines": 2174
+    "coveredLines": 2168
   },
   "functions": {
     "percentage": 92,
@@ -13,8 +13,8 @@
   },
   "branches": {
     "percentage": 94,
-    "total": 340,
-    "covered": 320
+    "total": 338,
+    "covered": 317
   },
   "tests": {
     "count": 451,
@@ -127,12 +127,12 @@
       "coverage": 97
     },
     {
-      "name": "Hero.tsx",
-      "coverage": 95
-    },
-    {
       "name": "Projects.tsx",
       "coverage": 92
+    },
+    {
+      "name": "Hero.tsx",
+      "coverage": 91
     }
   ],
   "testCategories": [
