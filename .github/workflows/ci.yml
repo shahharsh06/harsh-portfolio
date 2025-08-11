@@ -40,8 +40,16 @@ jobs:
       - name: Run Vitest and generate JSON report
         run: npx vitest run --reporter=json --outputFile=vitest-report.json
 
-      - name: Generate dashboard data
-        run: npm run dashboard:update
+      # Generate coverage data for dashboard workflow
+      - name: Generate coverage data
+        run: |
+          echo "Generating coverage data for dashboard..."
+          npx vitest run --coverage
+          echo "Coverage data generated successfully"
+
+      # Dashboard update removed - only runs when manually triggered
+      # - name: Generate dashboard data
+      #   run: npm run dashboard:update
 
       - name: Upload coverage to Qlty Cloud
         uses: qltysh/qlty-action/coverage@v1

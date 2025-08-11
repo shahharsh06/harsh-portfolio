@@ -1,25 +1,19 @@
-name: Update Dashboard (Auto)
+name: Update Dashboard (Auto-After-CI)
 
 on:
-  # Automatically trigger on commits to main branch
-  push:
+  # Automatically trigger AFTER CI/CD pipeline succeeds
+  workflow_run:
+    workflows: ["CI/CD Pipeline"]
+    types: [completed]
     branches: [ main, master ]
-    paths:
-      - 'src/**'
-      - 'tests/**'
-      - '**/*.test.*'
-      - '**/*.spec.*'
-      - 'vitest.config.*'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'yarn.lock'
-      - 'pnpm-lock.yaml'
   # Keep manual trigger for testing
   workflow_dispatch:
 
 jobs:
   update-dashboard:
     runs-on: ubuntu-latest
+    # Only run if CI/CD was successful
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: write
       actions: read
@@ -79,18 +73,18 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add public/dashboard-data.json public/dashboard-history.json
-          git commit -m "dashboard: auto-update metrics [ci skip]" || echo "No changes to commit"
+          git commit -m "dashboard: auto-update after successful CI [ci skip]" || echo "No changes to commit"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.DASHBOARD_TOKEN }}
 
       - name: Create dashboard summary
         run: |
-          echo "## 📊 Dashboard Auto-Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "## 📊 Dashboard Auto-Update After CI Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Coverage**: $(jq .coverage.percentage public/dashboard-data.json)%" >> $GITHUB_STEP_SUMMARY
           echo "**Function Coverage**: $(jq .functions.percentage public/dashboard-data.json)%" >> $GITHUB_STEP_SUMMARY
           echo "**Tests**: $(jq .tests.count public/dashboard-data.json) passing" >> $GITHUB_STEP_SUMMARY
           echo "**Test Files**: $(jq .tests.files public/dashboard-data.json)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "🔄 **Auto-updated on commit** - Dashboard available at: https://${{ github.event.repository.owner }}.github.io/${{ github.event.repository.name }}/dashboard.html" >> $GITHUB_STEP_SUMMARY 
+          echo "🔄 **Auto-updated after successful CI** - Dashboard available at: https://${{ github.event.repository.owner }}.github.io/${{ github.event.repository.name }}/dashboard.html" >> $GITHUB_STEP_SUMMARY 
