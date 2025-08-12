@@ -26,4 +26,4 @@ export const SkillTag: React.FC<SkillTagProps> = ({
   );
 };
 
-export default SkillTag; 
+export default SkillTag;

@@ -1,7 +1,12 @@
 import React from "react";
 import { renderHook } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
-import { ThemeProviderContext, useTheme, type Theme, type ThemeProviderState } from "../ThemeProvider.utils";
+import {
+  ThemeProviderContext,
+  useTheme,
+  type Theme,
+  type ThemeProviderState,
+} from "../ThemeProvider.utils";
 import { ReactNode } from "react";
 
 // Mock React context
@@ -61,7 +66,7 @@ describe("ThemeProvider.utils", () => {
     it("should work with default context values when no provider is present", () => {
       // When no provider is present, React will use the default context value
       const { result } = renderHook(() => useTheme());
-      
+
       expect(result.current.theme).toBe("system");
       expect(typeof result.current.setTheme).toBe("function");
     });
@@ -80,8 +85,8 @@ describe("ThemeProvider.utils", () => {
   describe("Theme types", () => {
     it("should accept valid theme values", () => {
       const validThemes: Theme[] = ["dark", "light", "system"];
-      
-      validThemes.forEach(theme => {
+
+      validThemes.forEach((theme) => {
         expect(validThemes).toContain(theme);
       });
     });
@@ -96,7 +101,7 @@ describe("ThemeProvider.utils", () => {
       // Test that Theme type only accepts valid values
       const validTheme: Theme = "light";
       const anotherValidTheme: Theme = "system";
-      
+
       expect(validTheme).toBe("light");
       expect(anotherValidTheme).toBe("system");
     });
@@ -117,8 +122,8 @@ describe("ThemeProvider.utils", () => {
 
     it("should accept all valid theme values", () => {
       const themes: Theme[] = ["dark", "light", "system"];
-      
-      themes.forEach(theme => {
+
+      themes.forEach((theme) => {
         const state: ThemeProviderState = {
           theme,
           setTheme: vi.fn(),
@@ -144,7 +149,7 @@ describe("ThemeProvider.utils", () => {
     it("should handle nested providers", () => {
       const outerContext = createMockContext("dark");
       const innerContext = createMockContext("light");
-      
+
       const CombinedWrapper = ({ children }: { children: ReactNode }) => (
         <ThemeProviderContext.Provider value={outerContext}>
           <ThemeProviderContext.Provider value={innerContext}>
@@ -153,8 +158,10 @@ describe("ThemeProvider.utils", () => {
         </ThemeProviderContext.Provider>
       );
 
-      const { result } = renderHook(() => useTheme(), { wrapper: CombinedWrapper });
-      
+      const { result } = renderHook(() => useTheme(), {
+        wrapper: CombinedWrapper,
+      });
+
       // Should use the innermost provider
       expect(result.current.theme).toBe("light");
     });
@@ -184,7 +191,7 @@ describe("ThemeProvider.utils", () => {
       const { result, rerender } = renderHook(() => useTheme(), { wrapper });
 
       expect(result.current.theme).toBe("dark");
-      
+
       // Rerender should maintain the same context
       rerender();
       expect(result.current.theme).toBe("dark");
@@ -199,7 +206,7 @@ describe("ThemeProvider.utils", () => {
 
       const createDynamicWrapper = () => {
         return ({ children }: { children: ReactNode }) => (
-          <ThemeProviderContext.Provider 
+          <ThemeProviderContext.Provider
             value={{ theme: currentTheme, setTheme: mockSetThemeWithUpdate }}
           >
             {children}
@@ -207,15 +214,15 @@ describe("ThemeProvider.utils", () => {
         );
       };
 
-      const { result, rerender } = renderHook(() => useTheme(), { 
-        wrapper: createDynamicWrapper() 
+      const { result, rerender } = renderHook(() => useTheme(), {
+        wrapper: createDynamicWrapper(),
       });
 
       expect(result.current.theme).toBe("dark");
-      
+
       result.current.setTheme("light");
       expect(mockSetThemeWithUpdate).toHaveBeenCalledWith("light");
-      
+
       // Rerender to get updated context
       rerender();
       expect(result.current.theme).toBe("light");

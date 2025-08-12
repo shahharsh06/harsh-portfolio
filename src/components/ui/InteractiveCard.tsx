@@ -17,17 +17,17 @@ export const InteractiveCard: React.FC<InteractiveCardProps> = ({
   contentClassName = "",
 }) => {
   return (
-    <Card className={`card-gradient border-border hover:border-primary/30 transition-all duration-300 hover-lift group ${className}`}>
+    <Card
+      className={`card-gradient border-border hover:border-primary/30 transition-all duration-300 hover-lift group ${className}`}
+    >
       {title && (
         <CardHeader className={headerClassName}>
           <CardTitle>{title}</CardTitle>
         </CardHeader>
       )}
-      <CardContent className={contentClassName}>
-        {children}
-      </CardContent>
+      <CardContent className={contentClassName}>{children}</CardContent>
     </Card>
   );
 };
 
-export default InteractiveCard; 
+export default InteractiveCard;

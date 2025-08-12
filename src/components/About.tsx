@@ -9,36 +9,52 @@ const About = () => {
     {
       icon: Brain,
       title: "AI/ML Expertise",
-      description: "Specialized in machine learning algorithms, deep learning models, and data-driven solutions for real-world applications."
+      description:
+        "Specialized in machine learning algorithms, deep learning models, and data-driven solutions for real-world applications.",
     },
     {
       icon: Database,
       title: "Data Science",
-      description: "Experienced in data analysis, statistical modeling, and building intelligent systems that extract meaningful insights."
+      description:
+        "Experienced in data analysis, statistical modeling, and building intelligent systems that extract meaningful insights.",
     },
     {
       icon: Code,
       title: "Full-Stack Development",
-      description: "Proficient in both frontend and backend technologies, creating scalable web applications and APIs."
+      description:
+        "Proficient in both frontend and backend technologies, creating scalable web applications and APIs.",
     },
     {
       icon: Rocket,
       title: "Performance Optimization",
-      description: "Demonstrated track record of improving system efficiency through code optimization and best practices."
-    }
+      description:
+        "Demonstrated track record of improving system efficiency through code optimization and best practices.",
+    },
   ];
 
   return (
-    <section id="about" data-testid="about-section" className="py-20 bg-muted/30">
+    <section
+      id="about"
+      data-testid="about-section"
+      className="py-20 bg-muted/30"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 flex items-center justify-center gap-2">
-            <SectionIcon icon={<Users />} size={28} padding="p-3" interactive={true} />
-            <span>About <span className="text-gradient">Me</span></span>
+            <SectionIcon
+              icon={<Users />}
+              size={28}
+              padding="p-3"
+              interactive={true}
+            />
+            <span>
+              About <span className="text-gradient">Me</span>
+            </span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            From academic research to industry applications, I bridge the gap between cutting-edge AI research 
-            and practical software solutions that solve real-world problems.
+            From academic research to industry applications, I bridge the gap
+            between cutting-edge AI research and practical software solutions
+            that solve real-world problems.
           </p>
         </div>
 
@@ -48,28 +64,39 @@ const About = () => {
             <h3 className="text-2xl font-semibold mb-4">My Journey</h3>
             <div className="space-y-4 text-muted-foreground">
               <p className="text-justify">
-                My journey began with a strong foundation in Computer Science and Engineering from SRM Institute 
-                of Science and Technology, where I graduated with First Class with Distinction. 
-                During my undergraduate studies, I published research on Breast Cancer Detection using Deep Learning 
-                in IEEE Xplore, marking my entry into the world of AI and Machine Learning Applications.
+                My journey began with a strong foundation in Computer Science
+                and Engineering from SRM Institute of Science and Technology,
+                where I graduated with First Class with Distinction. During my
+                undergraduate studies, I published research on Breast Cancer
+                Detection using Deep Learning in IEEE Xplore, marking my entry
+                into the world of AI and Machine Learning Applications.
               </p>
               <p className="text-justify">
-                At Haricomp Systems, I developed financial software applications in C++ and Python, focusing on 
-                optimizing system performance and enhancing data-driven decision-making processes. This experience 
-                taught me the importance of combining theoretical knowledge with practical implementation in 
-                real-world business environments.
+                At Haricomp Systems, I developed financial software applications
+                in C++ and Python, focusing on optimizing system performance and
+                enhancing data-driven decision-making processes. This experience
+                taught me the importance of combining theoretical knowledge with
+                practical implementation in real-world business environments.
               </p>
               <p className="text-justify">
-                I completed my Master of Computer Science at Texas A&M University, 
-                where I deepened my expertise in Machine Learning Frameworks like TensorFlow and PyTorch, 
-                while serving as a Graduate Teaching Assistant and Vice President of Professional Development 
-                for CSEGSA. My approach combines cutting-edge AI research with practical software engineering 
-                principles to create innovative solutions.
+                I completed my Master of Computer Science at Texas A&M
+                University, where I deepened my expertise in Machine Learning
+                Frameworks like TensorFlow and PyTorch, while serving as a
+                Graduate Teaching Assistant and Vice President of Professional
+                Development for CSEGSA. My approach combines cutting-edge AI
+                research with practical software engineering principles to
+                create innovative solutions.
               </p>
             </div>
 
             <div className="flex flex-wrap gap-3 mt-6">
-              {["Python", "Machine Learning", "Data Science", "TensorFlow", "C++"].map((tech) => (
+              {[
+                "Python",
+                "Machine Learning",
+                "Data Science",
+                "TensorFlow",
+                "C++",
+              ].map((tech) => (
                 <SkillTag key={tech}>{tech}</SkillTag>
               ))}
             </div>

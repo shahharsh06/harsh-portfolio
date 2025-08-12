@@ -13,8 +13,8 @@ import { GradientButton } from "./ui/GradientButton";
 import { SectionHeader } from "./ui/SectionHeader";
 import { PERSONAL_INFO, SOCIAL_LINKS } from "@/lib/constants";
 import { ContactFormData } from "@/types";
-import emailjs from '@emailjs/browser';
-import disposableDomains from 'disposable-email-domains';
+import emailjs from "@emailjs/browser";
+import disposableDomains from "disposable-email-domains";
 
 function isValidEmail(email: string) {
   // Simple regex for demonstration; you can use a stricter one if needed
@@ -22,8 +22,10 @@ function isValidEmail(email: string) {
 }
 
 function isDisposableEmail(email: string) {
-  const domain = email.split('@')[1]?.toLowerCase();
-  return disposableDomains.some(d => domain === d || domain.endsWith('.' + d));
+  const domain = email.split("@")[1]?.toLowerCase();
+  return disposableDomains.some(
+    (d) => domain === d || domain.endsWith("." + d),
+  );
 }
 
 const Contact = () => {
@@ -31,14 +33,16 @@ const Contact = () => {
     name: "",
     email: "",
     subject: "",
-    message: ""
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -71,18 +75,20 @@ const Contact = () => {
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         emailJsData,
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
       );
 
       toast({
         title: "Message sent successfully!",
-        description: "Thank you for reaching out. I'll get back to you within 1-3 business days.",
+        description:
+          "Thank you for reaching out. I'll get back to you within 1-3 business days.",
       });
       setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (error) {
       toast({
         title: "Error",
-        description: "There was a problem sending your message. Please try again later.",
+        description:
+          "There was a problem sending your message. Please try again later.",
         variant: "destructive",
       });
     } finally {
@@ -95,14 +101,14 @@ const Contact = () => {
       icon: Mail,
       label: "Email",
       value: PERSONAL_INFO.email,
-      href: SOCIAL_LINKS.email
+      href: SOCIAL_LINKS.email,
     },
     {
       icon: MapPin,
       label: "Location",
       value: PERSONAL_INFO.location,
-      href: "#"
-    }
+      href: "#",
+    },
   ];
 
   const socialLinks = [
@@ -110,14 +116,14 @@ const Contact = () => {
       icon: GithubIcon,
       label: "GitHub",
       href: SOCIAL_LINKS.github,
-      username: `@${PERSONAL_INFO.github}`
+      username: `@${PERSONAL_INFO.github}`,
     },
     {
       icon: LinkedinIcon,
       label: "LinkedIn",
       href: SOCIAL_LINKS.linkedin,
-      username: `@${PERSONAL_INFO.linkedin}`
-    }
+      username: `@${PERSONAL_INFO.linkedin}`,
+    },
   ];
 
   return (
@@ -130,7 +136,7 @@ const Contact = () => {
           description="Have a project in mind or want to collaborate? I'd love to hear from you. Let's create something amazing together!"
         />
 
-                <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl mx-auto">
           {/* Contact Form */}
           <Card className="card-gradient border-border group hover:border-primary/30 transition-all duration-300 hover-lift">
             <CardHeader>
@@ -163,7 +169,7 @@ const Contact = () => {
                     />
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="subject">Subject</Label>
                   <Input
@@ -175,7 +181,7 @@ const Contact = () => {
                     required
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="message">Message</Label>
                   <Textarea
@@ -188,7 +194,7 @@ const Contact = () => {
                     required
                   />
                 </div>
-                
+
                 <GradientButton
                   type="submit"
                   disabled={isSubmitting}

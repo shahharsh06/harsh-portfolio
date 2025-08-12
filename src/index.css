@@ -43,12 +43,16 @@ All colors MUST be HSL.
 
     /* Portfolio-specific design tokens - Light Theme */
     --card-gradient: linear-gradient(145deg, hsl(0 0% 100%), hsl(210 40% 98%));
-    --text-gradient: linear-gradient(135deg, hsl(221.2 83.2% 53.3%), hsl(189 85% 55%));
-    
+    --text-gradient: linear-gradient(
+      135deg,
+      hsl(221.2 83.2% 53.3%),
+      hsl(189 85% 55%)
+    );
+
     /* Shadows and effects - Light Theme */
     --shadow-card: 0 8px 32px hsl(220 13% 20% / 0.1);
     --shadow-subtle: 0 2px 8px hsl(220 13% 20% / 0.05);
-    
+
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -88,9 +92,17 @@ All colors MUST be HSL.
     --ring: 217.2 91.2% 59.8%;
 
     /* Portfolio-specific design tokens - Dark Theme */
-    --card-gradient: linear-gradient(145deg, hsl(217.2 32.6% 17.5%), hsl(222.2 84% 4.9%));
-    --text-gradient: linear-gradient(135deg, hsl(217.2 91.2% 59.8%), hsl(189 85% 55%));
-    
+    --card-gradient: linear-gradient(
+      145deg,
+      hsl(217.2 32.6% 17.5%),
+      hsl(222.2 84% 4.9%)
+    );
+    --text-gradient: linear-gradient(
+      135deg,
+      hsl(217.2 91.2% 59.8%),
+      hsl(189 85% 55%)
+    );
+
     /* Shadows and effects - Dark Theme */
     --shadow-card: 0 8px 32px hsl(220 13% 3% / 0.4);
     --shadow-subtle: 0 2px 8px hsl(220 13% 3% / 0.2);
@@ -102,13 +114,18 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
-  html, body {
+  html,
+  body {
     overflow-x: hidden;
   }
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family:
+      "Inter",
+      system-ui,
+      -apple-system,
+      sans-serif;
   }
 }
 
@@ -117,22 +134,22 @@ All colors MUST be HSL.
   .card-gradient {
     background: var(--card-gradient);
   }
-  
+
   .text-gradient {
     background: var(--text-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  
+
   .card-shadow {
     box-shadow: var(--shadow-card);
   }
-  
+
   .transition-smooth {
     transition: var(--transition-smooth);
   }
-  
+
   .transition-fast {
     transition: var(--transition-fast);
   }
@@ -141,7 +158,7 @@ All colors MUST be HSL.
   .hover-lift {
     @apply transition-smooth hover:scale-105 hover:-translate-y-1;
   }
-  
+
   .hover-glow {
     @apply transition-smooth hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)];
   }

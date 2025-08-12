@@ -284,7 +284,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="flex items-center p-4 bg-primary/5 dark:bg-primary/10 rounded-lg hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300">
                     <div class="p-2 bg-primary/10 rounded-full flex items-center justify-center transition-smooth mr-4 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20" style="width: 40px; height: 40px;">
-                        <i data-lucide="check-circle" class="w-5 h-5" style="color: #3b82f6"></i>
+                        <i id="ciIcon" data-lucide="check-circle" class="w-5 h-5" style="color: #3b82f6"></i>
                     </div>
                     <div>
                         <p class="text-sm font-medium text-foreground">Test Pipeline</p>
@@ -293,7 +293,7 @@
                 </div>
                 <div class="flex items-center p-4 bg-primary/5 dark:bg-primary/10 rounded-lg hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300">
                     <div class="p-2 bg-primary/10 rounded-full flex items-center justify-center transition-smooth mr-4 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20" style="width: 40px; height: 40px;">
-                        <i data-lucide="check-circle" class="w-5 h-5" style="color: #3b82f6"></i>
+                        <i id="coverageIcon" data-lucide="check-circle" class="w-5 h-5" style="color: #3b82f6"></i>
                     </div>
                     <div>
                         <p class="text-sm font-medium text-foreground">Coverage</p>
@@ -302,7 +302,7 @@
                 </div>
                 <div class="flex items-center p-4 bg-primary/5 dark:bg-primary/10 rounded-lg hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300">
                     <div class="p-2 bg-primary/10 rounded-full flex items-center justify-center transition-smooth mr-4 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20" style="width: 40px; height: 40px;">
-                        <i data-lucide="check-circle" class="w-5 h-5" style="color: #3b82f6"></i>
+                        <i id="deploymentIcon" data-lucide="check-circle" class="w-5 h-5" style="color: #3b82f6"></i>
                     </div>
                     <div>
                         <p class="text-sm font-medium text-foreground">Deployment</p>
@@ -311,11 +311,7 @@
                 </div>
             </div>
         </div>
-        <!-- Action Items -->
-        <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
-            <h3 class="text-lg font-semibold text-foreground mb-4">Next Steps to Improve Coverage</h3>
-            <div id="coverageRecommendations"></div>
-        </div>
+
     </main>
     <!-- Footer -->
     <footer class="bg-muted text-muted-foreground py-8 mt-12 border-t border-border">
@@ -375,7 +371,7 @@
         lucide.createIcons();
 
         // Fetch dashboard-data.json and update metrics
-        fetch('dashboard-data.json')
+        fetch('./dashboard-data.json')
           .then(res => res.json())
           .then(data => {
             window.dashboardData = data;
@@ -392,24 +388,74 @@
               ? "✓ All checks passed"
               : "✗ CI failed";
             const deployText = deployStatus === "success"
-              ? "✓ GitHub Pages active"
+              ? "✓ Deployment successful"
+              : deployStatus === "pending"
+              ? "⏳ Deployment pending"
               : "✗ Deployment failed";
             document.getElementById('ciStatus').textContent = ciText;
             document.getElementById('deploymentStatus').textContent = deployText;
+            
+            // Update CI icon
+            const ciIcon = document.getElementById('ciIcon');
+            if (ciIcon) {
+              if (ciStatus === "success") {
+                ciIcon.setAttribute('data-lucide', 'check-circle');
+                ciIcon.style.color = '#3b82f6'; // Blue - consistent with portfolio theme
+              } else {
+                ciIcon.setAttribute('data-lucide', 'x-circle');
+                ciIcon.style.color = '#3b82f6'; // Blue - consistent with portfolio theme
+              }
+              lucide.createIcons();
+            }
+            
+            // Update deployment icon
+            const deploymentIcon = document.getElementById('deploymentIcon');
+            if (deploymentIcon) {
+              if (deployStatus === "success") {
+                deploymentIcon.setAttribute('data-lucide', 'check-circle');
+                deploymentIcon.style.color = '#3b82f6'; // Blue - consistent with portfolio theme
+              } else if (deployStatus === "pending") {
+                deploymentIcon.setAttribute('data-lucide', 'clock');
+                deploymentIcon.style.color = '#3b82f6'; // Blue - consistent with portfolio theme
+              } else {
+                deploymentIcon.setAttribute('data-lucide', 'x-circle');
+                deploymentIcon.style.color = '#3b82f6'; // Blue - consistent with portfolio theme
+              }
+              lucide.createIcons();
+            }
             document.getElementById('coverageStatus').textContent = `✓ ${data.coverage.percentage}% coverage`;
+            
+            // Update coverage icon based on percentage
+            const coverageIcon = document.getElementById('coverageIcon');
+            if (coverageIcon) {
+              const coverage = data.coverage.percentage;
+              if (coverage >= 90) {
+                coverageIcon.setAttribute('data-lucide', 'check-circle');
+                coverageIcon.style.color = '#3b82f6'; // Blue - consistent with portfolio theme
+              } else if (coverage >= 70) {
+                coverageIcon.setAttribute('data-lucide', 'alert-circle');
+                coverageIcon.style.color = '#3b82f6'; // Blue - consistent with portfolio theme
+              } else {
+                coverageIcon.setAttribute('data-lucide', 'x-circle');
+                coverageIcon.style.color = '#3b82f6'; // Blue - consistent with portfolio theme
+              }
+              lucide.createIcons();
+            }
             // Update Security Score
             document.getElementById('securityScore').textContent = (data.security?.score ?? '-') + '%';
             document.getElementById('securityStatus').textContent =
               data.security?.highSeverityIssues === 0
                 ? '✓ No high severity issues'
                 : `✗ ${data.security.highSeverityIssues} high severity issues`;
-            // Fetch and update trend chart with real history
-            fetch('dashboard-history.json')
+            // Fetch and update trend chart with real history (last 7 days only)
+            fetch('./dashboard-history.json')
               .then(res => res.json())
               .then(history => {
-                chartLabels = history.map(entry => entry.date);
-                chartCoverageTrend = history.map(entry => entry.coverage);
-                chartTestTrend = history.map(entry => entry.tests);
+                // Filter to show only the last 7 days
+                const last7Days = history.slice(-7);
+                chartLabels = last7Days.map(entry => entry.date);
+                chartCoverageTrend = last7Days.map(entry => entry.coverage);
+                chartTestTrend = last7Days.map(entry => entry.tests);
                 updateCharts(data, chartLabels, chartCoverageTrend, chartTestTrend);
               });
             // Update coverage bar if present
@@ -450,11 +496,11 @@
             const qualityMetricsList = document.getElementById('qualityMetricsList');
             if (qualityMetricsList) {
               let metrics = [
-                { label: 'TypeScript Coverage', value: (data.quality?.typescriptCoverage ?? '100%') },
-                { label: 'Linting Score', value: (data.quality?.lintingScore ?? '100%') },
-                { label: 'Build Success Rate', value: (data.quality?.buildSuccessRate ?? '100%') },
-                { label: 'Deployment Success', value: (data.quality?.deploymentSuccess ?? '100%') },
-                { label: 'Security Vulnerabilities', value: (data.quality?.securityVulnerabilities ?? data.security?.highSeverityIssues ?? 0) }
+                { label: 'TypeScript Coverage', value: (data.quality?.typeCheckScore ?? '100') + '%' },
+                { label: 'Linting Score', value: (data.quality?.lintingScore ?? '100') + '%' },
+                { label: 'Deployment Success', value: (data.workflows?.deploy === 'success' ? '100%' : '0%') },
+                { label: 'Build Success Rate', value: (data.quality?.overallGrade ?? 'A+') },
+                { label: 'Security Vulnerabilities', value: (data.security?.highSeverityIssues ?? 0) }
               ];
               // Sort: percentages descending, vulnerabilities ascending (0 best)
               metrics = metrics.sort((a, b) => {
@@ -478,25 +524,7 @@
                 qualityMetricsList.appendChild(div);
               });
             }
-            const coverageRecommendations = document.getElementById('coverageRecommendations');
-            if (coverageRecommendations && Array.isArray(data.recommendations)) {
-              coverageRecommendations.innerHTML = '';
-              data.recommendations.forEach(priority => {
-                const div = document.createElement('div');
-                div.className = 'mb-6';
-                div.innerHTML = `<h4 class=\"font-medium text-foreground mb-3\">${priority.title}</h4>`;
-                const ul = document.createElement('ul');
-                ul.className = 'space-y-2 text-sm text-foreground';
-                priority.items.forEach(item => {
-                  const li = document.createElement('li');
-                  li.className = 'flex items-center';
-                  li.innerHTML = `<i data-lucide=\"circle\" class=\"w-3 h-3 mr-2 text-primary\"></i>${item}`;
-                  ul.appendChild(li);
-                });
-                div.appendChild(ul);
-                coverageRecommendations.appendChild(div);
-              });
-            }
+
           });
 
         // Chart configuration
@@ -661,6 +689,6 @@
             }
         }, 300000);
     </script>
-    <script src="dashboard.js"></script>
+    <script src="./dashboard.js"></script>
 </body>
 </html> 

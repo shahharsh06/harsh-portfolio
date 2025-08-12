@@ -1,2 +1,2 @@
 // Utility for Sonner
-export { toast } from "sonner"; 
+export { toast } from "sonner";

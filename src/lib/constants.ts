@@ -12,9 +12,10 @@ export const CAROUSEL_INTERVALS = {
 } as const;
 
 // Responsive visibility counts
-export const getVisibleCount = (type: 'featured' | 'other') => {
-  if (typeof window === 'undefined') return 1;
-  if (window.innerWidth >= BREAKPOINTS.TABLET) return type === 'featured' ? 2 : 3;
+export const getVisibleCount = (type: "featured" | "other") => {
+  if (typeof window === "undefined") return 1;
+  if (window.innerWidth >= BREAKPOINTS.TABLET)
+    return type === "featured" ? 2 : 3;
   if (window.innerWidth >= BREAKPOINTS.MOBILE) return 1;
   return 1;
 };
@@ -53,4 +54,4 @@ export const SOCIAL_LINKS = {
   github: `https://github.com/${PERSONAL_INFO.github}`,
   linkedin: `https://www.linkedin.com/in/${PERSONAL_INFO.linkedin}/`,
   email: `mailto:${PERSONAL_INFO.email}`,
-} as const; 
+} as const;

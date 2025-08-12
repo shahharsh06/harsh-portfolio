@@ -9,16 +9,17 @@ interface GradientButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean;
 }
 
-export const GradientButton = ({ 
-  children, 
-  className, 
+export const GradientButton = ({
+  children,
+  className,
   variant = "default",
   asChild,
-  ...props 
+  ...props
 }: GradientButtonProps) => {
-  const baseClasses = "bg-gradient-to-r from-primary to-cyan-400 hover:from-primary/90 hover:to-cyan-400/90 hover-lift text-white font-medium shadow-lg";
+  const baseClasses =
+    "bg-gradient-to-r from-primary to-cyan-400 hover:from-primary/90 hover:to-cyan-400/90 hover-lift text-white font-medium shadow-lg";
   const widthClasses = variant === "full-width" ? "w-full" : "";
-  
+
   return (
     <Button
       className={cn(baseClasses, widthClasses, className)}
@@ -28,4 +29,4 @@ export const GradientButton = ({
       {children}
     </Button>
   );
-}; 
+};

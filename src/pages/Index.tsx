@@ -5,7 +5,7 @@ import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import CareerEducation from '../components/CareerEducation';
+import CareerEducation from "../components/CareerEducation";
 import { MobileMenuProvider } from "@/components/MobileMenuContext";
 import { useMobileMenu } from "@/components/MobileMenuContext.utils";
 
@@ -17,23 +17,23 @@ const MainContent = () => {
       setIsMobileMenuOpen(false);
     }
   };
-  
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      <div 
+      <div
         className={`transition-all duration-300 ${
-          isMobileMenuOpen ? 'blur-sm' : ''
+          isMobileMenuOpen ? "blur-sm" : ""
         }`}
         onClick={handleContentClick}
       >
-      <Hero />
-      <About />
-      <CareerEducation />
-      <Skills />
-      <Projects />
-      <Contact />
-      <Footer />
+        <Hero />
+        <About />
+        <CareerEducation />
+        <Skills />
+        <Projects />
+        <Contact />
+        <Footer />
       </div>
     </div>
   );
@@ -42,7 +42,7 @@ const MainContent = () => {
 const Index = () => {
   return (
     <MobileMenuProvider>
-    <MainContent />
+      <MainContent />
     </MobileMenuProvider>
   );
 };

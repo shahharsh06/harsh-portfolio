@@ -26,7 +26,7 @@ const App = () => {
         <Toaster />
         <Sonner />
         {showCursorEffect && (
-          <CursorEffect 
+          <CursorEffect
             enabled={true}
             trailLength={10}
             blurAmount={6}

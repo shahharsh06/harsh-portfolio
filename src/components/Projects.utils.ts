@@ -16,10 +16,10 @@ interface ScrollHandlerConfig {
 
 // Generic scroll function that can handle any direction and functions
 export const scrollTo = (
-  direction: 'prev' | 'next', 
-  handlers: ScrollHandlerConfig
+  direction: "prev" | "next",
+  handlers: ScrollHandlerConfig,
 ) => {
-  if (direction === 'prev') {
+  if (direction === "prev") {
     handlers.prev();
   } else {
     handlers.next();
@@ -27,10 +27,7 @@ export const scrollTo = (
 };
 
 // Generic hover handler that can work with any set of pause/resume functions
-export const handleHover = (
-  isHovered: boolean,
-  config: HoverHandlerConfig
-) => {
+export const handleHover = (isHovered: boolean, config: HoverHandlerConfig) => {
   config.setHovered(isHovered);
   if (isHovered) {
     config.pause();
@@ -42,27 +39,35 @@ export const handleHover = (
 };
 
 // Specific implementations using the generic functions with reduced parameters
-export const scrollToFeatured = (direction: 'prev' | 'next', handlers: ScrollHandlerConfig) => 
-  scrollTo(direction, handlers);
+export const scrollToFeatured = (
+  direction: "prev" | "next",
+  handlers: ScrollHandlerConfig,
+) => scrollTo(direction, handlers);
 
-export const scrollToOther = (direction: 'prev' | 'next', handlers: ScrollHandlerConfig) => 
-  scrollTo(direction, handlers);
+export const scrollToOther = (
+  direction: "prev" | "next",
+  handlers: ScrollHandlerConfig,
+) => scrollTo(direction, handlers);
 
-export const scrollToFeaturedMobile = (direction: 'prev' | 'next', handlers: ScrollHandlerConfig) => 
-  scrollTo(direction, handlers);
+export const scrollToFeaturedMobile = (
+  direction: "prev" | "next",
+  handlers: ScrollHandlerConfig,
+) => scrollTo(direction, handlers);
 
-export const scrollToOtherMobile = (direction: 'prev' | 'next', handlers: ScrollHandlerConfig) => 
-  scrollTo(direction, handlers);
+export const scrollToOtherMobile = (
+  direction: "prev" | "next",
+  handlers: ScrollHandlerConfig,
+) => scrollTo(direction, handlers);
 
 // Hover handlers with reduced parameters using the interface
 export const handleFeaturedHover = (
   isHovered: boolean,
-  config: HoverHandlerConfig
+  config: HoverHandlerConfig,
 ) => handleHover(isHovered, config);
 
 export const handleOtherHover = (
   isHovered: boolean,
-  config: HoverHandlerConfig
+  config: HoverHandlerConfig,
 ) => handleHover(isHovered, config);
 
 // Alternative: If you prefer to keep the original function signatures for backward compatibility,
@@ -72,13 +77,13 @@ export const createFeaturedHoverConfig = (
   pauseFeatured: () => void,
   pauseFeaturedMobile: () => void,
   resumeFeatured: () => void,
-  resumeFeaturedMobile: () => void
+  resumeFeaturedMobile: () => void,
 ): HoverHandlerConfig => ({
   setHovered: setIsFeaturedHovered,
   pause: pauseFeatured,
   pauseMobile: pauseFeaturedMobile,
   resume: resumeFeatured,
-  resumeMobile: resumeFeaturedMobile
+  resumeMobile: resumeFeaturedMobile,
 });
 
 export const createOtherHoverConfig = (
@@ -86,11 +91,11 @@ export const createOtherHoverConfig = (
   pauseOther: () => void,
   pauseOtherMobile: () => void,
   resumeOther: () => void,
-  resumeOtherMobile: () => void
+  resumeOtherMobile: () => void,
 ): HoverHandlerConfig => ({
   setHovered: setIsOtherHovered,
   pause: pauseOther,
   pauseMobile: pauseOtherMobile,
   resume: resumeOther,
-  resumeMobile: resumeOtherMobile
-}); 
+  resumeMobile: resumeOtherMobile,
+});

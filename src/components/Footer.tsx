@@ -9,7 +9,7 @@ const Footer = () => {
   const socialLinks = [
     { icon: GithubIcon, href: SOCIAL_LINKS.github, label: "GitHub" },
     { icon: LinkedinIcon, href: SOCIAL_LINKS.linkedin, label: "LinkedIn" },
-    { icon: EnvelopeIcon, href: SOCIAL_LINKS.email, label: "Email" }
+    { icon: EnvelopeIcon, href: SOCIAL_LINKS.email, label: "Email" },
   ];
 
   const scrollToTop = () => {
@@ -22,7 +22,9 @@ const Footer = () => {
         <div className="grid md:grid-cols-3 gap-8 items-center">
           {/* Brand */}
           <div className="text-center md:text-left hidden md:block">
-            <span className="text-xl font-bold text-gradient block mb-2">{PERSONAL_INFO.name.split(' ')[0]}</span>
+            <span className="text-xl font-bold text-gradient block mb-2">
+              {PERSONAL_INFO.name.split(" ")[0]}
+            </span>
             <p className="text-muted-foreground text-sm">
               {PERSONAL_INFO.title}
             </p>
@@ -68,8 +70,10 @@ const Footer = () => {
         <div className="mt-8 pt-8 border-t border-border text-center">
           <p className="text-sm text-muted-foreground flex items-center justify-center gap-2">
             © {currentYear} Made with{" "}
-            <Heart className="h-4 w-4 text-red-500 fill-current" />{" "}
-            by <span className="text-gradient font-semibold">{PERSONAL_INFO.name.split(' ')[0]}</span>
+            <Heart className="h-4 w-4 text-red-500 fill-current" /> by{" "}
+            <span className="text-gradient font-semibold">
+              {PERSONAL_INFO.name.split(" ")[0]}
+            </span>
           </p>
         </div>
       </div>

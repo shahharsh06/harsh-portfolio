@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 // Test data
 export const mockPersonalInfo = {
@@ -51,15 +51,16 @@ export const createMockResizeObserver = () => {
 };
 
 // Wait for animations to complete
-export const waitForAnimation = () => new Promise(resolve => setTimeout(resolve, 100));
+export const waitForAnimation = () =>
+  new Promise((resolve) => setTimeout(resolve, 100));
 
 // Mock window methods
 export const mockWindowMethods = () => {
-  Object.defineProperty(window, 'scrollTo', {
+  Object.defineProperty(window, "scrollTo", {
     writable: true,
     value: vi.fn(),
   });
-  Object.defineProperty(window, 'scrollIntoView', {
+  Object.defineProperty(window, "scrollIntoView", {
     writable: true,
     value: vi.fn(),
   });
@@ -67,6 +68,6 @@ export const mockWindowMethods = () => {
 
 // Helper to wrap state updates in act()
 export const act = async (callback: () => void | Promise<void>) => {
-  const { act: reactAct } = await import('@testing-library/react');
+  const { act: reactAct } = await import("@testing-library/react");
   return reactAct(callback);
-}; 
+};

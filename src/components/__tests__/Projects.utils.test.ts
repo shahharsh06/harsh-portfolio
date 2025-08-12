@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi } from "vitest";
 import {
   scrollTo,
   handleHover,
@@ -9,44 +9,44 @@ import {
   handleFeaturedHover,
   handleOtherHover,
   createFeaturedHoverConfig,
-  createOtherHoverConfig
-} from '../Projects.utils';
+  createOtherHoverConfig,
+} from "../Projects.utils";
 
-describe('Projects.utils', () => {
-  describe('scrollTo', () => {
-    it('calls prev handler when direction is prev', () => {
+describe("Projects.utils", () => {
+  describe("scrollTo", () => {
+    it("calls prev handler when direction is prev", () => {
       const mockHandlers = {
         prev: vi.fn(),
-        next: vi.fn()
+        next: vi.fn(),
       };
 
-      scrollTo('prev', mockHandlers);
+      scrollTo("prev", mockHandlers);
 
       expect(mockHandlers.prev).toHaveBeenCalledTimes(1);
       expect(mockHandlers.next).not.toHaveBeenCalled();
     });
 
-    it('calls next handler when direction is next', () => {
+    it("calls next handler when direction is next", () => {
       const mockHandlers = {
         prev: vi.fn(),
-        next: vi.fn()
+        next: vi.fn(),
       };
 
-      scrollTo('next', mockHandlers);
+      scrollTo("next", mockHandlers);
 
       expect(mockHandlers.next).toHaveBeenCalledTimes(1);
       expect(mockHandlers.prev).not.toHaveBeenCalled();
     });
   });
 
-  describe('handleHover', () => {
-    it('pauses carousel when hovering', () => {
+  describe("handleHover", () => {
+    it("pauses carousel when hovering", () => {
       const mockConfig = {
         setHovered: vi.fn(),
         pause: vi.fn(),
         pauseMobile: vi.fn(),
         resume: vi.fn(),
-        resumeMobile: vi.fn()
+        resumeMobile: vi.fn(),
       };
 
       handleHover(true, mockConfig);
@@ -58,13 +58,13 @@ describe('Projects.utils', () => {
       expect(mockConfig.resumeMobile).not.toHaveBeenCalled();
     });
 
-    it('resumes carousel when not hovering', () => {
+    it("resumes carousel when not hovering", () => {
       const mockConfig = {
         setHovered: vi.fn(),
         pause: vi.fn(),
         pauseMobile: vi.fn(),
         resume: vi.fn(),
-        resumeMobile: vi.fn()
+        resumeMobile: vi.fn(),
       };
 
       handleHover(false, mockConfig);
@@ -77,66 +77,66 @@ describe('Projects.utils', () => {
     });
   });
 
-  describe('scrollToFeatured', () => {
-    it('delegates to scrollTo function', () => {
+  describe("scrollToFeatured", () => {
+    it("delegates to scrollTo function", () => {
       const mockHandlers = {
         prev: vi.fn(),
-        next: vi.fn()
+        next: vi.fn(),
       };
 
-      scrollToFeatured('prev', mockHandlers);
+      scrollToFeatured("prev", mockHandlers);
 
       expect(mockHandlers.prev).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('scrollToOther', () => {
-    it('delegates to scrollTo function', () => {
+  describe("scrollToOther", () => {
+    it("delegates to scrollTo function", () => {
       const mockHandlers = {
         prev: vi.fn(),
-        next: vi.fn()
+        next: vi.fn(),
       };
 
-      scrollToOther('next', mockHandlers);
+      scrollToOther("next", mockHandlers);
 
       expect(mockHandlers.next).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('scrollToFeaturedMobile', () => {
-    it('delegates to scrollTo function', () => {
+  describe("scrollToFeaturedMobile", () => {
+    it("delegates to scrollTo function", () => {
       const mockHandlers = {
         prev: vi.fn(),
-        next: vi.fn()
+        next: vi.fn(),
       };
 
-      scrollToFeaturedMobile('prev', mockHandlers);
+      scrollToFeaturedMobile("prev", mockHandlers);
 
       expect(mockHandlers.prev).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('scrollToOtherMobile', () => {
-    it('delegates to scrollTo function', () => {
+  describe("scrollToOtherMobile", () => {
+    it("delegates to scrollTo function", () => {
       const mockHandlers = {
         prev: vi.fn(),
-        next: vi.fn()
+        next: vi.fn(),
       };
 
-      scrollToOtherMobile('next', mockHandlers);
+      scrollToOtherMobile("next", mockHandlers);
 
       expect(mockHandlers.next).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('handleFeaturedHover', () => {
-    it('delegates to handleHover function', () => {
+  describe("handleFeaturedHover", () => {
+    it("delegates to handleHover function", () => {
       const mockConfig = {
         setHovered: vi.fn(),
         pause: vi.fn(),
         pauseMobile: vi.fn(),
         resume: vi.fn(),
-        resumeMobile: vi.fn()
+        resumeMobile: vi.fn(),
       };
 
       handleFeaturedHover(true, mockConfig);
@@ -147,14 +147,14 @@ describe('Projects.utils', () => {
     });
   });
 
-  describe('handleOtherHover', () => {
-    it('delegates to handleHover function', () => {
+  describe("handleOtherHover", () => {
+    it("delegates to handleHover function", () => {
       const mockConfig = {
         setHovered: vi.fn(),
         pause: vi.fn(),
         pauseMobile: vi.fn(),
         resume: vi.fn(),
-        resumeMobile: vi.fn()
+        resumeMobile: vi.fn(),
       };
 
       handleOtherHover(false, mockConfig);
@@ -165,8 +165,8 @@ describe('Projects.utils', () => {
     });
   });
 
-  describe('createFeaturedHoverConfig', () => {
-    it('creates config object with correct properties', () => {
+  describe("createFeaturedHoverConfig", () => {
+    it("creates config object with correct properties", () => {
       const mockSetIsFeaturedHovered = vi.fn();
       const mockPauseFeatured = vi.fn();
       const mockPauseFeaturedMobile = vi.fn();
@@ -178,7 +178,7 @@ describe('Projects.utils', () => {
         mockPauseFeatured,
         mockPauseFeaturedMobile,
         mockResumeFeatured,
-        mockResumeFeaturedMobile
+        mockResumeFeaturedMobile,
       );
 
       expect(config.setHovered).toBe(mockSetIsFeaturedHovered);
@@ -189,8 +189,8 @@ describe('Projects.utils', () => {
     });
   });
 
-  describe('createOtherHoverConfig', () => {
-    it('creates config object with correct properties', () => {
+  describe("createOtherHoverConfig", () => {
+    it("creates config object with correct properties", () => {
       const mockSetIsOtherHovered = vi.fn();
       const mockPauseOther = vi.fn();
       const mockPauseOtherMobile = vi.fn();
@@ -202,7 +202,7 @@ describe('Projects.utils', () => {
         mockPauseOther,
         mockPauseOtherMobile,
         mockResumeOther,
-        mockResumeOtherMobile
+        mockResumeOtherMobile,
       );
 
       expect(config.setHovered).toBe(mockSetIsOtherHovered);
@@ -213,37 +213,37 @@ describe('Projects.utils', () => {
     });
   });
 
-  describe('edge cases', () => {
-    it('handles empty handlers gracefully', () => {
+  describe("edge cases", () => {
+    it("handles empty handlers gracefully", () => {
       const emptyHandlers = {
         prev: vi.fn(),
-        next: vi.fn()
+        next: vi.fn(),
       };
 
-      expect(() => scrollTo('prev', emptyHandlers)).not.toThrow();
-      expect(() => scrollTo('next', emptyHandlers)).not.toThrow();
+      expect(() => scrollTo("prev", emptyHandlers)).not.toThrow();
+      expect(() => scrollTo("next", emptyHandlers)).not.toThrow();
     });
 
-    it('handles null config gracefully', () => {
+    it("handles null config gracefully", () => {
       const nullConfig = {
         setHovered: vi.fn(),
         pause: vi.fn(),
         pauseMobile: vi.fn(),
         resume: vi.fn(),
-        resumeMobile: vi.fn()
+        resumeMobile: vi.fn(),
       };
 
       expect(() => handleHover(true, nullConfig)).not.toThrow();
       expect(() => handleHover(false, nullConfig)).not.toThrow();
     });
 
-    it('handles config with no-op functions', () => {
+    it("handles config with no-op functions", () => {
       const noOpConfig = {
         setHovered: () => {},
         pause: () => {},
         pauseMobile: () => {},
         resume: () => {},
-        resumeMobile: () => {}
+        resumeMobile: () => {},
       };
 
       expect(() => handleHover(true, noOpConfig)).not.toThrow();

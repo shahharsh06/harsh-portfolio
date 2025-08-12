@@ -1,31 +1,59 @@
 {
-  "lastUpdated": "2025-08-10T21:29:26.518Z",
+  "lastUpdated": "2025-08-12T15:52:36.529Z",
+  "environment": {
+    "current": "development",
+    "lastUpdated": "2025-08-12T15:52:36.528Z",
+    "buildTime": "2025-08-12T15:52:36.528Z"
+  },
   "coverage": {
-    "percentage": 98,
-    "totalLines": 2349,
-    "coveredLines": 2300
+    "percentage": 99,
+    "totalLines": 3744,
+    "coveredLines": 3690,
+    "grade": "A+"
   },
   "functions": {
     "percentage": 93,
     "total": 100,
     "covered": 93,
-    "threshold": 80
+    "threshold": 80,
+    "grade": "A+"
   },
   "branches": {
     "percentage": 94,
     "total": 336,
-    "covered": 315
+    "covered": 315,
+    "grade": "A+"
   },
   "tests": {
     "count": 479,
     "files": 101,
-    "status": "passing"
+    "status": "passing",
+    "passed": 479,
+    "failed": 0
   },
   "security": {
     "score": 100,
-    "highSeverityIssues": 0
+    "highSeverityIssues": 0,
+    "vulnerabilities": 0,
+    "lastScan": "2025-08-12T15:52:36.530Z"
+  },
+  "quality": {
+    "lintingScore": 100,
+    "typeCheckScore": 100,
+    "formatScore": 100,
+    "overallGrade": "A+"
+  },
+  "workflows": {
+    "ci": "success",
+    "deploy": "success",
+    "staging": "success",
+    "production": "pending"
   },
   "componentCoverage": [
+    {
+      "name": "App.tsx",
+      "coverage": 100
+    },
     {
       "name": "About.tsx",
       "coverage": 100
@@ -40,18 +68,6 @@
     },
     {
       "name": "Footer.tsx",
-      "coverage": 100
-    },
-    {
-      "name": "Navigation.components.tsx",
-      "coverage": 100
-    },
-    {
-      "name": "Navigation.tsx",
-      "coverage": 100
-    },
-    {
-      "name": "SectionIcon.tsx",
       "coverage": 100
     },
     {
@@ -75,44 +91,28 @@
       "coverage": 100
     },
     {
-      "name": "SkillTag.tsx",
+      "name": "projects.ts",
       "coverage": 100
     },
     {
-      "name": "button.tsx",
+      "name": "timeline.ts",
       "coverage": 100
     },
     {
-      "name": "card.tsx",
+      "name": "constants.ts",
       "coverage": 100
     },
     {
-      "name": "input.tsx",
+      "name": "utils.ts",
       "coverage": 100
     },
     {
-      "name": "label.tsx",
-      "coverage": 100
+      "name": "Navigation.tsx",
+      "coverage": 99
     },
     {
-      "name": "sonner.tsx",
-      "coverage": 100
-    },
-    {
-      "name": "textarea.tsx",
-      "coverage": 100
-    },
-    {
-      "name": "toast.tsx",
-      "coverage": 100
-    },
-    {
-      "name": "toaster.tsx",
-      "coverage": 100
-    },
-    {
-      "name": "tooltip.tsx",
-      "coverage": 100
+      "name": "CursorEffect.tsx",
+      "coverage": 98
     },
     {
       "name": "Projects.tsx",
@@ -123,57 +123,81 @@
       "coverage": 97
     },
     {
-      "name": "CursorEffect.tsx",
+      "name": "ProjectCard.tsx",
+      "coverage": 97
+    },
+    {
+      "name": "use-toast.ts",
+      "coverage": 97
+    },
+    {
+      "name": "useResponsive.ts",
+      "coverage": 97
+    },
+    {
+      "name": "useCarousel.ts",
       "coverage": 96
     },
     {
-      "name": "ProjectCard.tsx",
-      "coverage": 95
+      "name": "Index.tsx",
+      "coverage": 96
     },
     {
       "name": "Hero.tsx",
-      "coverage": 92
+      "coverage": 94
     }
   ],
   "testCategories": [
     {
       "name": "Component Tests",
-      "count": 293
+      "count": 287
     },
     {
       "name": "UI Tests",
-      "count": 65
+      "count": 72
     },
     {
       "name": "Utility Tests",
-      "count": 53
+      "count": 48
     },
     {
       "name": "Hook Tests",
-      "count": 52
+      "count": 48
     },
     {
       "name": "Integration Tests",
-      "count": 16
+      "count": 24
     }
   ],
-  "quality": {
-    "typescriptCoverage": "98%",
-    "lintingScore": "100%",
-    "buildSuccessRate": "100%",
-    "deploymentSuccess": "100%",
-    "securityVulnerabilities": 0
-  },
   "recommendations": [
     {
-      "title": "",
+      "title": "High Priority",
       "items": [
-        "Great job! Your code coverage is excellent. 🎉"
+        "Add tests for uncovered functions",
+        "Increase branch coverage in complex components",
+        "Add integration tests for user workflows"
+      ]
+    },
+    {
+      "title": "Medium Priority",
+      "items": [
+        "Add performance tests",
+        "Implement accessibility testing",
+        "Add visual regression tests"
+      ]
+    },
+    {
+      "title": "Low Priority",
+      "items": [
+        "Add documentation tests",
+        "Implement mutation testing",
+        "Add load testing for critical paths"
       ]
     }
   ],
-  "workflows": {
-    "ci": "success",
-    "deploy": "success"
+  "performance": {
+    "buildSize": "2.1MB",
+    "loadTime": "< 2s",
+    "lighthouseScore": 95
   }
 }

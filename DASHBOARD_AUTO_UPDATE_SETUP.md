@@ -4,28 +4,30 @@ This guide explains how your dashboard automatically updates **after** your CI/C
 
 ## 🎯 **Current Setup: Auto-Update After Successful CI**
 
-The dashboard now automatically updates **only after** your CI/CD pipeline succeeds, giving you the best of both worlds:
+The dashboard now automatically updates **only after** your CI/CD pipeline succeeds, using a **dual-trigger mechanism** for reliability:
 - ✅ **Automatic updates** when code is proven to work
 - ❌ **No pre-commit hooks** or bot interference
 - 🔒 **Quality gate** - only updates after successful tests
+- 🚀 **Dual triggers** - ensures reliable execution
 
 ## 🔄 **How the Workflow Works**
 
-### **1. You Make a Commit**
-- 📝 **Push code** to `main` branch
-- 🚀 **CI/CD Pipeline** automatically starts
+### **1. You Make a Commit** 📝
+- Push code to `main` or `develop` branch
+- **No pre-commit hooks** - clean development experience
 
-### **2. CI/CD Pipeline Runs**
-- ✅ **Runs all tests** with coverage
-- ✅ **Generates coverage data** 
-- ✅ **Builds and validates** your code
-- ✅ **Reports success/failure**
+### **2. CI/CD Pipeline Runs** 🚀
+- Automatically starts on your commit
+- Runs all tests with coverage
+- Generates fresh coverage data
+- Reports success/failure
 
-### **3. Dashboard Auto-Updates (ONLY if CI Succeeds)**
-- 🎯 **Triggers automatically** after successful CI
-- 📊 **Uses fresh coverage data** from CI run
-- 📈 **Updates dashboard metrics**
-- 💾 **Commits changes** automatically
+### **3. Dashboard Auto-Updates (ONLY if CI Succeeds)** 🎯
+- **Primary trigger**: `workflow_run` after successful CI
+- **Backup trigger**: `repository_dispatch` from CI workflow
+- **Uses fresh coverage data** from CI run
+- **Updates dashboard metrics**
+- **Commits changes** automatically
 
 ## 📋 **What Happens During Dashboard Update**
 
@@ -41,6 +43,7 @@ The dashboard now automatically updates **only after** your CI/CD pipeline succe
 - ✅ **Happens automatically** after successful CI
 - 🎯 **No action needed** from you
 - 📊 **Always fresh data** after code changes
+- 🚀 **Dual triggers** ensure reliability
 
 ### **Option 2: Manual Trigger (For Testing)**
 1. Go to your repository on GitHub
@@ -53,7 +56,8 @@ The dashboard now automatically updates **only after** your CI/CD pipeline succe
 ## ⚙️ **Workflow Configuration**
 
 ### **Dashboard Workflow (`.github/workflows/dashboard.yml`)**
-- ✅ **Auto-triggers** after successful CI (`workflow_run`)
+- ✅ **Primary trigger**: After successful CI (`workflow_run`)
+- ✅ **Backup trigger**: Direct from CI (`repository_dispatch`)
 - ✅ **Manual trigger** available (`workflow_dispatch`)
 - 🔒 **Quality gate** - only runs if CI succeeded
 - 📊 **Uses fresh data** from CI run
@@ -61,7 +65,7 @@ The dashboard now automatically updates **only after** your CI/CD pipeline succe
 ### **CI Workflow (`.github/workflows/ci.yml`)**
 - ✅ **Runs tests and coverage** on every commit/PR
 - ✅ **Generates coverage data** for dashboard
-- ❌ **Does NOT update dashboard** directly
+- ✅ **Triggers dashboard update** directly
 - 📊 **Prepares data** for dashboard workflow
 
 ## 🔑 **Required GitHub Secrets**
@@ -78,14 +82,16 @@ DASHBOARD_TOKEN=your_personal_access_token
 - **📊 After successful PRs**: When CI passes
 - **🎯 Manual triggers**: When you want to test
 - **❌ Never after failed CI**: Quality gate protection
+- **🚀 Dual triggers**: Ensures reliable execution
 
 ## 🛠️ **Troubleshooting**
 
 ### **If Dashboard Doesn't Update:**
 1. **Check CI status** - Dashboard only runs after successful CI
 2. **Verify workflow_run** trigger is working
-3. **Check GitHub Actions logs** for errors
-4. **Ensure DASHBOARD_TOKEN** secret is set
+3. **Check repository_dispatch** backup trigger
+4. **Check GitHub Actions logs** for errors
+5. **Ensure DASHBOARD_TOKEN** secret is set
 
 ### **If You Want Manual-Only Updates:**
 Change the workflow trigger in `.github/workflows/dashboard.yml`:
@@ -102,7 +108,7 @@ Change the workflow trigger in `.github/workflows/dashboard.yml`:
 ```yaml
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, develop ]
     paths:
       - 'src/**'
       - 'tests/**'
@@ -116,6 +122,7 @@ on:
 - **📊 Fresh data** - Always uses latest coverage results
 - **🚫 No pre-commit hooks** - Clean development experience
 - **🎯 Smart triggers** - Runs when it makes sense
+- **🚀 Dual triggers** - Ensures reliable execution
 - **💾 Resource efficient** - No unnecessary updates
 
 ## 🚀 **Next Steps**
@@ -126,4 +133,4 @@ on:
 4. **Dashboard should auto-update** after CI succeeds
 5. **Check dashboard** for fresh metrics
 
-Your dashboard now **automatically updates after successful CI** - the perfect balance of automation and quality control! 🎯✨ 
+Your dashboard now **automatically updates after successful CI** with **dual-trigger reliability** - the perfect balance of automation and quality control! 🎯✨ 

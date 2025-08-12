@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ExternalLink } from "lucide-react";
 import { GithubIcon } from "../icons";
 import SectionIcon from "../SectionIcon";
@@ -31,7 +37,7 @@ const ProjectImage: React.FC<{
     // Reset state when image changes
     setImageLoaded(false);
     setImageError(false);
-    
+
     const img = new Image();
     img.src = getImageUrl(image);
     img.onload = () => setImageLoaded(true);
@@ -82,7 +88,7 @@ const ProjectImage: React.FC<{
         crossOrigin="anonymous"
         fetchPriority="high" // Add high priority for featured projects
         className={`w-full h-48 object-cover group-hover:scale-105 transition-smooth ${
-          imageLoaded && !imageError ? 'block' : 'hidden'
+          imageLoaded && !imageError ? "block" : "hidden"
         }`}
         onLoad={handleImageLoad}
         onError={handleImageError}
@@ -100,31 +106,31 @@ const ProjectLinks: React.FC<{
   featured: boolean;
 }> = ({ title, githubUrl, liveUrl, featured }) => (
   <div className="flex space-x-2">
-    <a 
-      href={githubUrl} 
-      target="_blank" 
+    <a
+      href={githubUrl}
+      target="_blank"
       rel="noopener noreferrer"
       className="focus:outline-none focus:ring-2 focus:ring-primary/40 rounded-full"
       aria-label={`View ${title} on GitHub`}
     >
-      <SectionIcon 
-        icon={<GithubIcon />} 
-        size={featured ? 24 : 18} 
-        padding={featured ? "p-3" : "p-2"} 
+      <SectionIcon
+        icon={<GithubIcon />}
+        size={featured ? 24 : 18}
+        padding={featured ? "p-3" : "p-2"}
         interactive={true}
       />
     </a>
-    <a 
-      href={liveUrl} 
-      target="_blank" 
+    <a
+      href={liveUrl}
+      target="_blank"
       rel="noopener noreferrer"
       className="focus:outline-none focus:ring-2 focus:ring-primary/40 rounded-full"
       aria-label={`View ${title} live demo`}
     >
-      <SectionIcon 
-        icon={<ExternalLink />} 
-        size={featured ? 24 : 18} 
-        padding={featured ? "p-3" : "p-2"} 
+      <SectionIcon
+        icon={<ExternalLink />}
+        size={featured ? 24 : 18}
+        padding={featured ? "p-3" : "p-2"}
         interactive={true}
       />
     </a>
@@ -136,9 +142,15 @@ const TechnologyTags: React.FC<{
   technologies: string[];
   featured: boolean;
 }> = ({ technologies, featured }) => (
-  <div className={`flex flex-wrap items-start justify-start gap-1 ${featured ? 'gap-2 min-h-[32px]' : 'min-h-[24px]'}`}>
+  <div
+    className={`flex flex-wrap items-start justify-start gap-1 ${featured ? "gap-2 min-h-[32px]" : "min-h-[24px]"}`}
+  >
     {technologies.slice(0, featured ? undefined : 4).map((tech) => (
-      <SkillTag key={tech} size={featured ? "md" : "sm"} className="flex-shrink-0">
+      <SkillTag
+        key={tech}
+        size={featured ? "md" : "sm"}
+        className="flex-shrink-0"
+      >
         {tech}
       </SkillTag>
     ))}
@@ -163,30 +175,32 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const fallbackEmoji = getProjectFallbackEmoji(title);
 
   return (
-    <Card 
+    <Card
       data-testid="project-card"
       className={`overflow-hidden card-gradient border-border hover-lift group h-full flex flex-col ${className}`}
     >
       {/* Only show image section for featured projects */}
       {featured && image && (
-        <ProjectImage 
-          image={image} 
-          title={title} 
-          fallbackEmoji={fallbackEmoji} 
+        <ProjectImage
+          image={image}
+          title={title}
+          fallbackEmoji={fallbackEmoji}
         />
       )}
-      
+
       <CardHeader className="flex-shrink-0">
         <CardTitle className="flex items-center justify-between">
           {title}
-          <ProjectLinks 
+          <ProjectLinks
             title={title}
             githubUrl={githubUrl}
             liveUrl={liveUrl}
             featured={featured}
           />
         </CardTitle>
-        <CardDescription className={`${featured ? "" : "text-sm"} line-clamp-2`}>
+        <CardDescription
+          className={`${featured ? "" : "text-sm"} line-clamp-2`}
+        >
           {description}
         </CardDescription>
       </CardHeader>
@@ -197,4 +211,4 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   );
 };
 
-export default ProjectCard; 
+export default ProjectCard;

@@ -1,9 +1,9 @@
-import '@testing-library/jest-dom';
-import { vi } from 'vitest';
+import "@testing-library/jest-dom";
+import { vi } from "vitest";
 
 // Make vi available globally for TypeScript
 declare global {
-  const vi: typeof import('vitest')['vi'];
+  const vi: (typeof import("vitest"))["vi"];
 }
 
 // Mock IntersectionObserver
@@ -21,9 +21,9 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
 }));
 
 // Mock matchMedia
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(window, "matchMedia", {
   writable: true,
-  value: vi.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -36,13 +36,13 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 // Mock scrollTo
-Object.defineProperty(window, 'scrollTo', {
+Object.defineProperty(window, "scrollTo", {
   writable: true,
   value: vi.fn(),
 });
 
 // Mock smooth scrolling
-Object.defineProperty(window, 'scrollIntoView', {
+Object.defineProperty(window, "scrollIntoView", {
   writable: true,
   value: vi.fn(),
 });
@@ -51,10 +51,15 @@ Object.defineProperty(window, 'scrollIntoView', {
 const originalQuerySelector = document.querySelector;
 document.querySelector = vi.fn((selector: string) => {
   // Return a mock element for navigation tests
-  if (selector.startsWith('#')) {
+  if (selector.startsWith("#")) {
     return {
       scrollIntoView: vi.fn(),
-      getBoundingClientRect: () => ({ top: 0, left: 0, width: 100, height: 100 }),
+      getBoundingClientRect: () => ({
+        top: 0,
+        left: 0,
+        width: 100,
+        height: 100,
+      }),
     } as unknown as HTMLElement;
   }
   return originalQuerySelector.call(document, selector);
@@ -63,7 +68,7 @@ document.querySelector = vi.fn((selector: string) => {
 // Suppress React Router warnings
 const originalWarn = console.warn;
 console.warn = (...args) => {
-  if (args[0]?.includes?.('React Router Future Flag Warning')) {
+  if (args[0]?.includes?.("React Router Future Flag Warning")) {
     return;
   }
   originalWarn(...args);
@@ -81,23 +86,23 @@ global.console = {
 };
 
 // Mock disposable-email-domains package
-vi.mock('disposable-email-domains', () => ({
+vi.mock("disposable-email-domains", () => ({
   default: [
-    '10minutemail.com',
-    'tempmail.org',
-    'guerrillamail.com',
-    'mailinator.com',
-    'yopmail.com',
-    'temp-mail.org',
-    'sharklasers.com',
-    'getairmail.com',
-    'mailnesia.com',
-    'trashmail.com'
-  ]
+    "10minutemail.com",
+    "tempmail.org",
+    "guerrillamail.com",
+    "mailinator.com",
+    "yopmail.com",
+    "temp-mail.org",
+    "sharklasers.com",
+    "getairmail.com",
+    "mailnesia.com",
+    "trashmail.com",
+  ],
 }));
 
 // Ensure proper cleanup after each test
 afterEach(() => {
   vi.clearAllMocks();
   vi.clearAllTimers();
-}); 
+});

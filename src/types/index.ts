@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 // Contact Form Types
 export interface ContactFormData {
@@ -34,7 +34,7 @@ export interface TimelineItem {
   subtitle: string;
   description: string;
   date: string;
-  type: 'education' | 'experience';
+  type: "education" | "experience";
   technologies?: string[];
 }
 
@@ -59,13 +59,13 @@ export interface PersonalInfo {
 }
 
 // Theme Types
-export type Theme = 'light' | 'dark' | 'system';
+export type Theme = "light" | "dark" | "system";
 
 // Toast Types
 export interface ToastProps {
   title: string;
   description?: string;
-  variant?: 'default' | 'destructive' | 'success';
+  variant?: "default" | "destructive" | "success";
   duration?: number;
 }
 
@@ -118,4 +118,4 @@ export interface DashboardData {
     title: string;
     items: string[];
   }>;
-} 
+}

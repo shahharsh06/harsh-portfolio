@@ -12,7 +12,11 @@ export const navItems = [
 ];
 
 export const socialLinks = [
-  { label: "Dashboard", href: "/harsh-portfolio/dashboard.html", icon: DashboardIcon },
+  {
+    label: "Dashboard",
+    href: "/harsh-portfolio/dashboard.html",
+    icon: DashboardIcon,
+  },
   { label: "GitHub", href: SOCIAL_LINKS.github, icon: GithubIcon },
   { label: "LinkedIn", href: SOCIAL_LINKS.linkedin, icon: LinkedinIcon },
-]; 
+];

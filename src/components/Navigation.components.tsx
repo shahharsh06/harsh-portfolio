@@ -7,7 +7,11 @@ interface SocialIconButtonProps {
   label: string;
 }
 
-export const SocialIconButton: React.FC<SocialIconButtonProps> = ({ href, icon: Icon, label }) => {
+export const SocialIconButton: React.FC<SocialIconButtonProps> = ({
+  href,
+  icon: Icon,
+  label,
+}) => {
   return (
     <Button
       variant="ghost"
@@ -25,7 +29,11 @@ export const SocialIconButton: React.FC<SocialIconButtonProps> = ({ href, icon: 
 };
 
 interface SocialIconsProps {
-  socialLinks: { label: string; href: string; icon: React.ComponentType<{ className?: string }> }[];
+  socialLinks: {
+    label: string;
+    href: string;
+    icon: React.ComponentType<{ className?: string }>;
+  }[];
 }
 
 export const SocialIcons: React.FC<SocialIconsProps> = ({ socialLinks }) => {
@@ -41,4 +49,4 @@ export const SocialIcons: React.FC<SocialIconsProps> = ({ socialLinks }) => {
       ))}
     </div>
   );
-}; 
+};
