@@ -25,7 +25,7 @@
     "test:coverage": "vitest run --coverage",
     "test:coverage:json": "vitest run --reporter=json --outputFile=vitest-report.json",
     "test:coverage:html": "vitest run --coverage --reporter=html",
-    "test:coverage:lcov": "vitest run --coverage --reporter=lcov",
+    "test:coverage:lcov": "vitest run --coverage",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:strict": "eslint . --max-warnings 0",
