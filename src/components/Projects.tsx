@@ -19,7 +19,7 @@ import {
   getCardWidthClass,
   getCardPadding,
   getCoverflowStyle,
-  getRollingWindow,
+  getCyclicWindow,
 } from "@/lib/utils";
 
 // Types for better organization
@@ -210,9 +210,7 @@ const CoverflowCarousel = ({
                   ...style,
                   width: "min(90vw, 480px)",
                   maxWidth: "100%",
-                  ...(style.pointerEvents
-                    ? { pointerEvents: style.pointerEvents }
-                    : {}),
+                  pointerEvents: style.pointerEvents as React.CSSProperties["pointerEvents"],
                 }}
               >
                 <ProjectCard
@@ -274,7 +272,7 @@ const DesktopCarousel = ({
         className="flex transition-transform duration-500"
         style={{ width: "100%" }}
       >
-        {getRollingWindow(projects, currentIndex, visibleCount).map(
+        {getCyclicWindow(projects, currentIndex, visibleCount).map(
           (project, i) => (
             <div
               key={i + "-" + project.title}

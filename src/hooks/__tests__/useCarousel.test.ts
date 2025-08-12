@@ -35,8 +35,8 @@ describe("useCarousel Hook", () => {
       result.current.next();
     });
 
-    // Featured: steps by 2 (A B, B C, C D pattern)
-    expect(result.current.currentIndex).toBe(2);
+    // Featured: steps by 1 for cyclic movement (A B → B C → C D pattern)
+    expect(result.current.currentIndex).toBe(1);
   });
 
   it("scrolls to next item correctly for other type", () => {
@@ -48,8 +48,8 @@ describe("useCarousel Hook", () => {
       result.current.next();
     });
 
-    // Other: steps by 3 (A B C, B C D pattern)
-    expect(result.current.currentIndex).toBe(3);
+    // Other: steps by 1 for cyclic movement (A B C → B C D → C D A pattern)
+    expect(result.current.currentIndex).toBe(1);
   });
 
   it("scrolls to next item correctly for mobile", () => {
@@ -74,8 +74,8 @@ describe("useCarousel Hook", () => {
       result.current.prev();
     });
 
-    // Featured: steps back by 2
-    expect(result.current.currentIndex).toBe(0);
+    // Featured: steps back by 1 for cyclic movement
+    expect(result.current.currentIndex).toBe(1);
   });
 
   it("scrolls to previous item correctly for other type", () => {
@@ -87,8 +87,8 @@ describe("useCarousel Hook", () => {
       result.current.prev();
     });
 
-    // Other: steps back by 3
-    expect(result.current.currentIndex).toBe(0);
+    // Other: steps back by 1 for cyclic movement
+    expect(result.current.currentIndex).toBe(2);
   });
 
   it("scrolls to previous item correctly for mobile", () => {
@@ -114,14 +114,14 @@ describe("useCarousel Hook", () => {
       result.current.next();
     });
 
-    expect(result.current.currentIndex).toBe(1); // (4 + 2) % 5 = 1
+    expect(result.current.currentIndex).toBe(0); // (4 + 1) % 5 = 0
 
     // Go to previous (should wrap to last)
     act(() => {
       result.current.prev();
     });
 
-    expect(result.current.currentIndex).toBe(4); // (1 - 2 + 5) % 5 = 4
+    expect(result.current.currentIndex).toBe(4); // (0 - 1 + 5) % 5 = 4
   });
 
   it("handles circular navigation for other type", () => {
@@ -134,14 +134,14 @@ describe("useCarousel Hook", () => {
       result.current.next();
     });
 
-    expect(result.current.currentIndex).toBe(2); // (4 + 3) % 5 = 2
+    expect(result.current.currentIndex).toBe(0); // (4 + 1) % 5 = 0
 
     // Go to previous (should wrap to last)
     act(() => {
       result.current.prev();
     });
 
-    expect(result.current.currentIndex).toBe(4); // (2 - 3 + 5) % 5 = 4
+    expect(result.current.currentIndex).toBe(4); // (0 - 1 + 5) % 5 = 4
   });
 
   it("handles empty items array", () => {
@@ -298,7 +298,7 @@ describe("useCarousel Hook", () => {
       vi.advanceTimersByTime(3000);
     });
 
-    expect(result.current.currentIndex).toBe(2); // Featured type by default, steps by 2
+    expect(result.current.currentIndex).toBe(1); // Featured type by default, steps by 1 for cyclic movement
   });
 
   it("auto-scrolls with custom interval", () => {
@@ -315,7 +315,7 @@ describe("useCarousel Hook", () => {
       vi.advanceTimersByTime(2000);
     });
 
-    expect(result.current.currentIndex).toBe(3); // Other type, steps by 3
+    expect(result.current.currentIndex).toBe(1); // Other type, steps by 1 for cyclic movement
   });
 
   it("auto-scrolls with mobile single-step navigation", () => {
@@ -373,7 +373,7 @@ describe("useCarousel Hook", () => {
       vi.advanceTimersByTime(3000);
     });
 
-    expect(result.current.currentIndex).toBe(2); // Should have advanced
+    expect(result.current.currentIndex).toBe(1); // Should have advanced by 1 for cyclic movement
   });
 
   it("does not auto-scroll when autoPlay is false", () => {
@@ -399,22 +399,22 @@ describe("useCarousel Hook", () => {
 
     // Advance timer multiple times
     act(() => {
-      vi.advanceTimersByTime(3000); // First cycle: 0 -> 2
+      vi.advanceTimersByTime(3000); // First cycle: 0 -> 1
+    });
+
+    expect(result.current.currentIndex).toBe(1);
+
+    act(() => {
+      vi.advanceTimersByTime(3000); // Second cycle: 1 -> 2
     });
 
     expect(result.current.currentIndex).toBe(2);
 
     act(() => {
-      vi.advanceTimersByTime(3000); // Second cycle: 2 -> 4
+      vi.advanceTimersByTime(3000); // Third cycle: 2 -> 3
     });
 
-    expect(result.current.currentIndex).toBe(4);
-
-    act(() => {
-      vi.advanceTimersByTime(3000); // Third cycle: 4 -> 1 (wraps around)
-    });
-
-    expect(result.current.currentIndex).toBe(1);
+    expect(result.current.currentIndex).toBe(3);
   });
 
   it("cleans up interval on unmount", () => {

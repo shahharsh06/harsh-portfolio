@@ -127,3 +127,34 @@ export const getRollingWindow = <T>(
     return arr[idx];
   });
 };
+
+// Optimized cyclic window function for smooth carousel movement
+// Creates the pattern: A B → B C → C D → D A (for 4 cards)
+// For any number of cards, it creates smooth cyclic transitions
+export const getCyclicWindow = <T>(
+  arr: T[],
+  start: number,
+  count: number,
+): T[] => {
+  const n = arr.length;
+  if (n === 0) return [];
+  
+  // For single card, just return the current item
+  if (count === 1) {
+    return [arr[start % n]];
+  }
+  
+  // Create a cyclic window that moves smoothly
+  // This ensures we always show the right combination of cards
+  // Pattern: A B → B C → C D → D A (for 4 cards)
+  // Pattern: A B C → B C D → C D A → D A B (for 3 cards)
+  const result: T[] = [];
+  
+  for (let i = 0; i < count; i++) {
+    let idx = (start + i) % n;
+    if (idx < 0) idx += n;
+    result.push(arr[idx]);
+  }
+  
+  return result;
+};

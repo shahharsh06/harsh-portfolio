@@ -38,7 +38,7 @@ export const useCarousel = (
     isMobile = false,
   } = options;
 
-  // Optimized scrolling patterns
+  // Optimized scrolling patterns for cyclic movement
   const getNextIndex = useCallback(
     (current: number): number => {
       if (totalItems <= 1) return current;
@@ -47,15 +47,13 @@ export const useCarousel = (
         // Mobile: single-step navigation for smooth coverflow
         return (current + 1) % totalItems;
       } else if (type === "featured") {
-        // Desktop Featured: A B, B C, C D, A D pattern (2 at a time)
-        const visibleCount = 2;
-        const step = visibleCount;
-        return (current + step) % totalItems;
+        // Desktop Featured: A B → B C → C D → D A pattern (2 at a time)
+        // Move by 1 to create the cyclic effect: A B → B C → C D → D A
+        return (current + 1) % totalItems;
       } else {
-        // Desktop Other: A B C, B C D pattern (3 at a time)
-        const visibleCount = 3;
-        const step = visibleCount;
-        return (current + step) % totalItems;
+        // Desktop Other: A B C → B C D → C D A pattern (3 at a time)
+        // Move by 1 to create the cyclic effect: A B C → B C D → C D A
+        return (current + 1) % totalItems;
       }
     },
     [totalItems, type, isMobile],
@@ -73,11 +71,11 @@ export const useCarousel = (
         // Mobile: single-step back
         return (prev - 1 + totalItems) % totalItems;
       } else if (type === "featured") {
-        // Desktop Featured: step back by 2
-        return (prev - 2 + totalItems) % totalItems;
+        // Desktop Featured: step back by 1 for cyclic movement
+        return (prev - 1 + totalItems) % totalItems;
       } else {
-        // Desktop Other: step back by 3
-        return (prev - 3 + totalItems) % totalItems;
+        // Desktop Other: step back by 1 for cyclic movement
+        return (prev - 1 + totalItems) % totalItems;
       }
     });
   }, [totalItems, type, isMobile]);
