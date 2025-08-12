@@ -1,26 +1,26 @@
 {
-  "lastUpdated": "2025-08-12T15:52:36.529Z",
+  "lastUpdated": "2025-08-12T21:25:41.045Z",
   "environment": {
     "current": "development",
-    "lastUpdated": "2025-08-12T15:52:36.528Z",
-    "buildTime": "2025-08-12T15:52:36.528Z"
+    "lastUpdated": "2025-08-12T21:25:41.044Z",
+    "buildTime": "2025-08-12T21:25:41.044Z"
   },
   "coverage": {
     "percentage": 99,
-    "totalLines": 3744,
-    "coveredLines": 3690,
+    "totalLines": 3771,
+    "coveredLines": 3715,
     "grade": "A+"
   },
   "functions": {
     "percentage": 93,
-    "total": 100,
-    "covered": 93,
+    "total": 101,
+    "covered": 94,
     "threshold": 80,
     "grade": "A+"
   },
   "branches": {
-    "percentage": 94,
-    "total": 336,
+    "percentage": 93,
+    "total": 339,
     "covered": 315,
     "grade": "A+"
   },
@@ -35,7 +35,7 @@
     "score": 100,
     "highSeverityIssues": 0,
     "vulnerabilities": 0,
-    "lastScan": "2025-08-12T15:52:36.530Z"
+    "lastScan": "2025-08-12T21:25:41.045Z"
   },
   "quality": {
     "lintingScore": 100,
@@ -103,11 +103,11 @@
       "coverage": 100
     },
     {
-      "name": "utils.ts",
-      "coverage": 100
+      "name": "Navigation.tsx",
+      "coverage": 99
     },
     {
-      "name": "Navigation.tsx",
+      "name": "utils.ts",
       "coverage": 99
     },
     {
