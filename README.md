@@ -4,16 +4,16 @@ A modern, high-performance portfolio website built with React, TypeScript, and T
 
 ---
 
-## 🚀 **Enterprise-Grade Features**
+## **Enterprise-Grade Features**
 
-- **🛡️ Zero-Downtime Guarantee**: Website never goes down due to failed deployments
-- **🚦 Quality Gates**: Multi-stage validation (linting, testing, coverage, security, build)
-- **🔒 Security First**: Automatic vulnerability scanning and security audits
-- **📊 Live Dashboard**: Real-time CI/CD metrics and test coverage monitoring
+- **Zero-Downtime Guarantee**: Website never goes down due to failed deployments
+- **Quality Gates**: Multi-stage validation (linting, testing, coverage, security, build)
+- **Security First**: Automatic vulnerability scanning and security audits
+- **Live Dashboard**: Real-time CI/CD metrics and test coverage monitoring
 
 ---
 
-## 📚 Table of Contents
+## Table of Contents
 
 - [Features](#features)
 - [Tech Stack](#tech-stack)
@@ -28,19 +28,19 @@ A modern, high-performance portfolio website built with React, TypeScript, and T
 
 ---
 
-## ✨ Features
+## Features
 
-- **🎭 Interactive Portfolio**: Animated hero section with typewriter effect
-- **🚀 Project Gallery**: Interactive project carousel with smooth navigation
-- **📊 Live Dashboard**: CI/CD-driven metrics with real-time updates
-- **📧 Contact Form**: EmailJS integration with validation (no backend needed)
-- **🌙 Theme Toggle**: Light/dark theme with system preference awareness
-- **📱 Mobile-First**: Responsive design optimized for all devices
-- **🧪 Quality Assured**: 450+ tests, 95% coverage, enterprise-grade reliability
+- **Interactive Portfolio**: Animated hero section with typewriter effect
+- **Project Gallery**: Interactive project carousel with smooth navigation
+- **Live Dashboard**: CI/CD-driven metrics with real-time updates
+- **Contact Form**: EmailJS integration with validation (no backend needed)
+- **Theme Toggle**: Light/dark theme with system preference awareness
+- **Mobile-First**: Responsive design optimized for all devices
+- **Quality Assured**: 450+ tests, 95% coverage, enterprise-grade reliability
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend**: React 18, TypeScript, Tailwind CSS, Framer Motion
 - **Build & Tooling**: Vite, ESLint, PostCSS, SWC
@@ -51,7 +51,7 @@ A modern, high-performance portfolio website built with React, TypeScript, and T
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Clone the repository
 
@@ -86,48 +86,48 @@ npm run test
 
 ---
 
-## 🏗️ **Enterprise CI/CD Pipeline**
+## **CI/CD Pipeline**
 
 Our **bulletproof deployment system** ensures your website is **never deployed unless everything is perfect**:
 
-### **🚦 Stage 1: Quality Gates & Validation**
+### **Stage 1: Quality Gates & Validation**
 - **Linting**: Code quality and style enforcement
 - **Type Checking**: Full TypeScript validation
 - **Unit Tests**: All tests must pass (450+ tests)
 - **Coverage Analysis**: Minimum 85% test coverage required
 - **Build Validation**: Production build must succeed
 
-### **🔒 Stage 2: Security & Performance**
+### **Stage 2: Security & Performance**
 - **Security Audit**: Vulnerability scanning and dependency analysis
 - **Bundle Analysis**: Performance optimization and size monitoring
 - **Performance Validation**: Speed and efficiency checks
 
-### **🏗️ Stage 3: Build & Artifact Creation**
+### **Stage 3: Build & Artifact Creation**
 - **Production Build**: Creates deployment-ready artifacts
 - **Artifact Verification**: Ensures build integrity
 - **Quality Assurance**: Final validation before deployment
 
-### **🚀 Stage 4: Deployment**
+### **Stage 4: Deployment**
 - **Automatic Deployment**: Only if ALL previous stages pass
 - **GitHub Pages Integration**: Seamless hosting deployment
 - **Health Monitoring**: Post-deployment validation
 
-### **🔍 Stage 5: Post-Deployment Validation**
+### **Stage 5: Post-Deployment Validation**
 - **Health Checks**: Ensures site is responding correctly
 - **Final Tests**: Post-deployment verification
 - **Success Confirmation**: Deployment completion status
 
 ---
 
-## 🧪 Testing & Coverage
+## Testing & Coverage
 
 - **Current Coverage**: ~95% overall
 - **Test Count**: 450+ passing tests
 - **Coverage Targets**: 
-  - Statements: 80%+ ✅
-  - Branches: 80%+ ✅
-  - Functions: 65%+ ✅
-  - Lines: 80%+ ✅
+  - Statements: 80%+
+  - Branches: 80%+
+  - Functions: 65%+
+  - Lines: 80%+
 
 ### **Run Tests**
 ```bash
@@ -143,7 +143,7 @@ npm run test:ui
 
 ---
 
-## 📊 Dashboard & Metrics
+## Dashboard & Metrics
 
 - **URL**: `/dashboard.html`
 - **Real-time Metrics**: 
@@ -155,7 +155,7 @@ npm run test:ui
 
 ---
 
-## 🎨 Design System
+## Design System
 
 - **Color Theme**: Professional blue palette
 - **Typography**: Inter, JetBrains Mono fonts
@@ -164,7 +164,7 @@ npm run test:ui
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/your-feature`)
@@ -177,30 +177,30 @@ npm run test:ui
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
-## 📬 Contact
+## Contact
 
 **Harsh Shah**  
 [LinkedIn](https://www.linkedin.com/in/shahharsh06/) | [GitHub](https://github.com/shahharsh06) | [Email](mailto:harsh.edu2@gmail.com)
 
 ---
 
-## 🎯 **Why Enterprise-Grade?**
+## **Why Enterprise-Grade?**
 
 This portfolio demonstrates **professional software engineering practices** that you'd expect from developers with 20+ years of experience:
 
-- **🛡️ Reliability**: Zero-downtime deployments
-- **🔒 Security**: Automatic vulnerability scanning
-- **📊 Quality**: Comprehensive testing and coverage
-- **🚀 Performance**: Optimized builds and monitoring
-- **📈 Scalability**: Professional CI/CD architecture
+- **Reliability**: Zero-downtime deployments
+- **Security**: Automatic vulnerability scanning
+- **Quality**: Comprehensive testing and coverage
+- **Performance**: Optimized builds and monitoring
+- **Scalability**: Professional CI/CD architecture
 
-> ⭐ **This isn't just a portfolio – it's a demonstration of enterprise-grade software engineering!**
+> ⭐ **This isn't just a portfolio – it's a demonstration of software engineering!**
 
 ---
 
