@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom";
 import { vi } from "vitest";
+import { afterEach } from "vitest";
 
 // Make vi available globally for TypeScript
 declare global {
@@ -101,7 +102,6 @@ vi.mock("disposable-email-domains", () => ({
   ],
 }));
 
-// Ensure proper cleanup after each test
 afterEach(() => {
   vi.clearAllMocks();
   vi.clearAllTimers();
