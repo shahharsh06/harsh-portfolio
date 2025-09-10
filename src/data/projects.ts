@@ -1,4 +1,5 @@
 import portfolioScreenshot from "../assets/profile/portfolio-screenshot.png";
+import dashboardScreenshot from "../assets/profile/Dashboard-screenshot.png";
 
 export interface Project {
   title: string;
@@ -20,7 +21,7 @@ export const projects: Project[] = [
     technologies: ["React", "Node.js", "MongoDB", "Stripe", "AWS"],
     liveUrl: "https://example.com",
     githubUrl: "https://github.com",
-    featured: true,
+    featured: false,
   },
   {
     title: "Task Management App",
@@ -31,28 +32,27 @@ export const projects: Project[] = [
     technologies: ["React", "TypeScript", "Socket.io", "PostgreSQL"],
     liveUrl: "https://example.com",
     githubUrl: "https://github.com",
-    featured: true,
+    featured: false,
   },
   {
-    title: "AI Chat Assistant",
+    title: "Credit Card Fraud Detection",
     description:
-      "An intelligent chatbot powered by machine learning, featuring natural language processing and context-aware responses.",
-    image:
-      "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=240&fit=crop&crop=center&auto=format&q=80",
-    technologies: ["Python", "TensorFlow", "OpenAI API", "FastAPI", "React"],
-    liveUrl: "https://example.com",
-    githubUrl: "https://github.com",
-    featured: true,
-  },
-  {
-    title: "Data Analytics Dashboard",
-    description:
-      "A comprehensive analytics platform with real-time data visualization, interactive charts, and business intelligence insights.",
+      "A machine learning system that analyzes transaction patterns to detect fraudulent credit card activities in real-time. Features advanced anomaly detection algorithms and high-accuracy classification models.",
     image:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=240&fit=crop&crop=center&auto=format&q=80",
-    technologies: ["React", "D3.js", "Python", "PostgreSQL", "Redis"],
-    liveUrl: "https://example.com",
-    githubUrl: "https://github.com",
+    technologies: ["Python", "Scikit-learn", "Pandas", "NumPy", "Matplotlib", "Jupyter"],
+    liveUrl: "",
+    githubUrl: "https://github.com/shahharsh06/credit-card-fraud-detection",
+    featured: true,
+  },
+  {
+    title: "International Student Financial Dashboard",
+    description:
+      "A comprehensive, professional-grade financial analysis and planning tool designed specifically for international students. Features expense tracking, scenario analysis, ROI calculations, and interactive visualizations with enterprise-level architecture.",
+    image: dashboardScreenshot,
+    technologies: ["Python", "Streamlit", "Pandas", "Plotly", "NumPy", "CSS3", "HTML5"],
+    liveUrl: "https://international-student-dashboard.streamlit.app/",
+    githubUrl: "https://github.com/shahharsh06/International_Student_Dashboard",
     featured: true,
   },
   {

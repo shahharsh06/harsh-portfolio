@@ -185,19 +185,23 @@ async function updateDashboardFromJson() {
         
         const totalTestsElement = document.getElementById('totalTests');
         if (totalTestsElement) {
-            totalTestsElement.textContent = data.tests.count;
+            totalTestsElement.textContent = data.tests?.count || 'Loading...';
         }
         
         const securityScoreElement = document.getElementById('securityScore');
         if (securityScoreElement) {
-            securityScoreElement.textContent = data.security.score + '%';
+            securityScoreElement.textContent = (data.security?.score || 'Loading...') + '%';
         }
         
         const securityStatusElement = document.getElementById('securityStatus');
         if (securityStatusElement) {
-            securityStatusElement.textContent = data.security.highSeverityIssues === 0
-                ? '✓ No high severity issues'
-                : `✗ ${data.security.highSeverityIssues} high severity issues`;
+            if (data.security?.highSeverityIssues !== undefined) {
+                securityStatusElement.textContent = data.security.highSeverityIssues === 0
+                    ? '✓ No high severity issues'
+                    : `✗ ${data.security.highSeverityIssues} high severity issues`;
+            } else {
+                securityStatusElement.textContent = 'Loading...';
+            }
         }
         
         const ciStatusElement = document.getElementById('ciStatus');

@@ -149,6 +149,44 @@
             box-shadow: 0 0 4px 1px rgba(59, 130, 246, 0.4);
             border: 1.5px solid #3b82f6;
         }
+        
+        /* Dashboard card spacing fixes */
+        .dashboard-card .flex.items-center.justify-between {
+            gap: 1rem;
+        }
+        
+        .dashboard-card .flex.items-center.justify-between > div:first-child {
+            flex-shrink: 0;
+        }
+        
+        .dashboard-card .flex.items-center.justify-between > div:last-child {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .dashboard-card .text-2xl.font-bold.text-gradient {
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Ensure consistent icon sizing and spacing */
+        .dashboard-card .p-3.bg-primary\/10 {
+            width: 48px !important;
+            height: 48px !important;
+            flex-shrink: 0;
+        }
+        
+        /* Ensure text content takes up proper space */
+        .dashboard-card .flex-1 {
+            min-width: 0;
+            overflow: hidden;
+        }
+        
+        /* Consistent spacing between icon and text */
+        .dashboard-card .flex.items-center.justify-between > div:first-child {
+            margin-right: 1rem;
+        }
     </style>
 </head>
 <body class="bg-background text-foreground min-h-screen transition-colors duration-300">
@@ -191,54 +229,54 @@
         <!-- Overview Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <!-- Overall Coverage -->
-            <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
+            <div class="dashboard-card card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
                 <div class="flex items-center justify-between">
                     <div class="p-3 bg-primary/10 rounded-full flex items-center justify-center transition-smooth group-hover:bg-primary/20" style="width: 48px; height: 48px;">
                         <i data-lucide="bar-chart-3" class="w-6 h-6" style="color: #3b82f6"></i>
                     </div>
-                    <div>
+                    <div class="flex-1 ml-4">
                         <p class="text-sm font-medium text-foreground">Overall Coverage</p>
-                        <p id="overallCoverage" class="text-2xl font-bold text-gradient">Loading...</p>
+                        <p id="overallCoverage" class="text-2xl font-bold text-gradient min-h-[32px] flex items-center">Loading...</p>
                         <p class="text-sm text-primary font-medium mt-1">✓ Industry Standard: 80%</p>
                     </div>
                 </div>
             </div>
             <!-- Total Tests -->
-            <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
+            <div class="dashboard-card card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
                 <div class="flex items-center justify-between">
                     <div class="p-3 bg-primary/10 rounded-full flex items-center justify-center transition-smooth group-hover:bg-primary/20" style="width: 48px; height: 48px;">
                         <i data-lucide="check-circle" class="w-6 h-6" style="color: #3b82f6"></i>
                     </div>
-                    <div>
+                    <div class="flex-1 ml-4">
                         <p class="text-sm font-medium text-foreground">Total Tests</p>
-                        <p id="totalTests" class="text-2xl font-bold text-gradient"></p>
+                        <p id="totalTests" class="text-2xl font-bold text-gradient min-h-[32px] flex items-center">Loading...</p>
                         <p class="text-sm text-primary font-medium mt-1">✓ All tests passing</p>
                     </div>
                 </div>
             </div>
             <!-- Function Coverage -->
-            <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
+            <div class="dashboard-card card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
                 <div class="flex items-center justify-between">
                     <div class="p-3 bg-primary/10 rounded-full flex items-center justify-center transition-smooth group-hover:bg-primary/20" style="width: 48px; height: 48px;">
                         <i data-lucide="function-square" class="w-6 h-6" style="color: #3b82f6"></i>
                     </div>
-                    <div>
+                    <div class="flex-1 ml-4">
                         <p class="text-sm font-medium text-foreground">Function Coverage</p>
-                        <p id="functionCoverage" class="text-2xl font-bold text-gradient">Loading...</p>
+                        <p id="functionCoverage" class="text-2xl font-bold text-gradient min-h-[32px] flex items-center">Loading...</p>
                         <p id="functionCoverageThreshold" class="text-sm text-primary font-medium mt-1">Loading...</p>
                     </div>
                 </div>
             </div>
             <!-- Security Score -->
-            <div class="card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
+            <div class="dashboard-card card-gradient rounded-2xl shadow-card card-hover hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300 p-6">
                 <div class="flex items-center justify-between">
                     <div class="p-3 bg-primary/10 rounded-full flex items-center justify-center transition-smooth group-hover:bg-primary/20" style="width: 48px; height: 48px;">
                         <i data-lucide="shield-check" class="w-6 h-6" style="color: #3b82f6"></i>
                     </div>
-                    <div>
+                    <div class="flex-1 ml-4">
                         <p class="text-sm font-medium text-foreground">Security Score</p>
-                        <p id="securityScore" class="text-2xl font-bold text-gradient"></p>
-                        <p id="securityStatus" class="text-sm text-primary font-medium mt-1"></p>
+                        <p id="securityScore" class="text-2xl font-bold text-gradient min-h-[32px] flex items-center">Loading...</p>
+                        <p id="securityStatus" class="text-sm text-primary font-medium mt-1">Loading...</p>
                     </div>
                 </div>
             </div>
@@ -286,27 +324,27 @@
                     <div class="p-2 bg-primary/10 rounded-full flex items-center justify-center transition-smooth mr-4 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20" style="width: 40px; height: 40px;">
                         <i id="ciIcon" data-lucide="check-circle" class="w-5 h-5" style="color: #3b82f6"></i>
                     </div>
-                    <div>
+                    <div class="flex-1">
                         <p class="text-sm font-medium text-foreground">Test Pipeline</p>
-                        <p id="ciStatus" class="text-sm text-primary"></p>
+                        <p id="ciStatus" class="text-sm text-primary">Loading...</p>
                     </div>
                 </div>
                 <div class="flex items-center p-4 bg-primary/5 dark:bg-primary/10 rounded-lg hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300">
                     <div class="p-2 bg-primary/10 rounded-full flex items-center justify-center transition-smooth mr-4 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20" style="width: 40px; height: 40px;">
                         <i id="coverageIcon" data-lucide="check-circle" class="w-5 h-5" style="color: #3b82f6"></i>
                     </div>
-                    <div>
+                    <div class="flex-1">
                         <p class="text-sm font-medium text-foreground">Coverage</p>
-                        <p class="text-sm text-primary" id="coverageStatus"></p>
+                        <p class="text-sm text-primary" id="coverageStatus">Loading...</p>
                     </div>
                 </div>
                 <div class="flex items-center p-4 bg-primary/5 dark:bg-primary/10 rounded-lg hover:shadow-[0_0_20px_hsl(var(--primary)/0.4)] hover:-translate-y-1 transition-all duration-300">
                     <div class="p-2 bg-primary/10 rounded-full flex items-center justify-center transition-smooth mr-4 group-hover:bg-primary/20 group-focus:bg-primary/20 group-active:bg-primary/20" style="width: 40px; height: 40px;">
                         <i id="deploymentIcon" data-lucide="check-circle" class="w-5 h-5" style="color: #3b82f6"></i>
                     </div>
-                    <div>
+                    <div class="flex-1">
                         <p class="text-sm font-medium text-foreground">Deployment</p>
-                        <p id="deploymentStatus" class="text-sm text-primary"></p>
+                        <p id="deploymentStatus" class="text-sm text-primary">Loading...</p>
                     </div>
                 </div>
             </div>

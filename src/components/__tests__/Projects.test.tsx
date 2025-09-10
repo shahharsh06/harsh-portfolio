@@ -3,6 +3,7 @@ import { screen, waitFor, act, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { render } from "@/test/utils";
 import Projects from "../Projects";
+import { featuredProjects, otherProjects, projects } from "@/data/projects";
 // Combine extra handlers tests from Projects.extra.functions.test.tsx
 
 describe("Projects Component", () => {
@@ -56,10 +57,10 @@ describe("Projects Component", () => {
     render(<Projects />);
 
     // Check for project titles (these should be in the data)
+    const allProjectTitles = projects.map(p => p.title);
+    const titleRegex = new RegExp(allProjectTitles.join('|'));
     const projectCards = screen
-      .getAllByText(
-        /E-Commerce Platform|Task Management App|Weather Dashboard|Portfolio Website|Recipe Finder App/,
-      )
+      .getAllByText(titleRegex)
       .map((el) => el.closest('div[class*="card-gradient"]'))
       .filter(Boolean);
     expect(projectCards.length).toBeGreaterThan(0);
@@ -89,9 +90,9 @@ describe("Projects Component", () => {
     render(<Projects />);
 
     // Check for project descriptions in cards
-    const projectDescriptions = screen.getAllByText(
-      /A showcase of my recent work|E-Commerce Platform|Recipe Finder App/,
-    );
+    const allProjectDescriptions = projects.map(p => p.description.split(' ').slice(0, 3).join(' '));
+    const descriptionRegex = new RegExp(allProjectDescriptions.join('|'));
+    const projectDescriptions = screen.getAllByText(descriptionRegex);
     expect(projectDescriptions.length).toBeGreaterThan(0);
   });
 
@@ -186,8 +187,10 @@ describe("Projects Component", () => {
   it("applies hover effects to project cards", () => {
     render(<Projects />);
 
+    const featuredProjectTitles = featuredProjects.map(p => p.title);
+    const titleRegex = new RegExp(featuredProjectTitles.join('|'));
     const projectCards = screen
-      .getAllByText(/E-Commerce Platform|Recipe Finder App/)
+      .getAllByText(titleRegex)
       .map((el) => el.closest('div[class*="card-gradient"]'))
       .filter(Boolean);
     projectCards.forEach((card) => {
@@ -249,8 +252,10 @@ describe("Projects Component", () => {
     const user = userEvent.setup();
     render(<Projects />);
 
+    const featuredProjectTitles = featuredProjects.map(p => p.title);
+    const titleRegex = new RegExp(featuredProjectTitles.join('|'));
     const projectCards = screen
-      .getAllByText(/E-Commerce Platform|Recipe Finder App/)
+      .getAllByText(titleRegex)
       .map((el) => el.closest('div[class*="card-gradient"]'))
       .filter(Boolean);
     if (projectCards.length > 0) {
@@ -384,8 +389,10 @@ describe("Projects Component", () => {
     const user = userEvent.setup();
     render(<Projects />);
 
+    const featuredProjectTitles = featuredProjects.map(p => p.title);
+    const titleRegex = new RegExp(featuredProjectTitles.join('|'));
     const projectCards = screen
-      .getAllByText(/E-Commerce Platform|Recipe Finder App/)
+      .getAllByText(titleRegex)
       .map((el) => el.closest('div[class*="card-gradient"]'))
       .filter(Boolean);
     if (projectCards.length > 0) {
@@ -484,8 +491,10 @@ describe("Projects Component", () => {
     render(<Projects />);
 
     // Featured projects should be limited to a specific number
+    const featuredProjectTitles = featuredProjects.map(p => p.title);
+    const titleRegex = new RegExp(featuredProjectTitles.join('|'));
     const featuredProjectCards = screen
-      .getAllByText(/E-Commerce Platform|Task Management App|Weather Dashboard/)
+      .getAllByText(titleRegex)
       .map((el) => el.closest('div[class*="card-gradient"]'))
       .filter(Boolean);
     expect(featuredProjectCards.length).toBeGreaterThan(0);
@@ -793,9 +802,12 @@ describe("Projects Component", () => {
   it("handles carousel data validation", () => {
     render(<Projects />);
 
-    // Should validate project data
+    // Should validate project data - use dynamic featured projects
+    const featuredProjectTitles = featuredProjects.map(p => p.title);
+    const titleRegex = new RegExp(featuredProjectTitles.join('|'));
+    
     const projectCards = screen
-      .getAllByText(/E-Commerce Platform|Recipe Finder App/)
+      .getAllByText(titleRegex)
       .map((el) => el.closest('div[class*="card-gradient"]'))
       .filter(Boolean);
     expect(projectCards.length).toBeGreaterThan(0);
