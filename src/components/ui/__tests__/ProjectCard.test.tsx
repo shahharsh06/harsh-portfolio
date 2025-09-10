@@ -6,7 +6,7 @@ import { ProjectCard } from "../ProjectCard";
 // Mock the utils with proper cn function
 vi.mock("@/lib/utils", () => ({
   getImageUrl: (image: string) => `/mock-images/${image}`,
-  getProjectFallbackEmoji: (title: string) => "🚀",
+  getProjectFallbackEmoji: (title: string) => "[CODE]",
   cn: (...classes: (string | undefined | null | false)[]) =>
     classes.filter(Boolean).join(" "),
 }));
@@ -335,7 +335,7 @@ describe("ProjectCard Component", () => {
 
     // Should show fallback emoji after error
     await waitFor(() => {
-      expect(screen.getByText("🚀")).toBeInTheDocument();
+      expect(screen.getByText("[CODE]")).toBeInTheDocument();
     });
 
     // Check that the project title is still visible (use a more specific selector)
@@ -362,7 +362,7 @@ describe("ProjectCard Component", () => {
     // Wait for timeout (2 seconds) to trigger fallback
     await waitFor(
       () => {
-        expect(screen.getByText("🚀")).toBeInTheDocument();
+        expect(screen.getByText("[CODE]")).toBeInTheDocument();
       },
       { timeout: 2500 },
     );
@@ -438,7 +438,7 @@ describe("ProjectCard Component", () => {
 
     // Should show fallback emoji after error
     await waitFor(() => {
-      expect(screen.getByText("🚀")).toBeInTheDocument();
+      expect(screen.getByText("[CODE]")).toBeInTheDocument();
     });
 
     // Rerender with different image to test state reset
@@ -489,7 +489,7 @@ describe("ProjectCard Component", () => {
     }
 
     await waitFor(() => {
-      expect(screen.getByText("🚀")).toBeInTheDocument();
+      expect(screen.getByText("[CODE]")).toBeInTheDocument();
     });
   });
 

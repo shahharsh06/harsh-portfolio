@@ -8,14 +8,14 @@ import { execSync, spawnSync } from 'child_process';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-console.log('🚀 Starting comprehensive dashboard update...');
+console.log('Starting comprehensive dashboard update...');
 
 // Small helpers
 const readJson = (filePath) => {
   try {
     return JSON.parse(fs.readFileSync(filePath, 'utf8'));
   } catch (error) {
-    console.error(`❌ Failed to read ${filePath}:`, error.message);
+    console.error(`Failed to read ${filePath}:`, error.message);
     return null;
   }
 };
@@ -46,22 +46,22 @@ const parseVitestReport = (reportPath) => {
       success: report.success || false
     };
   } catch (error) {
-    console.error('❌ Failed to parse Vitest report:', error.message);
+    console.error('Failed to parse Vitest report:', error.message);
     return null;
   }
 };
 
 // Clean up old coverage files
 const cleanupCoverageFiles = () => {
-  console.log('🧹 Cleaning up old coverage files...');
+  console.log('Cleaning up old coverage files...');
   const coverageDir = path.join(__dirname, '..', 'coverage');
   
   if (fs.existsSync(coverageDir)) {
     try {
       fs.rmSync(coverageDir, { recursive: true, force: true });
-      console.log('✅ Removed old coverage directory');
+      console.log('Removed old coverage directory');
     } catch (error) {
-      console.error('⚠️  Failed to remove coverage directory:', error.message);
+      console.error('Failed to remove coverage directory:', error.message);
     }
   }
   
@@ -69,43 +69,43 @@ const cleanupCoverageFiles = () => {
   if (fs.existsSync(vitestReport)) {
     try {
       fs.unlinkSync(vitestReport);
-      console.log('✅ Removed old vitest report');
+      console.log('Removed old vitest report');
     } catch (error) {
-      console.error('⚠️  Failed to remove vitest report:', error.message);
+      console.error('Failed to remove vitest report:', error.message);
     }
   }
   
-  console.log('✅ Cleanup completed');
+  console.log('Cleanup completed');
 };
 
 // Run tests with coverage and generate JSON report
 const runTestsWithCoverage = () => {
-  console.log('📋 Running tests with coverage and generating JSON report...');
+  console.log('Running tests with coverage and generating JSON report...');
   try {
     // First run tests with coverage to generate coverage data
     execSync('npm run test:coverage', { stdio: 'inherit' });
-    console.log('✅ Coverage tests completed successfully');
+    console.log('Coverage tests completed successfully');
     
     // Then generate JSON report
     execSync('npm run test:coverage:json', { stdio: 'inherit' });
-    console.log('✅ JSON report generated successfully');
+    console.log('JSON report generated successfully');
     
     return true;
   } catch (error) {
-    console.error('❌ Running tests with coverage and generating JSON report failed:', error.message);
+    console.error('Running tests with coverage and generating JSON report failed:', error.message);
     return false;
   }
 };
 
 // Generate coverage summary
 const generateCoverageSummary = () => {
-  console.log('📊 Generating coverage summary...');
+  console.log('Generating coverage summary...');
   
   try {
     // Read coverage data
     const coveragePath = path.join(__dirname, '..', 'coverage', 'coverage-final.json');
     if (!fs.existsSync(coveragePath)) {
-      console.error('❌ Coverage data not found. Run tests first.');
+      console.error('Coverage data not found. Run tests first.');
       return false;
     }
 
@@ -301,7 +301,7 @@ const generateCoverageSummary = () => {
     // Write dashboard data
     const dashboardPath = path.join(__dirname, '..', 'public', 'dashboard-data.json');
     fs.writeFileSync(dashboardPath, JSON.stringify(dashboardData, null, 2));
-    console.log('✅ Dashboard data written to public/dashboard-data.json');
+    console.log('Dashboard data written to public/dashboard-data.json');
 
     // Update history
     const historyPath = path.join(__dirname, '..', 'public', 'dashboard-history.json');
@@ -311,7 +311,7 @@ const generateCoverageSummary = () => {
       try {
         history = readJson(historyPath);
       } catch (error) {
-        console.log('⚠️  Could not read history file, starting fresh');
+        console.log('Could not read history file, starting fresh');
       }
     }
 
@@ -339,19 +339,19 @@ const generateCoverageSummary = () => {
     }
 
     fs.writeFileSync(historyPath, JSON.stringify(history, null, 2));
-    console.log('✅ Dashboard history updated');
+    console.log('Dashboard history updated');
 
     // Print summary
-    console.log('📊 Test Count:', testCount);
-    console.log('📊 Coverage:', overallLineCoverage + '%');
-    console.log('📊 Functions:', overallFunctionCoverage + '%');
-    console.log('📊 Branches:', overallBranchCoverage + '%');
-    console.log('🌍 Environment:', currentEnv);
-    console.log('🕒 Build Time:', buildTime);
+    console.log('Test Count:', testCount);
+    console.log('Coverage:', overallLineCoverage + '%');
+    console.log('Functions:', overallFunctionCoverage + '%');
+    console.log('Branches:', overallBranchCoverage + '%');
+    console.log('Environment:', currentEnv);
+    console.log('Build Time:', buildTime);
 
     return true;
   } catch (error) {
-    console.error('❌ Failed to generate coverage summary:', error.message);
+    console.error('Failed to generate coverage summary:', error.message);
     return false;
   }
 };
@@ -362,22 +362,22 @@ const main = async () => {
     cleanupCoverageFiles();
     
     if (!runTestsWithCoverage()) {
-      console.error('❌ Test execution failed. Stopping dashboard update.');
+      console.error('Test execution failed. Stopping dashboard update.');
       process.exit(1);
     }
     
     if (!generateCoverageSummary()) {
-      console.error('❌ Coverage summary generation failed.');
+      console.error('Coverage summary generation failed.');
       process.exit(1);
     }
     
-    console.log('🎉 Dashboard update completed successfully!');
-    console.log('📁 Updated files:');
+    console.log('Dashboard update completed successfully!');
+    console.log('Updated files:');
     console.log('   - public/dashboard-data.json');
     console.log('   - public/dashboard-history.json');
     
   } catch (error) {
-    console.error('❌ Dashboard update failed:', error.message);
+    console.error('Dashboard update failed:', error.message);
     process.exit(1);
   }
 };

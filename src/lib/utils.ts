@@ -24,35 +24,35 @@ export function getImageUrl(url: string, fallback?: string): string {
   return url;
 }
 
-// Project emoji mapping for better maintainability
-const PROJECT_EMOJI_MAP: Record<string, string> = {
-  recipe: "🍽️",
-  food: "🍽️",
-  weather: "🌤️",
-  "e-commerce": "🛒",
-  shop: "🛒",
-  task: "📋",
-  todo: "📋",
-  ai: "🤖",
-  chat: "🤖",
-  data: "📊",
-  analytics: "📊",
-  fitness: "💪",
-  workout: "💪",
-  blog: "📝",
-  portfolio: "🎨",
+// Project icon mapping for better maintainability
+const PROJECT_ICON_MAP: Record<string, string> = {
+  recipe: "[FOOD]",
+  food: "[FOOD]",
+  weather: "[WEATHER]",
+  "e-commerce": "[SHOP]",
+  shop: "[SHOP]",
+  task: "[TASK]",
+  todo: "[TASK]",
+  ai: "[AI]",
+  chat: "[AI]",
+  data: "[DATA]",
+  analytics: "[DATA]",
+  fitness: "[FITNESS]",
+  workout: "[FITNESS]",
+  blog: "[BLOG]",
+  portfolio: "[PORTFOLIO]",
 };
 
-// Utility function to get project-specific fallback emoji
+// Utility function to get project-specific fallback icon
 export function getProjectFallbackEmoji(title: string): string {
   const lowerTitle = title.toLowerCase();
 
   // Use find method instead of for loop with early return
-  const matchedEmoji = Object.entries(PROJECT_EMOJI_MAP).find(([keyword]) =>
+  const matchedIcon = Object.entries(PROJECT_ICON_MAP).find(([keyword]) =>
     lowerTitle.includes(keyword),
   );
 
-  return matchedEmoji ? matchedEmoji[1] : "💻";
+  return matchedIcon ? matchedIcon[1] : "[CODE]";
 }
 
 // Helper to get card width class based on visible count

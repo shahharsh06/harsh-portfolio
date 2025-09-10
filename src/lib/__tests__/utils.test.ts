@@ -59,51 +59,51 @@ describe("Utility Functions", () => {
   });
 
   describe("getProjectFallbackEmoji", () => {
-    it("returns food emoji for recipe projects", () => {
-      expect(getProjectFallbackEmoji("Recipe Finder App")).toBe("🍽️");
-      expect(getProjectFallbackEmoji("Food Delivery App")).toBe("🍽️");
+    it("returns food icon for recipe projects", () => {
+      expect(getProjectFallbackEmoji("Recipe Finder App")).toBe("[FOOD]");
+      expect(getProjectFallbackEmoji("Food Delivery App")).toBe("[FOOD]");
     });
 
-    it("returns weather emoji for weather projects", () => {
-      expect(getProjectFallbackEmoji("Weather Dashboard")).toBe("🌤️");
-      expect(getProjectFallbackEmoji("Weather App")).toBe("🌤️");
+    it("returns weather icon for weather projects", () => {
+      expect(getProjectFallbackEmoji("Weather Dashboard")).toBe("[WEATHER]");
+      expect(getProjectFallbackEmoji("Weather App")).toBe("[WEATHER]");
     });
 
-    it("returns shopping emoji for e-commerce projects", () => {
-      expect(getProjectFallbackEmoji("E-Commerce Platform")).toBe("🛒");
-      expect(getProjectFallbackEmoji("Online Shop")).toBe("🛒");
+    it("returns shopping icon for e-commerce projects", () => {
+      expect(getProjectFallbackEmoji("E-Commerce Platform")).toBe("[SHOP]");
+      expect(getProjectFallbackEmoji("Online Shop")).toBe("[SHOP]");
     });
 
-    it("returns task emoji for task management projects", () => {
-      expect(getProjectFallbackEmoji("Task Management App")).toBe("📋");
-      expect(getProjectFallbackEmoji("Todo App")).toBe("📋");
+    it("returns task icon for task management projects", () => {
+      expect(getProjectFallbackEmoji("Task Management App")).toBe("[TASK]");
+      expect(getProjectFallbackEmoji("Todo App")).toBe("[TASK]");
     });
 
-    it("returns robot emoji for AI projects", () => {
-      expect(getProjectFallbackEmoji("AI Chat Assistant")).toBe("🤖");
-      expect(getProjectFallbackEmoji("Chatbot App")).toBe("🤖");
+    it("returns robot icon for AI projects", () => {
+      expect(getProjectFallbackEmoji("AI Chat Assistant")).toBe("[AI]");
+      expect(getProjectFallbackEmoji("Chatbot App")).toBe("[AI]");
     });
 
-    it("returns chart emoji for data projects", () => {
-      expect(getProjectFallbackEmoji("Data Analytics Dashboard")).toBe("📊");
-      expect(getProjectFallbackEmoji("Analytics Platform")).toBe("📊");
+    it("returns chart icon for data projects", () => {
+      expect(getProjectFallbackEmoji("Data Analytics Dashboard")).toBe("[DATA]");
+      expect(getProjectFallbackEmoji("Analytics Platform")).toBe("[DATA]");
     });
 
-    it("returns fitness emoji for fitness projects", () => {
-      expect(getProjectFallbackEmoji("Fitness Tracker")).toBe("💪");
-      expect(getProjectFallbackEmoji("Workout App")).toBe("💪");
+    it("returns fitness icon for fitness projects", () => {
+      expect(getProjectFallbackEmoji("Fitness Tracker")).toBe("[FITNESS]");
+      expect(getProjectFallbackEmoji("Workout App")).toBe("[FITNESS]");
     });
 
-    it("returns blog emoji for blog projects", () => {
-      expect(getProjectFallbackEmoji("Blog Platform")).toBe("📝");
+    it("returns blog icon for blog projects", () => {
+      expect(getProjectFallbackEmoji("Blog Platform")).toBe("[BLOG]");
     });
 
-    it("returns portfolio emoji for portfolio projects", () => {
-      expect(getProjectFallbackEmoji("Portfolio Website")).toBe("🎨");
+    it("returns portfolio icon for portfolio projects", () => {
+      expect(getProjectFallbackEmoji("Portfolio Website")).toBe("[PORTFOLIO]");
     });
 
-    it("returns default emoji for unknown projects", () => {
-      expect(getProjectFallbackEmoji("Random App")).toBe("💻");
+    it("returns default icon for unknown projects", () => {
+      expect(getProjectFallbackEmoji("Random App")).toBe("[CODE]");
     });
   });
 
