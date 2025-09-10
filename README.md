@@ -1,10 +1,10 @@
 # Harsh Shah – ML Engineer & Software Engineer Portfolio
 
-A modern, high-performance portfolio website built with React, TypeScript, and Tailwind CSS. Features enterprise-grade CI/CD pipeline ensuring **zero-downtime deployments** and **bulletproof reliability**.
+A modern, high-performance portfolio website built with React, TypeScript, and Tailwind CSS. Features CI/CD pipeline ensuring **zero-downtime deployments** and **bulletproof reliability**.
 
 ---
 
-## **Enterprise-Grade Features**
+## **Features**
 
 - **Zero-Downtime Guarantee**: Website never goes down due to failed deployments
 - **Quality Gates**: Multi-stage validation (linting, testing, coverage, security, build)
@@ -18,7 +18,7 @@ A modern, high-performance portfolio website built with React, TypeScript, and T
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
-- [Enterprise CI/CD Pipeline](#enterprise-cicd-pipeline)
+- [CI/CD Pipeline](#cicd-pipeline)
 - [Testing & Coverage](#testing--coverage)
 - [Dashboard & Metrics](#dashboard--metrics)
 - [Design System](#design-system)
@@ -36,7 +36,7 @@ A modern, high-performance portfolio website built with React, TypeScript, and T
 - **Contact Form**: EmailJS integration with validation (no backend needed)
 - **Theme Toggle**: Light/dark theme with system preference awareness
 - **Mobile-First**: Responsive design optimized for all devices
-- **Quality Assured**: 450+ tests, 95% coverage, enterprise-grade reliability
+- **Quality Assured**: 450+ tests, 95% coverage, reliability
 
 ---
 
@@ -45,7 +45,7 @@ A modern, high-performance portfolio website built with React, TypeScript, and T
 - **Frontend**: React 18, TypeScript, Tailwind CSS, Framer Motion
 - **Build & Tooling**: Vite, ESLint, PostCSS, SWC
 - **UI Components**: Radix UI, shadcn/ui, Sonner
-- **Testing**: Vitest, React Testing Library, Enterprise CI/CD
+- **Testing**: Vitest, React Testing Library, CI/CD
 - **State Management**: React Context API, React Hook Form, Zod
 - **Deployment**: GitHub Actions, GitHub Pages, Zero-Downtime Guarantee
 
@@ -173,7 +173,7 @@ npm run test:ui
 5. Push to your branch
 6. Open a Pull Request
 
-**Note**: All contributions must pass our enterprise-grade quality gates before merging.
+**Note**: All contributions must pass our quality gates before merging.
 
 ---
 
@@ -190,9 +190,9 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE) for detai
 
 ---
 
-## **Why Enterprise-Grade?**
+## **Why High-Quality?**
 
-This portfolio demonstrates **professional software engineering practices** that you'd expect from developers with 20+ years of experience:
+This portfolio demonstrates **professional software engineering practices** that you'd expect from experienced developers:
 
 - **Reliability**: Zero-downtime deployments
 - **Security**: Automatic vulnerability scanning

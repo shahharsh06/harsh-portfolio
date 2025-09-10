@@ -48,7 +48,7 @@ export const projects: Project[] = [
   {
     title: "International Student Financial Dashboard",
     description:
-      "A comprehensive, professional-grade financial analysis and planning tool designed specifically for international students. Features expense tracking, scenario analysis, ROI calculations, and interactive visualizations with enterprise-level architecture.",
+      "A comprehensive financial analysis and planning tool designed specifically for international students. Features expense tracking, scenario analysis, ROI calculations, and interactive visualizations with robust architecture.",
     image: dashboardScreenshot,
     technologies: ["Python", "Streamlit", "Pandas", "Plotly", "NumPy", "CSS3", "HTML5"],
     liveUrl: "https://international-student-dashboard.streamlit.app/",
